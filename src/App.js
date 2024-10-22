@@ -1,21 +1,17 @@
+import React from 'react';
+import AppRoutes from './routes/Routes';
+import { useLoading } from './hooks/LoadingContext'; // Importa o contexto de Loading
+import Loading from './components/Loading'; // Importa o componente Loading
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const { isLoading, loadingMessage } = useLoading(); // Acessa o estado de isLoading e a mensagem
+
+    return (
+        <div className="App">
+            {isLoading && <Loading message={loadingMessage} />} {/* Renderiza o Loading se isLoading for true */}
+            <AppRoutes /> {/* Renderiza as rotas */}
+        </div>
+    );
 }
 
 export default App;
