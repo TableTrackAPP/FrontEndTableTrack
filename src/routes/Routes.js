@@ -6,6 +6,7 @@ import ForgotPassword from '../pages/ForgotPassword';
 import ValidateResetCode from '../pages/ValidateResetCode';
 import ResetPassword from '../pages/ResetPassword';
 import Establishments from '../pages/Establishments';
+import Products from '../pages/Products';
 import Orders from '../pages/Orders';
 
 import Dashboard from '../pages/Dashboard';
@@ -23,6 +24,7 @@ function AppRoutes() {
                 <Route path="/validate-reset-code" element={<ValidateResetCode />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/Establishments" element={<Establishments />} />
+                <Route path="/Products" element={<Products />} />
                 <Route path="/Orders" element={<Orders />} />
 
                 {/* Protected Routes */}

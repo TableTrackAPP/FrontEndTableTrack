@@ -7,6 +7,7 @@ import {
     getEstablishmentByOwnerID
 } from '../services/establishmentService';
 import { uploadImage } from '../services/firebaseService';
+import { getFromLocalStorage } from '../utils/storageUtils'; // Importa as funções utilitárias
 
 const Establishment = () => {
     const [establishment, setEstablishment] = useState({
@@ -23,7 +24,10 @@ const Establishment = () => {
     useEffect(() => {
         const fetchEstablishment = async () => {
             try {
-                const ownerID = JSON.parse(localStorage.getItem('userData')).userID;
+                const userData = getFromLocalStorage('userData');
+                if (!userData) throw new Error('Usuário não autenticado.');
+
+                const ownerID = userData.userID;
                 const data = await getEstablishmentByOwnerID(ownerID);
                 if (data && data.EstablishmentName) {
                     setEstablishment(data);
@@ -62,8 +66,14 @@ const Establishment = () => {
                 imageUrl = uploadData.url;
             }
 
-            // Cria ou atualiza o estabelecimento com a URL da imagem
-            const establishmentData = { ...establishment, ImageURL: imageUrl, OwnerID: JSON.parse(localStorage.getItem('userData')).userID };
+            const userData = getFromLocalStorage('userData');
+            if (!userData) throw new Error('Usuário não autenticado.');
+
+            const establishmentData = {
+                ...establishment,
+                ImageURL: imageUrl,
+                OwnerID: userData.userID,
+            };
 
             if (isNewEstablishment) {
                 await createEstablishment(establishmentData);
