@@ -8,7 +8,7 @@ import ResetPassword from '../pages/ResetPassword';
 import Establishments from '../pages/Establishments';
 import Products from '../pages/Products';
 import Orders from '../pages/Orders';
-
+import Catalog from '../pages/Catalog';
 import Dashboard from '../pages/Dashboard';
 import Subscribe from '../pages/Subscribe'; // Importing the Subscribe page
 import ProtectedRoute from '../components/ProtectedRoute'; // Importing the updated ProtectedRoute
@@ -26,6 +26,7 @@ function AppRoutes() {
                 <Route path="/Establishments" element={<Establishments />} />
                 <Route path="/Products" element={<Products />} />
                 <Route path="/Orders" element={<Orders />} />
+                <Route path="/Catalog/:establishmentID" element={<Catalog />} /> {/* Ajuste para receber establishmentID como parâmetro */}
 
                 {/* Protected Routes */}
                 <Route

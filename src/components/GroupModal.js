@@ -7,7 +7,7 @@ const GroupModal = ({ show, onHide, group, onSave }) => {
 
     useEffect(() => {
         if (group) {
-            setGroupName(group.groupName || '');
+            setGroupName(group.GroupName || '');
         } else {
             setGroupName('');
         }

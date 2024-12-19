@@ -1,32 +1,50 @@
-// src/components/ProductModal.js
 import React, { useState, useEffect } from 'react';
-import '../styles/Modal.css'; // Importe o arquivo CSS
+import '../styles/Modal.css';
+import { uploadImage } from '../services/firebaseService'; // Importa o serviço de upload
 
-const ProductModal = ({ show, onHide, product, onSave }) => {
+const ProductModal = ({ show, onHide, product, onSave, productGroups }) => {
     const [productName, setProductName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
     const [imageURL, setImageURL] = useState('');
-    const [category, setCategory] = useState('');
+    const [imageFile, setImageFile] = useState(null); // Estado para o arquivo de imagem
+    const [groupID, setGroupID] = useState('');
 
     useEffect(() => {
         if (product) {
-            setProductName(product.productName || '');
-            setDescription(product.description || '');
-            setPrice(product.price || '');
-            setImageURL(product.imageURL || '');
-            setCategory(product.category || '');
+            setProductName(product.ProductName || '');
+            setDescription(product.Description || '');
+            setPrice(product.Price || '');
+            setImageURL(product.ImageURL || '');
+            setGroupID(product.GroupID || '');
         }
     }, [product]);
 
-    const handleSave = () => {
-        onSave({
-            productName,
-            description,
-            price,
-            imageURL,
-            category,
-        });
+    const handleImageChange = (e) => {
+        setImageFile(e.target.files[0]);
+    };
+
+    const handleSave = async () => {
+        try {
+            let uploadedImageURL = imageURL;
+
+            // Faz o upload da imagem se houver um novo arquivo
+            if (imageFile) {
+                const uploadData = await uploadImage(imageFile, imageURL); // Envia a URL antiga para substituir no Firebase
+                uploadedImageURL = uploadData.url; // Obtém a nova URL
+            }
+
+            // Chama a função de salvar com os dados atualizados
+            onSave({
+                productName,
+                description,
+                price,
+                imageURL: uploadedImageURL,
+                groupID,
+            });
+        } catch (error) {
+            console.error('Erro ao fazer o upload da imagem:', error.message);
+        }
     };
 
     if (!show) return null;
@@ -47,13 +65,33 @@ const ProductModal = ({ show, onHide, product, onSave }) => {
                     <label>Preço:</label>
                     <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
                 </div>
+
+                {/* Mostra a imagem atual se disponível */}
+                {imageURL && (
+                    <div>
+                        <label>Imagem Atual:</label>
+                        <img
+                            src={imageURL}
+                            alt="Imagem do Produto"
+                            style={{ width: '150px', height: '150px', objectFit: 'cover', margin: '10px 0' }}
+                        />
+                    </div>
+                )}
+
                 <div>
-                    <label>URL da Imagem:</label>
-                    <input value={imageURL} onChange={(e) => setImageURL(e.target.value)} />
+                    <label>Atualizar Imagem:</label>
+                    <input type="file" onChange={handleImageChange} />
                 </div>
                 <div>
-                    <label>Categoria:</label>
-                    <input value={category} onChange={(e) => setCategory(e.target.value)} />
+                    <label>Grupo:</label>
+                    <select value={groupID} onChange={(e) => setGroupID(e.target.value)}>
+                        <option value="">Selecione um grupo</option>
+                        {productGroups.map((group) => (
+                            <option key={group.GroupID} value={group.GroupID}>
+                                {group.GroupName}
+                            </option>
+                        ))}
+                    </select>
                 </div>
                 <button onClick={handleSave}>Salvar</button>
                 <button onClick={onHide}>Cancelar</button>
