@@ -52,18 +52,21 @@ const Dashboard = () => {
                     <div className="dashboard-sections">
                         <div>
                             <h2>Gestão da Loja</h2>
-                            <button onClick={() => navigate('/establishments')} style={{ marginBottom: '10px' }}>
+                            <button onClick={() => navigate('/establishments')} style={{marginBottom: '10px'}}>
                                 Editar Catálogo
                             </button>
-                            <button onClick={() => navigate('/products')} style={{ marginBottom: '10px' }}>
+                            <button onClick={() => navigate('/products')} style={{marginBottom: '10px'}}>
                                 Gerenciar Produtos
                             </button>
                         </div>
 
                         <div>
                             <h2>Pedidos</h2>
-                            <button onClick={() => navigate('/orders')}>Visualizar Pedidos</button>
+                            <button onClick={() => navigate('/orders')}>
+                                Visualizar Pedidos
+                            </button>
                         </div>
+
 
                         <div>
                             <h2>Catálogo</h2>
@@ -75,7 +78,8 @@ const Dashboard = () => {
                                         : `/catalog/${establishmentID}`;
                                     navigate(url);
                                 }}
-                                style={{ marginTop: '10px' }}
+                                style={{marginTop: '10px'}}
+                                disabled={!establishmentID} // Desabilita se establishmentID não estiver disponível
                             >
                                 Acessar Catálogo
                             </button>

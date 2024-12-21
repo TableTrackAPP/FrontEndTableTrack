@@ -47,6 +47,17 @@ export const updateOrder = async (orderID, orderData) => {
         throw error;
     }
 };
+export const updateStatusOrder = async (orderID, orderData) => {
+    try {
+        const response = await axios.put(`${API_URL}/updateStatusOrder/${orderID}`, orderData, {
+            headers: getAuthHeader(),
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao atualizar pedido:', error);
+        throw error;
+    }
+};
 
 // Exclui um pedido pelo ID
 export const deleteOrder = async (orderID) => {
