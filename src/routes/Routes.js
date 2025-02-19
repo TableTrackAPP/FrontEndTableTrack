@@ -32,7 +32,7 @@ function AppRoutes() {
                 <Route
                     path="/dashboard"
                     element={
-                        <ProtectedRoute requireSubscription={true}>
+                        <ProtectedRoute requireSubscription={false}>
                             <Dashboard />
                         </ProtectedRoute>
                     }

@@ -6,7 +6,7 @@ import { getEstablishmentByOwnerID } from '../services/establishmentService';
 
 const Dashboard = () => {
     const [userData, setUserData] = useState(null);
-    const [establishmentID, setEstablishmentID] = useState(null); // Armazena o EstablishmentID
+    const [establishmentID, setEstablishmentID] = useState(null);
     const navigate = useNavigate();
     const { showToast } = useToast();
 
@@ -52,10 +52,10 @@ const Dashboard = () => {
                     <div className="dashboard-sections">
                         <div>
                             <h2>Gestão da Loja</h2>
-                            <button onClick={() => navigate('/establishments')} style={{marginBottom: '10px'}}>
+                            <button onClick={() => navigate('/establishments')} style={{ marginBottom: '10px' }}>
                                 Editar Catálogo
                             </button>
-                            <button onClick={() => navigate('/products')} style={{marginBottom: '10px'}}>
+                            <button onClick={() => navigate('/products')} style={{ marginBottom: '10px' }}>
                                 Gerenciar Produtos
                             </button>
                         </div>
@@ -67,7 +67,6 @@ const Dashboard = () => {
                             </button>
                         </div>
 
-
                         <div>
                             <h2>Catálogo</h2>
                             <button
@@ -78,12 +77,30 @@ const Dashboard = () => {
                                         : `/catalog/${establishmentID}`;
                                     navigate(url);
                                 }}
-                                style={{marginTop: '10px'}}
-                                disabled={!establishmentID} // Desabilita se establishmentID não estiver disponível
+                                style={{ marginTop: '10px' }}
+                                disabled={!establishmentID}
                             >
                                 Acessar Catálogo
                             </button>
                         </div>
+                    </div>
+
+                    {/* 🔹 Botão para Gerenciamento da Assinatura */}
+                    <div style={{ marginTop: '20px' }}>
+                        <button
+                            onClick={() => navigate('/subscribe')}
+                            style={{
+                                backgroundColor: '#007bff',
+                                color: 'white',
+                                padding: '10px',
+                                border: 'none',
+                                cursor: 'pointer',
+                                borderRadius: '5px',
+                                fontSize: '16px'
+                            }}
+                        >
+                            Gerenciar Assinatura
+                        </button>
                     </div>
                 </div>
             ) : (
