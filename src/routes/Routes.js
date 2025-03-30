@@ -10,6 +10,8 @@ import Products from '../pages/Products';
 import Orders from '../pages/Orders';
 import Catalog from '../pages/Catalog';
 import Dashboard from '../pages/Dashboard';
+import ServicesTerms from '../pages/ServicesTerms'; // Importing the updated ProtectedRoute
+import PrivacyPolicy from '../pages/PrivacyPolicy'; // Importing the updated ProtectedRoute
 import Subscribe from '../pages/Subscribe'; // Importing the Subscribe page
 import ProtectedRoute from '../components/ProtectedRoute'; // Importing the updated ProtectedRoute
 
@@ -27,6 +29,8 @@ function AppRoutes() {
                 <Route path="/Products" element={<Products />} />
                 <Route path="/Orders" element={<Orders />} />
                 <Route path="/Catalog/:establishmentID" element={<Catalog />} /> {/* Ajuste para receber establishmentID como parâmetro */}
+                <Route path="/terms" element={<ServicesTerms />} />
+                <Route path="/privacy" element={<PrivacyPolicy />} />
 
                 {/* Protected Routes */}
                 <Route

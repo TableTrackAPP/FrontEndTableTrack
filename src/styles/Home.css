@@ -1,0 +1,636 @@
+:root {
+    --primary-green: #006A42;
+    --secondary-green: #3EB489;
+    --background-light: #F8F9FA;
+    --accent-orange: #FF8360;
+    --accent-blue: #0099CC;
+    --text-dark: #333333;
+    --text-light: #FFFFFF;
+}
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--background-light);
+    color: var(--text-dark);
+}
+@media (max-width: 768px) {
+
+    .app-container {
+    font-family: 'Arial';
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+    .firstCard-text-section {
+        flex: 1;
+        text-align: left;
+        padding: 30px;
+        max-width: 50%;
+    }
+    .firstCard-text-section h2 {
+        font-size: 1.2rem; /* Reduz o tamanho do título no mobile */
+    }
+
+    .firstCard-text-section h2 span {
+        font-size: 1.8rem; /* Mantém o "TableTrack" destacado */
+    }
+.firstCard-image-section {
+    flex: 1;
+}
+
+.headerText {
+   font-size: 11px;
+
+}
+
+.headerTextInscrevaSe {
+    font-size: 13px;
+    margin-left: 15px;
+    cursor: pointer;
+
+}
+
+.small-image {
+    width: 70px;
+    height: auto;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #D7FEC9;
+}
+    .header button {
+        padding: 3px 23px;
+        background-color: #272626;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+        font-size: 13px;
+        border-radius: 5px;
+        margin-right: 5px;
+        transition: background-color 0.3s ease; /* Adiciona uma transição suave */
+    }
+
+
+header h1 {
+    font-size: 24px;
+}
+
+header nav a {
+
+    text-decoration: none;
+    color: #333;
+}
+
+.first-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #D7FEC9;
+    padding: 10px;
+    border-bottom-right-radius: 70px;
+}
+
+.second-card {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+}
+
+
+
+.secondCard-text-title{
+    font-size: 20px;
+    font-weight: bold;
+    color: #129666;
+    margin-top: 10px;
+}
+.secondCard-text-subtitle{
+    margin-top: 10px;
+    color: #333333;
+    font-size: 13px;
+
+}
+    .card-row {
+        display: flex;
+        justify-content: center; /* Alinha os itens filhos horizontalmente no centro */
+        align-items: center; /* Alinha os itens filhos verticalmente no centro */
+        flex-wrap: wrap; /* Permite que os itens filhos quebram a linha se não houver espaço suficiente */    }
+.secondCard-image-container {
+    border-radius: 26px;
+    margin-top: 30px;
+    width: 90%;
+    height: 200px;
+    background-color: gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+}
+.secondCard-text-section {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.secondCard-text-section-title {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+.secondCard-text-section-description {
+    font-size: 13px;
+    margin-bottom: 15px;
+    font-weight: normal;
+
+}
+
+.secondCard-contained-image {
+    max-width: 90%;
+    height: 90%;
+    margin-left: 10px;
+}
+    .secondCard-contained-imageFourth {
+        height: 100%;
+        border-radius: 20px;
+        width: 60%;
+    }
+
+.first-card button {
+    padding: 10px 20px;
+    background-color: #1C1C1A;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    background-color: #f5f5f5;
+}
+
+
+
+
+.image-container {
+    margin-top:50px;
+    width: 200px;
+    height: 200px;
+    background-color: #D9D9D9;
+    border-radius: 36px 36px 36px 5px;
+    position: relative;
+}
+
+.contained-image {
+    position: absolute;
+    top: -50px;
+    left: 25%;
+    transform: translateX(-50%);
+    height: 250px;
+    width: auto;
+}
+
+
+.third-card-container {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 70px;
+    position: relative;
+zoom: 90%;
+    background-color: #006A42;
+
+}
+
+.third-card-contained-square {
+    position: absolute;
+    top: -20px;
+    left: 25%;
+    transform: translateX(-50%);
+    height: 15%;
+    width: 30%;
+    background-color: #E6F9DC;
+    border-radius: 25px 25px 5px 25px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+}
+
+.thirdCard-contained-image {
+    max-width: 100%;
+    height: 100%;
+
+}
+.cards-container {
+    display: flex;
+    gap: 5px; /* Space between cards */
+    margin-left: 40px;
+
+}
+.card {
+    background: linear-gradient(to bottom, #00C1B4, #006A42);
+    width: 30%; /* Allows for 3 cards to fit side by side, accounting for the gap */
+    box-sizing: border-box;
+    border-radius: 20px 20px 0 0;
+    overflow: hidden; /* Ensures child elements do not overflow the rounded corners */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #FFFFFF;
+    font-family: Arial, sans-serif; /* You can choose any font family you prefer */
+}
+
+.card-header {
+    background-color: #FFFFFF;
+    color: #00A89C;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.card-content {
+    padding: 20px 0;
+}
+
+.card-price {
+    font-size: 36px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.card-price span {
+    margin-right: 5px;
+}
+
+.card-price sup {
+    font-size: 16px;
+}
+
+.price-period {
+    font-size: 14px;
+}
+
+.buy-button {
+    background-color: #00A89C;
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 40px;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.buy-button:hover {
+    background-color: #008577;
+}
+.fourth-card-container {
+
+    background-color: #6458DE;
+
+    padding: 50px;
+    border-top-left-radius: 60px;  /* Adjust as needed */
+    border-top-right-radius: 60px; /* Adjust as needed */
+}
+}
+
+/* Adiciona efeito hover */
+.header button:hover {
+    background-color: #555; /* Ou qualquer outra cor que você preferir */
+}
+.first-card button:hover {
+    background-color: #555; /* Ou qualquer outra cor que você preferir */
+}
+
+@media (min-width: 769px) {
+
+    .app-container {
+        font-family: 'Arial';
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .firstCard-text-section {
+        text-align: center;
+        margin-right: 50px;
+        max-width: 50%;
+    }
+
+
+    .headerText {
+        font-size: 17px;
+    }
+
+    .headerTextInscrevaSe {
+        font-size: 17px;
+        margin-left: 15px;
+        cursor: pointer;
+
+    }
+
+    .small-image {
+        width: 100px;
+        height: auto;
+    }
+
+    header {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        background-color: #D7FEC9;
+    }
+    .header button {
+        padding: 7px 23px;
+        background-color: #272626;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+        font-size: 13px;
+        border-radius: 5px;
+        margin-right: 5px;
+        transition: background-color 0.3s ease; /* Adiciona uma transição suave */
+    }
+
+
+    .firstCard-text-section h2 {
+        font-size: 2rem; /* Tamanho padrão do título */
+        color: #083D2E; /* Cor mais escura */
+        font-weight: bold;
+    }
+
+    .firstCard-text-section h2 span {
+        font-size: 2.3rem; /* Mantém o "TableTrack" maior */
+        color: #083D2E; /* Cor ainda mais escura para destaque */
+    }
+    header h1 {
+        font-size: 24px;
+    }
+
+    header nav a {
+
+        text-decoration: none;
+        color: #333;
+    }
+
+    .first-card {
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #D7FEC9;
+        padding: 20px;
+        border-bottom-right-radius: 70px;
+        width: 100%;
+        height: 400px; /* Define uma altura fixa */
+    }
+
+    .second-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+
+    }
+
+
+
+    .secondCard-text-title{
+        font-size: 30px;
+        font-weight: bold;
+        color: #129666;
+        margin-top: 50px;
+    }
+    .secondCard-text-subtitle{
+        margin-top: 10px;
+        margin-bottom: 20px;
+        color: #333333;
+        font-size: 16px;
+
+    }
+    .card-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 60%; /* Adjust as needed */
+        margin-bottom: 30px; /* Adjust as needed */
+        gap: 15px;
+    }
+    .secondCard-image-container {
+        border-radius: 26px;
+        margin-top: 30px;
+        width: 100%;
+        height: 200px;
+        background-color: gray;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+
+    }
+    .secondCard-text-section {
+        flex: 1;
+        padding-right: 20px;
+    }
+
+    .secondCard-text-section-title {
+        font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+    .secondCard-text-section-description {
+        font-size: 13px;
+        margin-bottom: 15px;
+        font-weight: normal;
+
+    }
+
+    .secondCard-contained-image {
+        max-width: 90%;
+        height: 90%;
+        margin-left: 10px;
+    }
+    .secondCard-contained-imageFourth {
+        max-width: 60%;
+        height: 100%;
+        border-radius: 10px;
+    }
+
+    .first-card button {
+        padding: 10px 20px;
+        background-color: #1C1C1A;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        background-color: #f5f5f5;
+    }
+
+
+
+
+    .image-container {
+        margin-top:50px;
+        width: 200px;
+        height: 200px;
+        background-color: #D9D9D9;
+        border-radius: 36px 36px 36px 5px;
+        position: relative;
+    }
+
+    .contained-image {
+        position: absolute;
+        top: -50px;
+        left: 30%;
+        transform: translateX(-50%);
+        height: 250px;
+        width: auto;
+    }
+
+
+    .third-card-container {
+        margin-top: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        padding: 70px;
+        position: relative;
+
+        background-color: #006A42;
+
+    }
+
+    .third-card-contained-square {
+        position: absolute;
+        top: -40px;
+        left: 25%;
+        transform: translateX(-50%);
+        height: 20%;
+        width: 15%;
+        background-color: #E6F9DC;
+        border-radius: 25px 25px 5px 25px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+
+    }
+
+    .thirdCard-contained-image {
+        max-width: 100%;
+        height: 100%;
+
+    }
+    .cards-container {
+        display: flex;
+        gap: 5px; /* Space between cards */
+        margin-left: 40px;
+
+    }
+    .card {
+        background: linear-gradient(to bottom, #00C1B4, #006A42);
+        width: 30%; /* Allows for 3 cards to fit side by side, accounting for the gap */
+        box-sizing: border-box;
+        border-radius: 20px 20px 0 0;
+        overflow: hidden; /* Ensures child elements do not overflow the rounded corners */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: #FFFFFF;
+        font-family: Arial, sans-serif; /* You can choose any font family you prefer */
+    }
+
+    .card-header {
+        background-color: #FFFFFF;
+        color: #00A89C;
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .card-content {
+        padding: 20px 0;
+    }
+
+    .card-price {
+        font-size: 36px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+    }
+
+    .card-price span {
+        margin-right: 5px;
+    }
+
+    .card-price sup {
+        font-size: 16px;
+    }
+
+    .price-period {
+        font-size: 14px;
+    }
+
+    .buy-button {
+        background-color: #00A89C;
+        color: #FFFFFF;
+        border: none;
+        padding: 10px 40px;
+        margin-top: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 25px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .buy-button:hover {
+        background-color: #008577;
+    }
+    .fourth-card-container {
+        background-color: #6458DE;
+        padding: 50px;
+        border-top-left-radius: 60px;
+        border-top-right-radius: 60px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Centraliza verticalmente */
+        align-items: center; /* Centraliza horizontalmente */
+        text-align: center; /* Alinha o texto no centro */
+        height: 250px; /* Ajuste a altura conforme necessário */
+    }
+
+
+}

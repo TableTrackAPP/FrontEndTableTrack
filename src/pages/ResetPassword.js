@@ -4,6 +4,7 @@ import { resetPassword } from '../services/authService';
 import { useToast } from '../hooks/ToastContext'; // Hook de Toast para exibir notificações
 import { useLoading } from '../hooks/LoadingContext'; // Hook de Loading para exibir o loader
 import { useNavigate, useLocation } from 'react-router-dom'; // Para pegar parâmetros da URL e redirecionar
+import logoImageUrl from '../assets/logoProvisoria.png';
 
 const ResetPassword = () => {
     const [newPassword, setNewPassword] = useState('');
@@ -39,16 +40,20 @@ const ResetPassword = () => {
     };
 
     return (
-        <div>
-            <h2>Redefinir Senha</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
+
+        <div className="password-container">
+
+            <div className="password-box">
+                <h2>Redefinir Senha</h2>
+            <form onSubmit={handleSubmit} className="password-form">
+                <div className="input-group">
                     <label>Nova Senha:</label>
                     <input
                         type="password"
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         required
+                        className="input-field"
                     />
                 </div>
                 <div>
@@ -58,10 +63,12 @@ const ResetPassword = () => {
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
+                        className="input-field"
                     />
                 </div>
-                <button type="submit">Redefinir Senha</button>
+                <button type="submit" className="password-button">Redefinir Senha</button>
             </form>
+            </div>
         </div>
     );
 };

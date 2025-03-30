@@ -1,0 +1,102 @@
+.subscribe-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.subscribe-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.subscribe-logo {
+    width: 100px;
+    cursor: pointer;
+}
+
+.loading-text {
+    font-size: 18px;
+    font-weight: bold;
+    color: #444;
+}
+
+.subscription-info {
+    margin-top: 20px;
+}
+
+.subscription-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px 0;
+    border-left: 5px solid #007bff;
+    text-align: left;
+}
+
+.manage-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.plans-container {
+    margin-top: 20px;
+}
+
+.plans {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.plan-card {
+    flex: 1;
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.subscribe-button {
+    border: none;
+    padding: 10px;
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.subscribe-button.monthly {
+    background-color: #28a745;
+    color: white;
+}
+
+.subscribe-button.annual {
+    background-color: #ff9800;
+    color: white;
+}
+
+@media (max-width: 500px) {
+    .plans {
+        flex-direction: column;
+    }
+
+    .plan-card {
+        width: 100%;
+    }
+}

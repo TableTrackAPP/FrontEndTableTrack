@@ -1,0 +1,110 @@
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+}
+
+.register-box {
+    max-width: 400px;
+    width: 100%;
+    padding: 30px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.register-logo {
+    width: 120px;
+    cursor: pointer;
+}
+
+.register-header h2 {
+    margin-bottom: 15px;
+    font-size: 22px;
+    color: #333;
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #333;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.register-button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #129666;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.register-button:hover {
+    background-color: #0f7d54;
+}
+
+.register-links {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.register-links a {
+    color: #129666;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-links a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 500px) {
+    .register-box {
+        padding: 20px;
+    }
+
+    .register-header h2 {
+        font-size: 20px;
+    }
+
+    .input-field {
+        font-size: 13px;
+    }
+
+    .register-button {
+        font-size: 14px;
+    }
+}
