@@ -1,102 +1,175 @@
-.subscribe-container {
-    max-width: 600px;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: #f5f5f5;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.subscribe-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5vh 0;
+    min-height: 30vh;
+    background-color: #eef0fb;
     text-align: center;
 }
 
-.subscribe-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.subscribe-logo {
-    width: 100px;
-    cursor: pointer;
-}
-
-.loading-text {
-    font-size: 18px;
+.subscribe-title {
+    font-size: 32px;
     font-weight: bold;
-    color: #444;
+    color: #2d3c6c;
+    margin-bottom: 10px;
 }
 
-.subscription-info {
-    margin-top: 20px;
-}
-
-.subscription-card {
-    background-color: white;
-    border-radius: 8px;
-    padding: 15px;
-    margin: 10px 0;
-    border-left: 5px solid #007bff;
-    text-align: left;
-}
-
-.manage-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 10px;
+.subscribe-subtitle {
     font-size: 16px;
-}
-
-.plans-container {
-    margin-top: 20px;
+    color: #6c7890;
+    margin-bottom: 40px;
+    max-width: 500px;
 }
 
 .plans {
     display: flex;
-    justify-content: space-between;
-    gap: 15px;
-    margin-top: 20px;
+    justify-content: center;
+    gap: 30px;
+    width: 100%;
+    padding: 0 10vw;
 }
 
 .plan-card {
     flex: 1;
+    max-width: 300px;
+    height: 450px;
     background-color: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 30px 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.plan-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #5f6dc1;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.plan-price {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1f1f1f;
+}
+
+.plan-period {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 20px;
+}
+
+.plan-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto 20px auto;
+    text-align: left;
+    max-width: 200px;
+}
+
+.plan-features li {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.plan-features li::before {
+    content: "✔";
+    color: #4caf50;
+    margin-right: 8px;
 }
 
 .subscribe-button {
+    background-color: #5f6dc1;
+    color: white;
     border: none;
-    padding: 10px;
-    width: 100%;
-    margin-top: 10px;
-    border-radius: 5px;
+    padding: 12px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 16px;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
 }
 
-.subscribe-button.monthly {
-    background-color: #28a745;
+.subscribe-button:hover {
+    background-color: #3e4fa3;
+}
+
+.manage-subscription-button {
+    background: linear-gradient(135deg, #5f6dc1, #3e4fa3);
+    color: #fff;
+    padding: 12px 20px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.manage-subscription-button:hover {
+    background: linear-gradient(135deg, #4b5bb5, #2e3f90);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.home-button-container {
+    position: absolute;
+
+    z-index: 10;
+}
+
+.home-button {
+    display: flex;
+    align-items: center;
+    background-color: #5f6dc1;
     color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.subscribe-button.annual {
-    background-color: #ff9800;
-    color: white;
+.home-button:hover {
+    background-color: #3e4fa3;
+    transform: translateY(-2px);
 }
 
-@media (max-width: 500px) {
+
+@media (max-width: 768px) {
     .plans {
         flex-direction: column;
+        align-items: center;
+        padding: 0 5vw;
+    }
+    .home-button-text {
+        display: none; /* Esconde o texto "Início" no mobile */
     }
 
+    .subscribe-button:hover {
+        background-color: white;
+    }
+
+    .home-button-container {
+        display: none; /* Esconde o texto "Início" no mobile */
+
+    }
     .plan-card {
         width: 100%;
+        max-width: 350px;
+        margin-bottom: 20px;
     }
 }

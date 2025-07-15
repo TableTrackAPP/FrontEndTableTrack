@@ -1,31 +1,417 @@
-/* src/styles/Dashboard.css */
+/* Dashboard.css - Versão com CSS puro */
+
 .dashboard-container {
-    padding: 20px;
+    padding: 2rem;
+    background-color: #fafafa;
+    min-height: 100vh;
 }
 
-h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+.dashboard-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem;
 }
 
-h2 {
-    font-size: 2rem;
-    margin-top: 1.5rem;
+.topbar-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }
 
-.subscription-info {
-    background-color: #f4f4f4;
-    padding: 15px;
-    border-radius: 5px;
-    margin-top: 1rem;
-}
-
-.subscription-info a {
-    color: #007bff;
-    text-decoration: none;
+.dashboard-title {
+    font-size: 1.5rem;
     font-weight: bold;
+    color: #333;
+    margin: 0;
 }
 
-.subscription-info a:hover {
-    text-decoration: underline;
+.dashboard-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-subscribe-top {
+    background: linear-gradient(135deg, #93befe, #2b3cf8);
+    color: white;
+    font-weight: bold;
+    padding: 8px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.dashboard-panel {
+    background-color: #FFFFFF;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
+.dashboard-section-title {
+    font-size: 1.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+.dashboard-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.dashboard-card {
+    border-radius: 10px;
+    min-height: 250px;
+    width: 380px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    position: relative;
+    padding: 1rem;
+}
+
+.dashboard-card:hover {
+    transform: scale(1.10);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100%;
+    padding: 1rem;
+    position: relative;
+}
+
+.card-buttons-centered {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    gap: 10px;
+}
+
+.dashboard-avatar {
+    position: absolute;
+    top: 25px;
+    right: 40px;
+    background-color: white;
+    border-radius: 50%;
+    padding: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-size: 1.5rem;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-bottom: 20px;
+    font-weight: 200;
+    color: inherit;
+}
+
+.btn-card {
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-blue {
+    background-color: rgba(43, 60, 248, 0.18);
+    color: black;
+}
+
+.btn-purple {
+    background-color: rgba(108, 69, 218, 0.25);
+    color: black;
+}
+
+.btn-orange {
+    background-color: rgba(227, 148, 7, 0.65);
+    color: black;
+}
+
+.card-blue {
+    background: linear-gradient(135deg, rgb(147, 190, 254), rgba(43, 60, 248, 0.28));
+    color: #00254c;
+}
+
+.card-purple {
+    background: linear-gradient(135deg, #c770dc, rgba(104, 83, 210, 0.22));
+    color: #3e3072;
+}
+
+.card-orange {
+    background: linear-gradient(135deg, #eecb4b, rgba(235, 147, 32, 0.11));
+    color: #b35400;
+}
+
+.avatar-blue {
+    background-color: transparent;
+    color: #93befe;
+}
+
+.avatar-purple {
+    background-color: transparent;
+    color: #c770dc;
+}
+
+.avatar-orange {
+    background-color: transparent;
+    color: #eecb4b;
+}
+
+.desktop-sidebar {
+    display: block;
+}
+
+.mobile-sidebar {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .dashboard-topbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 1rem;
+    }
+
+    .topbar-row {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .dashboard-actions {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .btn-subscribe-top {
+        font-size: 0.9rem;
+        width: 100%;
+        padding: 10px 20px;
+    }
+
+    .desktop-sidebar {
+        display: none;
+    }
+
+    .mobile-sidebar {
+        display: block;
+    }
+}
+.dashboard-notification {
+    position: fixed;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #3232b8;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+    animation: fadeInSlideDown 0.4s ease-out;
+}
+
+.dashboard-notification-close {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.entry-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to right bottom, #f6d365, #fda085);
+    color: white;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-bottom: 16px;
+    position: relative;
+}
+
+.entry-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.entry-card-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 16px;
+}
+
+.entry-card-content {
+    flex: 1;
+}
+
+.entry-card-edit-icon {
+    margin-left: 10px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.entry-card-edit-icon:hover {
+    color: #ffd700; /* Exemplo: dourado ao passar o mouse */
+}
+
+.dashboard-action-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    width: 100%;
+    max-width: 300px;
+}
+
+.dashboard-action-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.dashboard-action-image {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+}
+
+.dashboard-action-content {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.dashboard-action-title {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.dashboard-action-description {
+    font-size: 14px;
+    color: #666;
+}
+
+.dashboard-action-card.disabled {
+    filter: grayscale(100%);
+    opacity: 0.6;
+    cursor: default;
+    pointer-events: none;
+    box-shadow: none;
+    transform: none;
+}
+
+.dashboard-action-card.disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.non-subscriber-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.non-subscriber-header .dashboard-section-title {
+    margin-bottom: 10px;
+}
+
+.non-subscriber-header .dashboard-subtitle {
+    margin-bottom: 15px;
+    color: #555;
+    max-width: 600px;
+}
+
+.highlight-card {
+    filter: none !important;
+    opacity: 1 !important;
+    transform: scale(1.8);
+    transition: all 0.4s ease;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+}
+
+
+.highlight-0 {
+    background: linear-gradient(135deg, #f6d365, #fda085);
+    color: white;
+}
+
+.highlight-1 {
+    background: linear-gradient(135deg, #f6d365, #fda085);
+    color: white;
+}
+
+.highlight-2 {
+    background: linear-gradient(135deg, #f6d365, #fda085);
+    color: white;
+}
+
+.highlight-3 {
+    background: linear-gradient(135deg, #f6d365, #fda085);
+    color: white;
+}
+
+
+@keyframes fadeInSlideDown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
 }

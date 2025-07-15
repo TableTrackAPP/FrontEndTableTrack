@@ -2,6 +2,7 @@
 import axios from 'axios';
 
 const IMAGE_UPLOAD_URL = 'http://localhost:3000/api/upload';
+//const IMAGE_UPLOAD_URL = 'http://192.168.1.8:3000/api/upload';
 
 // Função para obter o token de autenticação
 const getAuthHeader = () => {

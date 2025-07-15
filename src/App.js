@@ -1,16 +1,24 @@
+// src/App.js
 import React from 'react';
 import AppRoutes from './routes/Routes';
-import { useLoading } from './hooks/LoadingContext'; // Importa o contexto de Loading
-import Loading from './components/Loading'; // Importa o componente Loading
+import { useLoading } from './hooks/LoadingContext';
+import Loading from './components/Loading';
+
+// Importa o ThemeProvider e CssBaseline do Material UI
+import { ThemeProvider, CssBaseline } from '@mui/material';
+import theme from './utils/theme'; // Importa o seu tema personalizado
 
 function App() {
-    const { isLoading, loadingMessage } = useLoading(); // Acessa o estado de isLoading e a mensagem
+    const { isLoading, loadingMessage } = useLoading();
 
     return (
-        <div className="App">
-            {isLoading && <Loading message={loadingMessage} />} {/* Renderiza o Loading se isLoading for true */}
-            <AppRoutes /> {/* Renderiza as rotas */}
-        </div>
+        <ThemeProvider theme={theme}>
+            <CssBaseline /> {/* Normaliza o CSS do Material UI */}
+            <div className="App">
+                {isLoading && <Loading message={loadingMessage} />}
+                <AppRoutes />
+            </div>
+        </ThemeProvider>
     );
 }
 

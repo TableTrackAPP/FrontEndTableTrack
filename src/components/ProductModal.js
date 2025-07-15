@@ -51,53 +51,43 @@ const ProductModal = ({ show, onHide, product, onSave, productGroups }) => {
 
     return (
         <div className="modal-overlay">
-            <div className="modal-content">
-                <h2>{product ? 'Editar Produto' : 'Novo Produto'}</h2>
-                <div>
-                    <label>Nome do Produto:</label>
-                    <input value={productName} onChange={(e) => setProductName(e.target.value)} />
-                </div>
-                <div>
-                    <label>Descrição:</label>
-                    <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
-                </div>
-                <div>
-                    <label>Preço:</label>
-                    <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
-                </div>
+            <div className="modal-box">
+                <h2 className="modal-title">{product ? 'Editar Produto' : 'Novo Produto'}</h2>
 
-                {/* Mostra a imagem atual se disponível */}
+                <label>Nome do Produto</label>
+                <input className="modal-input" value={productName} onChange={(e) => setProductName(e.target.value)}/>
+
+                <label>Descrição</label>
+                <textarea className="modal-textarea" value={description}
+                          onChange={(e) => setDescription(e.target.value)}/>
+
+                <label>Preço</label>
+                <input className="modal-input" type="number" value={price} onChange={(e) => setPrice(e.target.value)}/>
+
+                <label>Grupo</label>
+                <select className="modal-select" value={groupID} onChange={(e) => setGroupID(e.target.value)}>
+                    <option value="">Selecione um grupo</option>
+                    {productGroups.map((group) => (
+                        <option key={group.GroupID} value={group.GroupID}>{group.GroupName}</option>
+                    ))}
+                </select>
+
                 {imageURL && (
-                    <div>
+                    <div className="modal-image-preview">
                         <label>Imagem Atual:</label>
-                        <img
-                            src={imageURL}
-                            alt="Imagem do Produto"
-                            style={{ width: '150px', height: '150px', objectFit: 'cover', margin: '10px 0' }}
-                        />
+                        <img src={imageURL} alt="Imagem do Produto"/>
                     </div>
                 )}
 
-                <div>
-                    <label>Atualizar Imagem:</label>
-                    <input type="file" onChange={handleImageChange} />
+                <label>Atualizar Imagem</label>
+                <input type="file" onChange={handleImageChange} className="modal-file-input"/>
+
+                <div className="modal-buttons">
+                    <button className="modal-btn save" onClick={handleSave}>Salvar</button>
+                    <button className="modal-btn cancel" onClick={onHide}>Cancelar</button>
                 </div>
-                <div>
-                    <label>Grupo:</label>
-                    <select value={groupID} onChange={(e) => setGroupID(e.target.value)}>
-                        <option value="">Selecione um grupo</option>
-                        {productGroups.map((group) => (
-                            <option key={group.GroupID} value={group.GroupID}>
-                                {group.GroupName}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <button onClick={handleSave}>Salvar</button>
-                <button onClick={onHide}>Cancelar</button>
             </div>
-        </div>
-    );
+        </div>);
 };
 
 export default ProductModal;

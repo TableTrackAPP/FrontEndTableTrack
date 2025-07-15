@@ -1,0 +1,21 @@
+.menu-icon {
+    position: absolute;
+    color: #006A42;
+    z-index: 9999;
+}
+
+.sidebar-content {
+    width: 250px;
+    padding: 10px;
+}
+
+/* Efeito hover nos itens da sidebar */
+.sidebar-content .MuiListItem-root {
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.sidebar-content .MuiListItem-root:hover {
+    background-color: #f0f0f0;
+}
+

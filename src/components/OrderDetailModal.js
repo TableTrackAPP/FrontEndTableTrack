@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Modal.css';
+import './../styles/Orders.css'
 
 const ConfirmationModal = ({ show, onClose, onConfirm, message }) => {
     if (!show) return null;
@@ -81,65 +82,80 @@ const OrderDetailModal = ({
 
     return (
         <div className="modal-overlay">
-            <div className="modal-content">
-                <button className="close-button" onClick={onClose}>
-                    ×
-                </button>
-                <h2>Detalhes do Pedido #{order.OrderID}</h2>
-                <p>
-                    <strong>Cliente:</strong> {order.CustomerName}
-                </p>
-                <p>
-                    <strong>Contato:</strong> {order.CustomerPhone || 'Não informado'}
-                </p>
-                <p>
-                    <strong>Mesa:</strong> {order.TableNumber || 'N/A'}
-                </p>
-                <p>
-                    <strong>Observação:</strong> {order.Observation || 'Nenhuma'}
-                </p>
-                <p>
-                    <strong>Data do Pedido:</strong>{' '}
-                    {new Date(order.CreatedAt).toLocaleString('pt-BR', {
-                        dateStyle: 'short',
-                        timeStyle: 'short',
-                    })}
-                </p>
-                <p>
-                    <strong>Total:</strong> R$ {Number(order.TotalAmount || 0).toFixed(2)}
-                </p>
-                <h3>Itens do Pedido</h3>
-                <ul>
+            <div className="orderdetailmodal-content">
+                <button className="orderdetailmodal-close-button" onClick={onClose}>×</button>
+                <h2 className="orderdetailmodal-title">Pedido #{order.OrderID}</h2>
+
+                <div className="orderdetailmodal-section">
+                    <div className="orderdetailmodal-row">
+                        <label>Cliente:</label>
+                        <span>{order.CustomerName}</span>
+                    </div>
+                    <div className="orderdetailmodal-row">
+                        <label>Contato:</label>
+                        <span>{order.CustomerPhone || 'Não informado'}</span>
+                    </div>
+                    <div className="orderdetailmodal-row">
+                        <label>Mesa:</label>
+                        <span>{order.TableNumber || 'N/A'}</span>
+                    </div>
+                    <div className="orderdetailmodal-row">
+                        <label>Observação:</label>
+                        <span>{order.Observation || 'Nenhuma'}</span>
+                    </div>
+                    <div className="orderdetailmodal-row">
+                        <label>Data do Pedido:</label>
+                        <span>
+                {new Date(order.CreatedAt).toLocaleString('pt-BR', {
+                    dateStyle: 'short',
+                    timeStyle: 'short',
+                })}
+            </span>
+                    </div>
+                    <div className="orderdetailmodal-row">
+                        <label>Total:</label>
+                        <span>R$ {Number(order.TotalAmount || 0).toFixed(2)}</span>
+                    </div>
+                </div>
+
+                <h3 className="orderdetailmodal-subtitle">Itens do Pedido</h3>
+                <ul className="orderdetailmodal-items-list">
                     {order.items?.length ? (
                         order.items.map((item) => (
                             <li key={item.OrderItemID}>
-                                {item.ProductName} - R$ {Number(item.UnitPrice || 0).toFixed(2)} x {item.Quantity}
+                                <span>{item.ProductName}</span> -
+                                R$ {Number(item.UnitPrice || 0).toLocaleString('pt-BR', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                            })}
                             </li>
                         ))
                     ) : (
                         <p>Sem itens neste pedido.</p>
                     )}
                 </ul>
-                <h3>Alterar Status</h3>
-                <div>
+
+                <h3 className="orderdetailmodal-subtitle">Alterar Status</h3>
+                <div className="orderdetailmodal-status-buttons">
                     {statusOptions.map((option) => (
                         <button
                             key={option.value}
                             onClick={() => handleStatusChange(option.value)}
-                            style={{ marginRight: '10px', marginTop: '10px' }}
+                            className={`orderdetailmodal-status-button status-${option.value.replace(/\s+/g, '').toLowerCase()}`}
                         >
                             {option.label}
                         </button>
                     ))}
                 </div>
 
-                <h3>Histórico de Status do Pedido</h3>
-                <ul>
+
+                <h3 className="orderdetailmodal-subtitle">Histórico de Status</h3>
+                <ul className="orderdetailmodal-status-history">
                     {order.statusHistory?.length ? (
-                        order.statusHistory.map((statusHistory) => (
-                            <li key={statusHistory.StatusHistoryID}>
-                                {statusHistory.StatusDescription} -{' '}
-                                {new Date(statusHistory.UpdatedAt).toLocaleString('pt-BR', {
+                        order.statusHistory.map((history) => (
+                            <li key={history.StatusHistoryID}>
+                                <span>{history.StatusDescription}</span> -{' '}
+                                {new Date(history.UpdatedAt).toLocaleString('pt-BR', {
                                     dateStyle: 'short',
                                     timeStyle: 'short',
                                 })}
@@ -149,6 +165,7 @@ const OrderDetailModal = ({
                         <p>Sem histórico de status para este pedido.</p>
                     )}
                 </ul>
+
                 <ConfirmationModal
                     show={confirmationModal}
                     onClose={() => setConfirmationModal(false)}

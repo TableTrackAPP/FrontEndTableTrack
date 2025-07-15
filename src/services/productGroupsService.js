@@ -2,6 +2,7 @@
 import axios from 'axios';
 
 const API_URL = 'http://localhost:3000/api/productGroups';
+//const API_URL = 'http://192.168.1.8:3000/api/productGroups';
 
 const getAuthHeader = () => {
     const accessToken = localStorage.getItem('accessToken');

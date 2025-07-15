@@ -5,6 +5,7 @@ import { useLoading } from '../hooks/LoadingContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/PasswordReset.css';
 import logoImageUrl from '../assets/logoProvisoria.png';
+import AppFooter from "../components/AppFooter";
 
 const ValidateResetCode = () => {
     const [email, setEmail] = useState('');
@@ -35,6 +36,14 @@ const ValidateResetCode = () => {
     };
 
     return (
+        <div
+            style={{
+                minHeight: '100vh',
+                display: 'flex',
+                flexDirection: 'column',
+                backgroundColor: '#eef0fb',
+            }}
+        >
         <div className="password-container">
             <div className="password-box">
                 <div className="password-logo-container">
@@ -66,6 +75,9 @@ const ValidateResetCode = () => {
                     <button type="submit" className="password-button">Validar Código</button>
                 </form>
             </div>
+        </div>
+            <AppFooter />
+
         </div>
     );
 };

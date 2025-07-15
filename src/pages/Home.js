@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react';
 import '../styles/Home.css';
 import logoImageUrl from '../assets/logoProvisoria.png';
-import handImage from '../assets/handphone.webp'; // adjust the path according to your project structure
+import handImage from '../assets/handphone.png'; // adjust the path according to your project structure
 import PlansImage from '../assets/planosexemplo.png'; // adjust the path according to your project structure
 import BuildStoreImage from '../assets/pickshop.png'; // adjust the path according to your project structure
 import ExploreAndSelectImage from '../assets/shop.png'; // adjust the path according to your project structure
-import RedirectToWppImage from '../assets/whatsapp-no-ecommerce.jpg'; // adjust the path according to your project structure
+import RedirectToWppImage from '../assets/whatsapp-no-ecommerce.png'; // adjust the path according to your project structure
 import Login from './Login'; // adjust path if needed
 import SignUp from './Register'; // adjust path if needed
 import { useNavigate } from 'react-router-dom'; // Importa o hook de navegação
@@ -81,9 +81,9 @@ function Home() {
                 <div className="secondCard-text-title" >Fácil e rápido</div>
                 <div className="secondCard-text-subtitle">Comece agora seguindo os seguintes passos</div>
                 <div className="card-row" >
-                    <div style={{backgroundColor: '#DCD9F8'}} className="secondCard-image-container">
-                        <img src={PlansImage} className="secondCard-contained-image"/>
-                        <div className="secondCard-text-section" >
+                    <div style={{backgroundColor: '#fdf6e3'}} className="secondCard-image-container">
+                        <img src={PlansImage} className="secondCard-image-container"/>
+                        <div className="secondCard-text-section">
                             <div className='secondCard-text-section-title' style={{color: '#333333'}}>Escolha o seu
                                 plano
                             </div>
@@ -93,9 +93,9 @@ function Home() {
 
                     </div>
 
-                    <div style={{backgroundColor: '#ffffef'}} className="secondCard-image-container">
-                        <img style={{borderRadius: '30px', height: '80%', marginRight: '20px'}} src={BuildStoreImage}
-                             className="secondCard-contained-image"/>
+                    <div style={{backgroundColor: '#fdf6e3'}} className="secondCard-image-container">
+                        <img src={BuildStoreImage}
+                             className="secondCard-image-container"/>
                         <div className="secondCard-text-section">
                             <div className='secondCard-text-section-title' style={{color: '#333333'}}>Cadastre seu estabelecimento
                             </div>
@@ -107,9 +107,9 @@ function Home() {
                     </div>
                 </div>
                 <div className="card-row">
-                    <div style={{backgroundColor: '#e9e4e9'}} className="secondCard-image-container">
-                        <img src={ExploreAndSelectImage} className="secondCard-contained-image"/>
-                        <div className="secondCard-text-section">
+                    <div style={{backgroundColor: '#fdf6e3'}} className="secondCard-image-container">
+                        <img src={ExploreAndSelectImage} className="secondCard-image-container"/>
+                        <div style={{marginLeft: '5px'}} className="secondCard-text-section">
                             <div className='secondCard-text-section-title' style={{color: '#333333'}}>Clientes fazem pedidos
                             </div>
                             <div className='secondCard-text-section-description'>Seus clientes acessam o cardápio e montam seus pedidos online
@@ -119,8 +119,8 @@ function Home() {
 
                     </div>
 
-                    <div style={{backgroundColor: '#DCF4F4'}} className="secondCard-image-container">
-                        <img src={RedirectToWppImage} className="secondCard-contained-imageFourth"/>
+                    <div style={{backgroundColor: '#fdf6e3'}} className="secondCard-image-container">
+                        <img src={RedirectToWppImage} className="secondCard-image-container"/>
                         <div style={{marginLeft: '5px'}} className="secondCard-text-section">
                             <div className='secondCard-text-section-title' style={{color: '#333333'}}>Gerencie pedidos em tempo real
                             </div>

@@ -8,6 +8,24 @@ import {
 } from '../services/establishmentService';
 import { uploadImage } from '../services/firebaseService';
 import { getFromLocalStorage } from '../utils/storageUtils'; // Importa as funções utilitárias
+import './../styles/Establishments.css'
+import {
+    Avatar,
+    Box,
+    Button,
+    Card,
+    CardContent,
+    Container,
+    Grid,
+    TextField,
+    Typography
+} from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import HomeIcon from "@mui/icons-material/Home";
+import SideBar from "../components/SideBar";
+import AppFooter from "../components/AppFooter";
+import '../styles/NotificationListener.css';
+import NotificationListener from "../components/NotificationListener";
 
 const Establishment = () => {
     const [establishment, setEstablishment] = useState({
@@ -89,63 +107,110 @@ const Establishment = () => {
             showToast('Erro ao salvar os dados do estabelecimento', 'error');
         }
     };
-
+    const handleNavigation = (path) => {
+        navigate(path);
+    };
     return (
-        <div style={{ padding: '20px' }}>
-            <h1>{isNewEstablishment ? 'Cadastrar Estabelecimento' : 'Editar Estabelecimento'}</h1>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Nome do Estabelecimento:</label>
-                    <input
-                        type="text"
-                        name="EstablishmentName"
-                        value={establishment.EstablishmentName}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Endereço:</label>
-                    <input
-                        type="text"
-                        name="Address"
-                        value={establishment.Address}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <label>Descrição:</label>
-                    <textarea
-                        name="Description"
-                        value={establishment.Description}
-                        onChange={handleChange}
-                        rows="4"
-                    />
+        <div style={{padding: '20px'}}>
+            <NotificationListener />
+
+            <Box className="dashboard-topbar" style={{marginLeft: '20px', marginRight: '20px'}}>
+
+
+                <div className="home-button-container">
+                    <button className="establishment-home-button" onClick={() => handleNavigation('/Dashboard')}>
+                        <HomeIcon style={{marginRight: '6px'}}/>
+                        <span className="home-button-text">Início</span>
+                    </button>
                 </div>
 
-                {/* Exibir imagem atual, se existir */}
-                {establishment.ImageURL && (
-                    <div>
-                        <label>Imagem Atual:</label>
-                        <img
-                            src={establishment.ImageURL}
-                            alt="Imagem do Estabelecimento"
-                            style={{ width: '150px', height: '150px', objectFit: 'cover', margin: '10px 0' }}
-                        />
+
+                <div className="topbar-row" style={{width: '100%'}}>
+
+                    <Typography
+                        className="dashboard-title"
+                        style={{width: '100%', textAlign: 'center'}}
+                    >
+                        Estabelecimento
+                    </Typography>
+                    <div className="mobile-sidebar">
+                        <SideBar/>
                     </div>
-                )}
-
-                <div>
-                    <label>Atualizar Imagem (Logo):</label>
-                    <input
-                        type="file"
-                        onChange={handleImageChange}
-                    />
                 </div>
 
-                <button type="submit">{isNewEstablishment ? 'Criar Estabelecimento' : 'Salvar Alterações'}</button>
-            </form>
+                <div className="desktop-sidebar">
+                    <SideBar/>
+                </div>
+            </Box>
+
+            <div className="establishment-container">
+                <div className="establishment-card">
+                    {/* Lado esquerdo */}
+                    <div className="establishment-left">
+                        <img
+                            src={establishment.ImageURL || 'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'}
+                            alt="Logo"
+                            className="avatar"
+                        />
+                        <h3>{establishment.EstablishmentName || 'Estabelecimento'}</h3>
+                        <p>{establishment.Address || 'Sem endereço'}</p>
+                        <span className="edit-icon">✎</span>
+                    </div>
+
+                    {/* Lado direito */}
+                    <div className="establishment-right">
+                        <h3>{isNewEstablishment ? 'Cadastrar Estabelecimento' : 'Editar Estabelecimento'}</h3>
+                        <form onSubmit={handleSubmit} className="establishment-form">
+                            <div className="form-group">
+                                <label>Nome do Estabelecimento</label>
+                                <input
+                                    type="text"
+                                    name="EstablishmentName"
+                                    value={establishment.EstablishmentName}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label>Endereço</label>
+                                <input
+                                    type="text"
+                                    name="Address"
+                                    value={establishment.Address}
+                                    onChange={handleChange}
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label>Descrição</label>
+                                <textarea
+                                    name="Description"
+                                    value={establishment.Description}
+                                    onChange={handleChange}
+                                    rows="4"
+                                ></textarea>
+                            </div>
+
+                            <div className="form-group">
+                                <label className="upload-button">
+                                    Atualizar imagem (logo)
+                                    <input type="file" hidden onChange={handleImageChange}/>
+                                </label>
+                            </div>
+
+                            <button type="submit" className="submit-button">
+                                {isNewEstablishment ? 'Criar Estabelecimento' : 'Salvar Alterações'}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <AppFooter />
+
         </div>
+
+
     );
 };
 

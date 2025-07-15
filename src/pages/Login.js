@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { saveToLocalStorage } from '../utils/storageUtils';
 import '../styles/Login.css';
 import logoImageUrl from '../assets/logoProvisoria.png';
+import AppFooter from "../components/AppFooter";
 
 const Login = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
@@ -40,7 +41,7 @@ const Login = () => {
             if (response.subscriptionStatus === 'Active') {
                 navigate('/dashboard');
             } else {
-                navigate('/subscribe');
+                navigate('/dashboard');
             }
         } catch (err) {
             hideLoading();
@@ -49,6 +50,14 @@ const Login = () => {
     };
 
     return (
+        <div
+            style={{
+                minHeight: '100vh',
+                display: 'flex',
+                flexDirection: 'column',
+                backgroundColor: '#eef0fb',
+            }}
+        >
         <div className="login-container">
             <div className="login-box">
                 {/* Redireciona para Home ao clicar na logo */}
@@ -93,7 +102,12 @@ const Login = () => {
                     <Link to="/register">Criar conta</Link>
                 </div>
             </div>
+
         </div>
+            <AppFooter />
+
+        </div>
+
     );
 };
 

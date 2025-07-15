@@ -54,20 +54,24 @@ const CartModal = ({ cart, onHide, onRemove, tableID, establishmentID, setCart }
 
     return (
         <div className="modal-overlay">
-            <div className="modal-content">
-                <h2>Carrinho</h2>
-                <ul>
+            <div className="cart-modal-box">
+                <h2 className="cart-modal-title">Carrinho</h2>
+
+                <ul className="cart-modal-list">
                     {cart.map((item, index) => (
-                        <li key={`${item.ProductID}-${index}`}>
-                            {item.ProductName} - R$ {item.Price.toFixed(2)}
-                            <button onClick={() => onRemove(index)}>Remover</button>
+                        <li key={`${item.ProductID}-${index}`} className="cart-modal-item">
+                            <span>{item.ProductName}</span>
+                            <span style={{marginLeft:"auto"}}>R$ {item.Price.toFixed(2)}</span>
+                            <button className="cart-modal-remove" onClick={() => onRemove(index)}>✕</button>
                         </li>
                     ))}
                 </ul>
-                <h3>Total: R$ {total.toFixed(2)}</h3>
+
+                <h3 className="cart-modal-total">Total: R$ {total.toFixed(2)}</h3>
 
                 <input
                     type="text"
+                    className="cart-modal-input"
                     placeholder="Nome do cliente"
                     value={customerName}
                     onChange={(e) => setCustomerName(e.target.value)}
@@ -75,17 +79,21 @@ const CartModal = ({ cart, onHide, onRemove, tableID, establishmentID, setCart }
                 />
                 <input
                     type="text"
+                    className="cart-modal-input"
                     placeholder="Contato do cliente (opcional)"
                     value={customerPhone}
                     onChange={(e) => setCustomerPhone(e.target.value)}
                 />
                 <textarea
-                    placeholder="Adicione uma observação ao pedido..."
+                    className="cart-modal-textarea"
+                    placeholder="Observações do pedido..."
                     value={observation}
                     onChange={(e) => setObservation(e.target.value)}
                 />
-                <button onClick={handleFinalizeOrder}>Finalizar Pedido</button>
-                <button onClick={onHide}>Fechar</button>
+                <div className="cart-modal-buttons">
+                    <button className="cart-modal-btn finalize" onClick={handleFinalizeOrder}>Finalizar Pedido</button>
+                    <button className="cart-modal-btn cancel" onClick={onHide}>Fechar</button>
+                </div>
             </div>
         </div>
     );

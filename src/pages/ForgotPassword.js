@@ -5,6 +5,7 @@ import { useLoading } from '../hooks/LoadingContext';
 import { useToast } from '../hooks/ToastContext';
 import '../styles/PasswordReset.css';
 import logoImageUrl from '../assets/logoProvisoria.png';
+import AppFooter from "../components/AppFooter";
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
@@ -27,6 +28,14 @@ const ForgotPassword = () => {
     };
 
     return (
+        <div
+            style={{
+                minHeight: '100vh',
+                display: 'flex',
+                flexDirection: 'column',
+                backgroundColor: '#eef0fb',
+            }}
+        >
         <div className="password-container">
             <div className="password-box">
                 <div className="password-logo-container">
@@ -50,6 +59,10 @@ const ForgotPassword = () => {
                 </form>
             </div>
         </div>
+            <AppFooter />
+
+        </div>
+
     );
 };
 

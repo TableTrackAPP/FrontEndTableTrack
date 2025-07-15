@@ -2,6 +2,7 @@
 import axios from 'axios';
 
 const API_URL = 'http://localhost:3000/api'; // URL do back-end
+//const API_URL = 'http://192.168.1.8:3000/api'; // URL do back-end
 
 // Função para login e armazenamento dos tokens
 export const login = async (email, password) => {

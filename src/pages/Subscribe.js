@@ -4,9 +4,16 @@ import { useToast } from '../hooks/ToastContext';
 import { useLoading } from '../hooks/LoadingContext';
 import { getFromLocalStorage } from '../utils/storageUtils';
 import { getUserSubscriptions, getCustomerPortalLink, createCheckoutSession } from '../services/subscriptions';
+import '../styles/Subscribe.css';
+import {Box, Button, Typography} from "@mui/material";
+import SideBar from "../components/SideBar";
+import HomeIcon from '@mui/icons-material/Home';
+import AppFooter from "../components/AppFooter";
+import NotificationListener from "../components/NotificationListener";
+
 
 const Subscribe = () => {
-    const [subscriptions, setSubscriptions] = useState([]); // 🔹 Agora começa com um array vazio
+    const [subscriptions, setSubscriptions] = useState(); // 🔹 Agora começa com um array vazio
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const { showToast } = useToast();
@@ -22,8 +29,11 @@ const Subscribe = () => {
             }
 
             try {
+                console.log('user id', userData.userID);
                 const userSubscriptions = await getUserSubscriptions(userData.userID);
-                setSubscriptions(Array.isArray(userSubscriptions) ? userSubscriptions : []); // 🔹 Garante que seja um array
+                console.log('se tem subscriptions',userSubscriptions);
+                setSubscriptions(userSubscriptions); // 🔹 Garante que seja um array
+                console.log('teste', userSubscriptions.SubscriptionStatus)
             } catch (error) {
                 console.error('Erro ao buscar assinaturas:', error);
                 setSubscriptions([]); // 🔹 Evita que subscriptions seja undefined/null
@@ -36,7 +46,7 @@ const Subscribe = () => {
     }, [navigate, showToast]);
 
     // Verifica se o usuário tem uma assinatura ativa
-    const hasActiveSubscription = subscriptions.length > 0 && subscriptions.some(sub => sub.subscriptionStatus === 'Active');
+    const hasActiveSubscription = subscriptions && subscriptions.SubscriptionStatus === 'Active';
 
     // Abre o portal do Stripe em uma nova aba
     const handleManageSubscription = async () => {
@@ -66,51 +76,138 @@ const Subscribe = () => {
         }
     };
 
-    return (
-        <div>
-            <h2>Gerenciamento de Assinatura</h2>
-
-            {loading ? (
+    if (loading) {
+        return (
+            <div style={{ backgroundColor: '#eef0fb', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <p>Carregando...</p>
-            ) : hasActiveSubscription ? (
-                <div>
-                    <h3>Suas Assinaturas</h3>
-                    {subscriptions.map((sub) => (
-                        <div key={sub.subscriptionID} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '10px' }}>
-                            <p><strong>Plano:</strong> {sub.subscriptionPlan}</p>
-                            <p><strong>Status:</strong> {sub.subscriptionStatus}</p>
-                            <p><strong>Vencimento:</strong> {new Date(sub.subscriptionEndDate).toLocaleDateString()}</p>
-                        </div>
-                    ))}
-                    <button onClick={handleManageSubscription} style={{ backgroundColor: 'blue', color: 'white', padding: '10px', marginTop: '10px' }}>
-                        Gerenciar Assinatura
+            </div>
+        );
+    }
+
+    const traduzirPlano = (plano) => {
+        if (plano === 'Monthly') return 'Mensal';
+        if (plano === 'Free') return 'Gratuito';
+        return plano;
+    };
+
+    const traduzirStatus = (status) => {
+        if (status === 'Active') return 'Ativo';
+        if (status === 'Inactive') return 'Inativo';
+        return status;
+    };
+
+    const handleNavigation = (path) => {
+        navigate(path);
+    };
+
+    return (
+        <div style={{
+            backgroundColor: '#eef0fb',
+            minHeight: '100vh',
+            display: 'flex',
+            flexDirection: 'column'
+        }}>
+            <div style={{ flex: 1 }}>
+                <div style={{ marginTop: '10px' }}></div>
+
+                <NotificationListener />
+
+                <Box className="dashboard-topbar" style={{marginLeft: '20px', marginRight: '20px'}}>
+
+
+                <div className="home-button-container">
+                    <button className="home-button" onClick={() => handleNavigation('/Dashboard')}>
+                        <HomeIcon style={{marginRight: '6px'}}/>
+                        <span className="home-button-text">Início</span>
                     </button>
                 </div>
-            ) : (
-                <div>
-                    <p>Você não tem uma assinatura ativa. Escolha um plano abaixo:</p>
 
-                    <div style={{ display: 'flex', gap: '20px' }}>
-                        <div style={{ border: '1px solid #ccc', padding: '15px' }}>
-                            <h3>Plano Mensal</h3>
-                            <p>R$ XX,XX por mês</p>
-                            <button onClick={() => handleSubscribe('Monthly')} style={{ backgroundColor: 'green', color: 'white', padding: '10px' }}>
-                                Assinar Mensal
+
+                <div className="topbar-row" style={{width: '100%'}}>
+
+                    <Typography
+                        className="dashboard-title"
+                        style={{width: '100%', textAlign: 'center'}}
+                    >
+                        Gerenciamento de Assinatura
+                    </Typography>
+                    <div className="mobile-sidebar">
+                        <SideBar/>
+                    </div>
+                </div>
+
+                <div className="desktop-sidebar">
+                    <SideBar/>
+                </div>
+            </Box>
+
+            {hasActiveSubscription ? (
+                <div className="subscribe-page">
+                    <h2 className="subscribe-title">Suas Assinaturas</h2>
+
+                    <div className="plan-card">
+                        <div>
+                        <p><strong>Plano:</strong> {traduzirPlano(subscriptions.SubscriptionPlan)}</p>
+                            <p><strong>Status:</strong> {traduzirStatus(subscriptions.SubscriptionStatus)}</p>
+                            <p>
+                                <strong>Vencimento:</strong> {new Date(subscriptions.SubscriptionEndDate).toLocaleDateString()}
+                            </p>
+
+                        </div>
+
+
+                    </div>
+                    <button
+                        onClick={handleManageSubscription}
+                        className="manage-subscription-button"
+                    >
+                        Cancelar e gerenciar Assinatura
+                    </button>
+
+                </div>
+            ) : (
+                <div className="subscribe-page">
+                    <h2 className="subscribe-title">Planos e preços flexíveis</h2>
+                    <p className="subscribe-subtitle">
+                        Escolha um plano que se encaixe com o seu negócio e comece agora mesmo.
+                    </p>
+
+                    <div className="plans">
+                        <div className="plan-card">
+                            <div className="plan-title">Mensal</div>
+                            <div className="plan-price">R$ 19,99</div>
+                            <div className="plan-period">/ mês</div>
+                            <ul className="plan-features">
+                                <li>Acesso completo ao sistema</li>
+                                <li>Cancelamento a qualquer momento</li>
+                            </ul>
+                            <button onClick={() => handleSubscribe('Monthly')} className="subscribe-button">
+                                ASSINAR
                             </button>
                         </div>
 
-                        <div style={{ border: '1px solid #ccc', padding: '15px' }}>
-                            <h3>Plano Anual</h3>
-                            <p>R$ XX,XX por ano</p>
-                            <button onClick={() => handleSubscribe('Annual')} style={{ backgroundColor: 'orange', color: 'white', padding: '10px' }}>
-                                Assinar Anual
+                        <div className="plan-card">
+                            <div className="plan-title">Anual</div>
+                            <div className="plan-price">R$ 149,99</div>
+                            <div className="plan-period">/ ano</div>
+                            <ul className="plan-features">
+                                <li>Todos os benefícios do plano mensal</li>
+                                <li>Economize mais de 35%</li>
+                            </ul>
+                            <button onClick={() => handleSubscribe('Annual')} className="subscribe-button">
+                                ASSINAR
                             </button>
                         </div>
                     </div>
                 </div>
             )}
+            </div>
+
+            <AppFooter />
+
         </div>
     );
+
 };
 
 export default Subscribe;

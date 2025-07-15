@@ -5,6 +5,7 @@ import { useToast } from '../hooks/ToastContext'; // Hook de Toast para exibir n
 import { useLoading } from '../hooks/LoadingContext'; // Hook de Loading para exibir o loader
 import { useNavigate, useLocation } from 'react-router-dom'; // Para pegar parâmetros da URL e redirecionar
 import logoImageUrl from '../assets/logoProvisoria.png';
+import AppFooter from "../components/AppFooter";
 
 const ResetPassword = () => {
     const [newPassword, setNewPassword] = useState('');
@@ -40,36 +41,52 @@ const ResetPassword = () => {
     };
 
     return (
+        <div
+            style={{
+                minHeight: '100vh',
+                display: 'flex',
+                flexDirection: 'column',
+                backgroundColor: '#eef0fb',
+            }}
+        >
+            <div className="password-container">
 
-        <div className="password-container">
-
-            <div className="password-box">
-                <h2>Redefinir Senha</h2>
-            <form onSubmit={handleSubmit} className="password-form">
-                <div className="input-group">
-                    <label>Nova Senha:</label>
-                    <input
-                        type="password"
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                        required
-                        className="input-field"
-                    />
+                <div className="password-box">
+                    <div className="password-logo-container">
+                        <img src={logoImageUrl} alt="TableTrack Logo" className="password-logo"
+                             onClick={() => navigate('/')}/>
+                    </div>
+                    <h2>Redefinir Senha</h2>
+                    <form onSubmit={handleSubmit} className="password-form">
+                        <div className="input-group">
+                            <label>Nova Senha:</label>
+                            <input
+                                type="password"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                required
+                                className="input-field"
+                            />
+                        </div>
+                        <div>
+                            <label>Confirme a Nova Senha:</label>
+                            <input
+                                type="password"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                required
+                                className="input-field"
+                            />
+                        </div>
+                        <button type="submit" className="password-button">Redefinir Senha</button>
+                    </form>
                 </div>
-                <div>
-                    <label>Confirme a Nova Senha:</label>
-                    <input
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        required
-                        className="input-field"
-                    />
-                </div>
-                <button type="submit" className="password-button">Redefinir Senha</button>
-            </form>
             </div>
+
+            <AppFooter/>
+
         </div>
+
     );
 };
 

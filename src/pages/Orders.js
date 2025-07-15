@@ -5,6 +5,18 @@ import '../styles/Modal.css';
 import { getFromLocalStorage } from '../utils/storageUtils';
 import { getEstablishmentByOwnerID } from '../services/establishmentService';
 import OrderDetailModal from '../components/OrderDetailModal';
+import './../styles/Orders.css'
+import pendingIcon from '../assets/Pending.gif'
+import inProgressIcon from '../assets/inProgress.gif'
+import CanceledIcon from '../assets/Canceled.gif'
+import pagoIcone from '../assets/pagoIcone.gif'
+import completedIcon from '../assets/CompletedIcon.gif'
+import {Box, Typography} from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
+import SideBar from "../components/SideBar";
+import {useNavigate} from "react-router-dom";
+import AppFooter from "../components/AppFooter";
+import NotificationListener from '../components/NotificationListener';
 
 const Orders = () => {
     const [orders, setOrders] = useState([]);
@@ -16,6 +28,10 @@ const Orders = () => {
     const [dateFilter, setDateFilter] = useState('Novos');
     const [customDateRange, setCustomDateRange] = useState({ startDate: '', endDate: '' });
     const { showToast } = useToast();
+    const [searchText, setSearchText] = useState('');
+    const navigate = useNavigate();
+    const [itemsToShow, setItemsToShow] = useState(10);
+    const [showFilters, setShowFilters] = useState(true);
 
     const fetchOrders = useCallback(async () => {
         try {
@@ -53,8 +69,18 @@ const Orders = () => {
             }
         }
 
+        // Filtro por texto digitado (ID ou nome do cliente)
+        if (searchText.trim() !== '') {
+            const lowerText = searchText.toLowerCase();
+            filtered = filtered.filter(order =>
+                order.OrderID.toString().includes(lowerText) ||
+                (order.TableNumber && order.TableNumber.toLowerCase().includes(lowerText)) ||
+                (order.CustomerName && order.CustomerName.toLowerCase().includes(lowerText))
+            );
+        }
+
         setFilteredOrders(filtered);
-    }, [orders, statusFilter, dateFilter, customDateRange]);
+    }, [orders, statusFilter, dateFilter, customDateRange, searchText]);
 
     useEffect(() => {
         fetchOrders();
@@ -68,8 +94,10 @@ const Orders = () => {
         setStatusFilter('Todos');
         setDateFilter('Novos');
         setCustomDateRange({ startDate: '', endDate: '' });
-        setFilteredOrders(orders); // Reseta para os pedidos originais
+        setSearchText('');
+        setFilteredOrders(orders);
     };
+
 
     const handleUpdateOrder = async (newStatus) => {
         console.log('Atualizando pedido:', {
@@ -97,82 +125,242 @@ const Orders = () => {
             showToast('Erro ao atualizar status do pedido.', 'error');
         }
     };
+    const handleScroll = () => {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+            setItemsToShow(prev => prev + 10); // Carrega mais 10
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+
+    const traduzirStatus = (status) => {
+        switch (status) {
+            case 'Pending':
+                return 'Pendente';
+            case 'In Progress':
+                return 'Em andamento';
+            case 'Completed':
+                return 'Entregue';
+            case 'Paid':
+                return 'Pago';
+            case 'Cancelled':
+                return 'Cancelado';
+            default:
+                return status;
+        }
+    };
+
+    const getStatusClass = (status) => {
+        switch (status) {
+            case 'Pending':
+                return 'status-pending';
+            case 'In Progress':
+                return 'status-inprogress';
+            case 'Completed':
+                return 'status-completed';
+            case 'Paid':
+                return 'status-paid';
+            case 'Cancelled':
+                return 'status-cancelled';
+            default:
+                return '';
+        }
+    };
+
+
+    const getStatusImage = (status) => {
+        switch (status) {
+            case 'Pending':
+                return pendingIcon;
+            case 'Completed':
+                return completedIcon;
+            case 'Cancelled':
+                return CanceledIcon;
+            case 'In Progress':
+                return inProgressIcon;
+            case 'Paid':
+                return pagoIcone;
+            default:
+                return '/images/status/default.png'; // imagem padrão
+        }
+    };
+    const handleNavigation = (path) => {
+        navigate(path);
+    };
 
 
 
     return (
-        <div style={{ padding: '20px' }}>
-            <h1>Pedidos</h1>
+        <div className="orders-container colorful-theme">
+            <NotificationListener />
+
+            <Box className="dashboard-topbar" style={{marginLeft: '20px', marginRight: '20px'}}>
+
+
+                <div className="home-button-container">
+                    <button className="order-home-button" onClick={() => handleNavigation('/Dashboard')}>
+                        <HomeIcon style={{marginRight: '6px'}}/>
+                        <span className="home-button-text">Início</span>
+                    </button>
+                </div>
+
+
+                <div className="topbar-row" style={{width: '100%'}}>
+
+                    <Typography
+                        className="dashboard-title"
+                        style={{width: '100%', textAlign: 'center'}}
+                    >
+                        Pedidos
+                    </Typography>
+                    <div className="mobile-sidebar">
+                        <SideBar/>
+                    </div>
+                </div>
+
+                <div className="desktop-sidebar">
+                    <SideBar/>
+                </div>
+            </Box>
 
             {/* Filtros */}
-            <div style={{ marginBottom: '20px' }}>
-                <h3>Filtros</h3>
-                {/* Filtros por status */}
-                <div>
-                    <button onClick={() => setStatusFilter('Todos')}>Todos</button>
-                    <button onClick={() => setStatusFilter('Pending')}>Pendente</button>
-                    <button onClick={() => setStatusFilter('In Progress')}>Em andamento</button>
-                    <button onClick={() => setStatusFilter('Completed')}>Concluído</button>
-                    <button onClick={() => setStatusFilter('Paid')}>Pago</button>
-                    <button onClick={() => setStatusFilter('Cancelled')}>Cancelado</button>
+            {showFilters ? (
+                <div className="filters-section expanded">
+                    <div className="filters-header">
+                        <button className="filters-toggle-icon" onClick={() => setShowFilters(false)}>▲</button>
+                        <span>Filtros</span>
+                    </div>
+
+                    <div className="filter-group">
+                    <button className={statusFilter === 'Todos' ? 'filter-btn active' : 'filter-btn'}
+                                onClick={() => setStatusFilter('Todos')}>Todos
+                        </button>
+                        <button className={statusFilter === 'Pending' ? 'filter-btn active' : 'filter-btn'}
+                                onClick={() => setStatusFilter('Pending')}>Pendente
+                        </button>
+                        <button className={statusFilter === 'In Progress' ? 'filter-btn active' : 'filter-btn'}
+                                onClick={() => setStatusFilter('In Progress')}>Em andamento
+                        </button>
+                        <button className={statusFilter === 'Completed' ? 'filter-btn active' : 'filter-btn'}
+                                onClick={() => setStatusFilter('Completed')}>Entregue
+                        </button>
+                        <button className={statusFilter === 'Paid' ? 'filter-btn active' : 'filter-btn'}
+                                onClick={() => setStatusFilter('Paid')}>Pago
+                        </button>
+                        <button className={statusFilter === 'Cancelled' ? 'filter-btn active' : 'filter-btn'}
+                                onClick={() => setStatusFilter('Cancelled')}>Cancelado
+                        </button>
+                    </div>
+
+                    {/* Filtros por data */}
+                    <div className="filter-group">
+                        <button className={dateFilter === 'Novos' ? 'filter-btn active' : 'filter-btn'}
+                                onClick={() => setDateFilter('Novos')}>Novos
+                        </button>
+                        <button className={dateFilter === 'Antigos' ? 'filter-btn active' : 'filter-btn'}
+                                onClick={() => setDateFilter('Antigos')}>Antigos
+                        </button>
+                        <button className={dateFilter === 'Data' ? 'filter-btn active' : 'filter-btn'}
+                                onClick={() => setDateFilter('Data')}>Por Data
+                        </button>
+
+                        {dateFilter === 'Data' && (
+                            <div className="date-range-inputs">
+                                <label>
+                                    Data inicial:
+                                    <input
+                                        type="date"
+                                        value={customDateRange.startDate}
+                                        onChange={e =>
+                                            setCustomDateRange(prev => ({...prev, startDate: e.target.value}))
+                                        }
+                                    />
+                                </label>
+                                <label>
+                                    Data final:
+                                    <input
+                                        type="date"
+                                        value={customDateRange.endDate}
+                                        onChange={e =>
+                                            setCustomDateRange(prev => ({...prev, endDate: e.target.value}))
+                                        }
+                                    />
+                                </label>
+                            </div>
+                        )}
+                    </div>
+                    <div className="search-bar-sticky">
+                        <input
+                            type="text"
+                            placeholder="Pesquisar"
+                            value={searchText}
+                            onChange={e => setSearchText(e.target.value)}
+                            className="search-input"
+                        />
+                    </div>
+                    {/* Resetar filtros */}
+                    <div className="reset-btn-container">
+                        <button className="reset-btn" onClick={resetFilters}>Resetar Filtros</button>
+                    </div>
+
+
+                </div>
+            ) : (
+
+                <div className="filters-section ">
+                    <div className="filters-header">
+                        <button className="filters-toggle-icon" onClick={() => setShowFilters(true)}>▼</button>
+                        <span>Filtros</span>
+
+                    </div>
                 </div>
 
-                {/* Filtros por data */}
-                <div style={{ marginTop: '10px' }}>
-                    <button onClick={() => setDateFilter('Novos')}>Novos</button>
-                    <button onClick={() => setDateFilter('Antigos')}>Antigos</button>
-                    <button onClick={() => setDateFilter('Data')}>Por Data</button>
-                    {dateFilter === 'Data' && (
-                        <div style={{ marginTop: '10px' }}>
-                            <label>
-                                Data inicial:
-                                <input
-                                    type="date"
-                                    value={customDateRange.startDate}
-                                    onChange={e =>
-                                        setCustomDateRange(prev => ({ ...prev, startDate: e.target.value }))
-                                    }
-                                />
-                            </label>
-                            <label style={{ marginLeft: '10px' }}>
-                                Data final:
-                                <input
-                                    type="date"
-                                    value={customDateRange.endDate}
-                                    onChange={e =>
-                                        setCustomDateRange(prev => ({ ...prev, endDate: e.target.value }))
-                                    }
-                                />
-                            </label>
-                        </div>
-                    )}
-                </div>
 
-                {/* Botão de resetar filtros */}
-                <div style={{ marginTop: '20px' }}>
-                    <button onClick={resetFilters}>Resetar Filtros</button>
-                </div>
-            </div>
+            )}
+
 
             {/* Lista de pedidos */}
             {filteredOrders.length === 0 ? (
                 <p>Nenhum pedido encontrado para os critérios selecionados.</p>
             ) : (
-                <ul>
-                    {filteredOrders.map(order => (
-                        <li key={order.OrderID}>
-                            Pedido #{order.OrderID} - {order.Status}
-                            <button
-                                onClick={() => {
-                                    setSelectedOrder(order);
-                                    setOrderStatus(order.Status);
-                                    setShowModal(true);
-                                }}
-                                style={{ marginLeft: '10px' }}
-                            >
-                                Ver detalhes
-                            </button>
-                        </li>
+                <ul className="custom-list">
+                    {filteredOrders.slice(0, itemsToShow).map(order => (
+                        <React.Fragment key={order.OrderID}>
+                            <li className="custom-list-item">
+                                <div className="avatar">
+                                    <img src={getStatusImage(order.Status)} alt={order.Status}/>
+                                </div>
+                                <div className="message-content">
+                                    <h4 className="message-title">Pedido #{order.OrderID}</h4>
+                                    <span className={`message-author ${getStatusClass(order.Status)}`}>
+                                    {traduzirStatus(order.Status)}
+                                        <button
+                                            onClick={() => {
+                                                setSelectedOrder(order);
+                                                setOrderStatus(order.Status);
+                                                setShowModal(true);
+                                            }}
+                                            style={{marginLeft: '10px'}}
+                                        >
+                                    Ver detalhes
+                                </button></span>
+                                    <span className="message-text">
+  Mesa: <span className="semi-bold">{order.TableNumber}</span> |
+  Cliente: <span className="semi-bold">{order.CustomerName}</span> |
+  Preço: <span className="semi-bold">{Number(order.TotalAmount || 0).toLocaleString('pt-BR', {
+                                        style: 'currency',
+                                        currency: 'BRL'
+                                    })}</span>
+</span>
+
+
+                                </div>
+                            </li>
+                        </React.Fragment>
                     ))}
                 </ul>
             )}
@@ -185,7 +373,14 @@ const Orders = () => {
                 setOrderStatus={setOrderStatus}
                 onUpdateStatus={handleUpdateOrder}
             />
+            <button className="scroll-to-top-btn" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
+                ↑
+            </button>
+
+            <AppFooter />
+
         </div>
+
     );
 };
 

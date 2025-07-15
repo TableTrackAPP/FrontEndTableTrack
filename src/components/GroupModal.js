@@ -21,18 +21,19 @@ const GroupModal = ({ show, onHide, group, onSave }) => {
 
     return (
         <div className="modal-overlay">
-            <div className="modal-content">
-                <h2>{group ? 'Editar Grupo' : 'Novo Grupo'}</h2>
+            <div className="modal-box">
+                <h2  className="modal-title">{group ? 'Editar Grupo' : 'Novo Grupo'}</h2>
                 <div>
                     <label>Nome do Grupo:</label>
                     <input
+                        className="modal-input"
                         value={groupName}
                         onChange={(e) => setGroupName(e.target.value)}
                     />
                 </div>
                 <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'flex-end' }}>
-                    <button onClick={handleSave} style={{ marginRight: '10px' }}>Salvar</button>
-                    <button onClick={onHide}>Cancelar</button>
+                    <button className="modal-btn save" onClick={handleSave} style={{ marginRight: '10px' }}>Salvar</button>
+                    <button className="modal-btn cancel" onClick={onHide}>Cancelar</button>
                 </div>
             </div>
         </div>

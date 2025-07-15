@@ -134,6 +134,13 @@ header nav a {
     overflow: hidden;
 
 }
+    .secondCard-image-container img {
+        width: 200px;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 16px;
+        margin-right: 20px;
+    }
 .secondCard-text-section {
     flex: 1;
     padding-right: 20px;
@@ -156,11 +163,7 @@ header nav a {
     height: 90%;
     margin-left: 10px;
 }
-    .secondCard-contained-imageFourth {
-        height: 100%;
-        border-radius: 20px;
-        width: 60%;
-    }
+
 
 .first-card button {
     padding: 10px 20px;
@@ -324,6 +327,8 @@ zoom: 90%;
 
 @media (min-width: 769px) {
 
+
+
     .app-container {
         font-family: 'Arial';
         width: 100%;
@@ -466,16 +471,24 @@ zoom: 90%;
 
     }
 
-    .secondCard-contained-image {
-        max-width: 90%;
-        height: 90%;
-        margin-left: 10px;
+    .secondCard-image-container img {
+        width: 250px;
+        height: 250px;
+        object-fit: cover;
+        margin-right: 20px;
     }
-    .secondCard-contained-imageFourth {
-        max-width: 60%;
-        height: 100%;
-        border-radius: 10px;
+
+    .secondCard-image-container {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
     }
+
+    .secondCard-image-container:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+
 
     .first-card button {
         padding: 10px 20px;
