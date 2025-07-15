@@ -28,11 +28,11 @@ body {
         max-width: 50%;
     }
     .firstCard-text-section h2 {
-        font-size: 1.2rem; /* Reduz o tamanho do título no mobile */
+        font-size: 1.2rem;
     }
 
     .firstCard-text-section h2 span {
-        font-size: 1.8rem; /* Mantém o "TableTrack" destacado */
+        font-size: 1.8rem;
     }
 .firstCard-image-section {
     flex: 1;
@@ -70,7 +70,7 @@ header {
         font-size: 13px;
         border-radius: 5px;
         margin-right: 5px;
-        transition: background-color 0.3s ease; /* Adiciona uma transição suave */
+        transition: background-color 0.3s ease;
     }
 
 
@@ -119,9 +119,9 @@ header nav a {
 }
     .card-row {
         display: flex;
-        justify-content: center; /* Alinha os itens filhos horizontalmente no centro */
-        align-items: center; /* Alinha os itens filhos verticalmente no centro */
-        flex-wrap: wrap; /* Permite que os itens filhos quebram a linha se não houver espaço suficiente */    }
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;  }
 .secondCard-image-container {
     border-radius: 26px;
     margin-top: 30px;
@@ -241,21 +241,21 @@ zoom: 90%;
 }
 .cards-container {
     display: flex;
-    gap: 5px; /* Space between cards */
+    gap: 5px;
     margin-left: 40px;
 
 }
 .card {
     background: linear-gradient(to bottom, #00C1B4, #006A42);
-    width: 30%; /* Allows for 3 cards to fit side by side, accounting for the gap */
+    width: 30%;
     box-sizing: border-box;
     border-radius: 20px 20px 0 0;
-    overflow: hidden; /* Ensures child elements do not overflow the rounded corners */
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
     color: #FFFFFF;
-    font-family: Arial, sans-serif; /* You can choose any font family you prefer */
+    font-family: Arial, sans-serif;
 }
 
 .card-header {
@@ -312,17 +312,16 @@ zoom: 90%;
     background-color: #6458DE;
 
     padding: 50px;
-    border-top-left-radius: 60px;  /* Adjust as needed */
-    border-top-right-radius: 60px; /* Adjust as needed */
+    border-top-left-radius: 60px;
+    border-top-right-radius: 60px;
 }
 }
 
-/* Adiciona efeito hover */
 .header button:hover {
-    background-color: #555; /* Ou qualquer outra cor que você preferir */
+    background-color: #555;
 }
 .first-card button:hover {
-    background-color: #555; /* Ou qualquer outra cor que você preferir */
+    background-color: #555;
 }
 
 @media (min-width: 769px) {
@@ -374,19 +373,19 @@ zoom: 90%;
         font-size: 13px;
         border-radius: 5px;
         margin-right: 5px;
-        transition: background-color 0.3s ease; /* Adiciona uma transição suave */
+        transition: background-color 0.3s ease;
     }
 
 
     .firstCard-text-section h2 {
-        font-size: 2rem; /* Tamanho padrão do título */
-        color: #083D2E; /* Cor mais escura */
+        font-size: 2rem;
+        color: #083D2E;
         font-weight: bold;
     }
 
     .firstCard-text-section h2 span {
-        font-size: 2.3rem; /* Mantém o "TableTrack" maior */
-        color: #083D2E; /* Cor ainda mais escura para destaque */
+        font-size: 2.3rem;
+        color: #083D2E;
     }
     header h1 {
         font-size: 24px;
@@ -407,7 +406,7 @@ zoom: 90%;
         padding: 20px;
         border-bottom-right-radius: 70px;
         width: 100%;
-        height: 400px; /* Define uma altura fixa */
+        height: 400px;
     }
 
     .second-card {
@@ -438,8 +437,8 @@ zoom: 90%;
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 60%; /* Adjust as needed */
-        margin-bottom: 30px; /* Adjust as needed */
+        width: 60%;
+        margin-bottom: 30px;
         gap: 15px;
     }
     .secondCard-image-container {
@@ -566,21 +565,21 @@ zoom: 90%;
     }
     .cards-container {
         display: flex;
-        gap: 5px; /* Space between cards */
+        gap: 5px;
         margin-left: 40px;
 
     }
     .card {
         background: linear-gradient(to bottom, #00C1B4, #006A42);
-        width: 30%; /* Allows for 3 cards to fit side by side, accounting for the gap */
+        width: 30%;
         box-sizing: border-box;
         border-radius: 20px 20px 0 0;
-        overflow: hidden; /* Ensures child elements do not overflow the rounded corners */
+        overflow: hidden;
         display: flex;
         flex-direction: column;
         align-items: center;
         color: #FFFFFF;
-        font-family: Arial, sans-serif; /* You can choose any font family you prefer */
+        font-family: Arial, sans-serif;
     }
 
     .card-header {
@@ -639,10 +638,10 @@ zoom: 90%;
         border-top-right-radius: 60px;
         display: flex;
         flex-direction: column;
-        justify-content: center; /* Centraliza verticalmente */
-        align-items: center; /* Centraliza horizontalmente */
-        text-align: center; /* Alinha o texto no centro */
-        height: 250px; /* Ajuste a altura conforme necessário */
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        height: 250px;
     }
 
 

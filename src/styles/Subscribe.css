@@ -156,7 +156,7 @@
         padding: 0 5vw;
     }
     .home-button-text {
-        display: none; /* Esconde o texto "Início" no mobile */
+        display: none;
     }
 
     .subscribe-button:hover {
@@ -164,7 +164,7 @@
     }
 
     .home-button-container {
-        display: none; /* Esconde o texto "Início" no mobile */
+        display: none;
 
     }
     .plan-card {

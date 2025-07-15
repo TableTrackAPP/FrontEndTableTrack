@@ -9,7 +9,6 @@
     padding: 10px;
 }
 
-/* Efeito hover nos itens da sidebar */
 .sidebar-content .MuiListItem-root {
     transition: background-color 0.3s ease;
     cursor: pointer;

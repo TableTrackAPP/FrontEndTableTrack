@@ -1,4 +1,3 @@
-/* Centraliza a tela */
 .login-container {
     display: flex;
     justify-content: center;
@@ -7,7 +6,6 @@
     background-color: #f4f4f4;
 }
 
-/* Caixa do login */
 .login-box {
     background: #fff;
     padding: 40px;
@@ -18,39 +16,33 @@
     text-align: center;
 }
 
-/* Container da logo */
 .logo-container {
     display: flex;
     justify-content: center;
     margin-bottom: 15px;
 }
 
-/* Logo */
 .login-logo {
-    width: 120px; /* Ajuste o tamanho conforme necessário */
+    width: 120px;
     height: auto;
 }
 
-/* Título */
 .login-header h2 {
     color: #333;
     font-size: 24px;
     margin-bottom: 20px;
 }
 
-/* Formulário */
 .login-form {
     display: flex;
     flex-direction: column;
 }
 
-/* Grupos de input */
 .input-group {
     margin-bottom: 15px;
     text-align: left;
 }
 
-/* Labels */
 .input-group label {
     font-size: 14px;
     color: #555;
@@ -58,7 +50,6 @@
     margin-bottom: 5px;
 }
 
-/* Campos de entrada */
 .input-field {
     width: 100%;
     padding: 10px;
@@ -67,7 +58,6 @@
     font-size: 14px;
 }
 
-/* Botão de login */
 .login-button {
     width: 100%;
     padding: 12px;
@@ -84,7 +74,6 @@
     background-color: #0f7d57;
 }
 
-/* Links abaixo do formulário */
 .login-links {
     margin-top: 15px;
     display: flex;

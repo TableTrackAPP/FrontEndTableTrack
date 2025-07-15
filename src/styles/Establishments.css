@@ -5,11 +5,11 @@
     justify-content: center;
     align-items: flex-start;
     padding: 20px;
-    margin-top: 0; /* 🔽 Garante que não há margem extra */
+    margin-top: 0;
 }
 
 .establishment-card {
-    margin-top: 0; /* 🔽 Remove espaço entre cards */
+    margin-top: 0;
 }
 
 .establishment-home-button {
@@ -106,7 +106,6 @@
     background-color: #125ea5;
 }
 
-/* Responsivo */
 @media (max-width: 768px) {
     .establishment-card {
         flex-direction: column;
