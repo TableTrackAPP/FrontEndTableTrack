@@ -1,8 +1,8 @@
 // src/services/firebaseService.js
 import axios from 'axios';
 
-const IMAGE_UPLOAD_URL = 'http://localhost:3000/api/upload';
-//const IMAGE_UPLOAD_URL = 'http://192.168.1.8:3000/api/upload';
+//const IMAGE_UPLOAD_URL = 'http://localhost:3000/api/upload';
+const IMAGE_UPLOAD_URL = 'https://backendtabletrack.onrender.com/api/upload';
 
 // Função para obter o token de autenticação
 const getAuthHeader = () => {

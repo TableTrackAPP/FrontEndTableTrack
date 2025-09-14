@@ -1,8 +1,8 @@
 // src/services/orderService.js
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api/orders';
-//const API_URL = 'http://192.168.1.8:3000/api/orders';
+//const API_URL = 'http://localhost:3000/api/orders';
+const API_URL = 'https://backendtabletrack.onrender.com/api/orders';
 
 const getAuthHeader = () => {
     const accessToken = localStorage.getItem('accessToken');

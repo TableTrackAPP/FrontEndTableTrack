@@ -1,8 +1,8 @@
 // src/services/establishmentService.js
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api/establishments';
-//const API_URL = 'http://192.168.1.8:3000/api/establishments';
+//const API_URL = 'http://localhost:3000/api/establishments';
+const API_URL = 'https://backendtabletrack.onrender.com/api/establishments';
 
 // Função auxiliar para obter o token de autenticação
 const getAuthHeader = () => {
