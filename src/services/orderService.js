@@ -12,9 +12,7 @@ const getAuthHeader = () => {
 // Cria um novo pedido
 export const createOrder = async (orderData) => {
     try {
-        const response = await axios.post(API_URL, orderData, {
-            headers: getAuthHeader(),
-        });
+        const response = await axios.post(API_URL, orderData);
         return response.data;
     } catch (error) {
         console.error('Erro ao criar pedido:', error);

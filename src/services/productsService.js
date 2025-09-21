@@ -44,8 +44,6 @@ export const getProductsByUserID = async (userID) => {
 };
 
 export const getProductsByEstablishmentId = async (establishmentID) => {
-    const response = await axios.get(`${API_URL}/establishment/${establishmentID}`, {
-        headers: getAuthHeader(),
-    });
+    const response = await axios.get(`${API_URL}/establishment/${establishmentID}`);
     return response.data;
 };

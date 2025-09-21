@@ -14,15 +14,14 @@ const getAuthHeader = () => {
 // Função para obter um estabelecimento pelo ID
 export const getEstablishment = async (establishmentID) => {
     try {
-        const response = await axios.get(`${API_URL}/${establishmentID}`, {
-            headers: getAuthHeader(),
-        });
+        const response = await axios.get(`${API_URL}/${establishmentID}`);
         return response.data;
     } catch (error) {
         console.error('Erro ao obter o estabelecimento:', error);
         throw error;
     }
 };
+
 // Função para obter um estabelecimento pelo ID
 export const getEstablishmentByOwnerID = async (OwnerID) => {
     try {

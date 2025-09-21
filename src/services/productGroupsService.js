@@ -39,6 +39,6 @@ export const getProductGroupsByUserID = async (userID) => {
 };
 
 export const getProductGroupsByEstablishmentId = async (establishmentID) => {
-    const response = await axios.get(`${API_URL}/byEstablishment/${establishmentID}`, { headers: getAuthHeader() });
+    const response = await axios.get(`${API_URL}/byEstablishment/${establishmentID}`);
     return response.data;
 };
