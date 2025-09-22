@@ -64,17 +64,34 @@ const Subscribe = () => {
 
     // Inicia o checkout para assinar um plano e abre em nova aba
     const handleSubscribe = async (subscriptionPlan) => {
+        showLoading('Redirecionando para o pagamento...');
+        const userData = getFromLocalStorage('userData');
+
+        // 1. Abrir a aba imediatamente
+        const newWindow = window.open('', '_blank');
+
         try {
-            showLoading('Redirecionando para o pagamento...');
-            const userData = getFromLocalStorage('userData');
+            // 2. Fazer a requisição normalmente
             const checkoutUrl = await createCheckoutSession(userData.userID, subscriptionPlan);
-            window.open(checkoutUrl, '_blank');
+
+            // 3. Redirecionar a nova aba para a URL recebida
+            if (newWindow) {
+                newWindow.location.href = checkoutUrl;
+            } else {
+                showToast('Não foi possível abrir a nova aba.', 'error');
+            }
         } catch (error) {
             showToast('Erro ao iniciar o pagamento.', 'error');
+
+            // 4. Fecha a nova aba se houve erro
+            if (newWindow) {
+                newWindow.close();
+            }
         } finally {
             hideLoading();
         }
     };
+
 
     if (loading) {
         return (
