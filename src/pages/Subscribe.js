@@ -175,7 +175,7 @@ const Subscribe = () => {
                     <div className="plans">
                         <div className="plan-card">
                             <div className="plan-title">Mensal</div>
-                            <div className="plan-price">R$ 19,99</div>
+                            <div className="plan-price">R$ 24,99</div>
                             <div className="plan-period">/ mês</div>
                             <ul className="plan-features">
                                 <li>Acesso completo ao sistema</li>
@@ -188,7 +188,7 @@ const Subscribe = () => {
 
                         <div className="plan-card">
                             <div className="plan-title">Anual</div>
-                            <div className="plan-price">R$ 149,99</div>
+                            <div className="plan-price">R$ 249,99</div>
                             <div className="plan-period">/ ano</div>
                             <ul className="plan-features">
                                 <li>Todos os benefícios do plano mensal</li>
