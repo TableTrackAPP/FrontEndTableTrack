@@ -36,6 +36,19 @@ function Home() {
         howItWorksRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
+    const handleEnterClick = () => {
+        const savedUser = localStorage.getItem('userData');
+
+        if (savedUser) {
+            // Já está logado → manda para o dashboard
+            navigate('/dashboard');
+        } else {
+            // Não está logado → manda para login
+            navigate('/login');
+        }
+    };
+
+
     return (
         <div className="app-container">
             <header className="header">
@@ -54,7 +67,7 @@ function Home() {
                     <div className="headerTextInscrevaSe" onClick={() => navigate('/register')}>Se inscrever</div>
                 </nav>
                 <nav>
-                    <button onClick={() => navigate('/login')}>Entrar</button>
+                    <button onClick={handleEnterClick}>Entrar</button>
                     {/* Redireciona para Login */}
                 </nav>
 

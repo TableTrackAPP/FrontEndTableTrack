@@ -1,3 +1,184 @@
+/* Modal básico */
+.tt-variant-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.tt-btn-light {
+    background: #f3f4f6;
+    color: #111827;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform .15s ease, background .2s ease;
+}
+.tt-btn-light:hover { background: #e5e7eb; transform: translateY(-2px); }
+
+.tt-btn-number {
+    background: #129666;
+    color: #fff;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform .15s ease, background .2s ease;
+}
+.tt-btn-number:hover { background: #0f7d56; transform: translateY(-2px); }
+
+.tt-btn-logo {
+    background: #5b5bff;
+    color: #fff;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform .15s ease, background .2s ease;
+}
+.tt-btn-logo:hover { background: #4848d3; transform: translateY(-2px); }
+
+/* BOTÕES DO MODAL */
+.tt-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all .2s ease;
+    font-weight: 600;
+}
+
+.tt-btn svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* Estilo do botão Catálogo */
+.tt-btn-catalog {
+    background: #129666;
+    color: white;
+}
+
+.tt-btn-catalog:hover {
+    background: #0f7d56;
+    transform: translateY(-2px);
+}
+
+/* Estilo do botão QR Code */
+.tt-btn-qr {
+    background: #5b5bff;
+    color: white;
+}
+
+.tt-btn-qr:hover {
+    background: #4848d3;
+    transform: translateY(-2px);
+}
+
+/* Botão Fechar */
+.tt-btn-close {
+    background: #e5e7eb;
+    color: #333;
+}
+
+.tt-btn-close:hover {
+    background: #d4d4d8;
+    transform: translateY(-2px);
+}
+
+/* Container dos botões */
+.tt-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 18px;
+    justify-content: center;
+}
+
+.tt-modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+}
+
+.tt-modal {
+    width: 100%;
+    max-width: 520px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.tt-label {
+    display: block;
+    margin: 8px 0 6px;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.tt-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.tt-input:focus {
+    border-color: #129666;
+    box-shadow: 0 0 0 3px rgba(18,150,102,0.12);
+}
+
+.tt-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+}
+
+.btn-ghost {
+    background: #f3f4f6;
+    color: #333;
+}
+
+.tt-qr-wrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 16px;
+}
+
+.tt-qr-image {
+    width: 220px; height: 220px; object-fit: contain;
+    border: 1px solid #eee; border-radius: 12px; padding: 8px; background: #fff;
+}
+
+.tt-download {
+    margin-top: 10px;
+    text-decoration: underline;
+    cursor: pointer;
+    color: #129666;
+    font-weight: 600;
+}
+
+.tt-url-hint {
+    margin-top: 6px;
+    font-size: 0.85rem;
+    color: #666;
+    word-break: break-all;
+}
 
 .dashboard-container {
     padding: 2rem;
