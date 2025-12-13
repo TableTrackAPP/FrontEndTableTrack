@@ -522,7 +522,7 @@ const Dashboard = () => {
                             className="tt-input"
                             value={tableIDInput}
                             onChange={(e) => setTableIDInput(e.target.value)}
-                            placeholder="Ex.: Mesa 12, Balcão, etc."
+                            placeholder="Coloque o número da mesa"
                         />
 
                         <div className="tt-actions">
