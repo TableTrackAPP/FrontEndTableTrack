@@ -26,6 +26,7 @@ import SideBar from "../components/SideBar";
 import AppFooter from "../components/AppFooter";
 import '../styles/NotificationListener.css';
 import NotificationListener from "../components/NotificationListener";
+import {useLoading} from "../hooks/LoadingContext";
 
 const Establishment = () => {
     const [establishment, setEstablishment] = useState({
@@ -38,10 +39,13 @@ const Establishment = () => {
     const [imageFile, setImageFile] = useState(null); // Estado para armazenar o arquivo de imagem
     const navigate = useNavigate();
     const { showToast } = useToast();
+    const { showLoading, hideLoading } = useLoading();
 
     useEffect(() => {
         const fetchEstablishment = async () => {
             try {
+                showLoading('Carregando estabelecimento...'); // Mostra o loading
+
                 const userData = getFromLocalStorage('userData');
                 if (!userData) throw new Error('Usuário não autenticado.');
 
@@ -56,6 +60,8 @@ const Establishment = () => {
             } catch (error) {
                 console.log('Erro ao carregar o estabelecimento:', error);
                 showToast('Erro ao carregar os dados do estabelecimento', 'error');
+            }finally {
+                hideLoading(); // Esconde o loading
             }
         };
         fetchEstablishment();

@@ -10,6 +10,7 @@ import '../styles/Dashboard.css';
 import NotificationListener from '../components/NotificationListener';
 import CatalogImage from '../assets/catalog.png';
 import ProductsImage from '../assets/products.png';
+import {useLoading} from "../hooks/LoadingContext";
 
 const Dashboard = () => {
     const [userData, setUserData] = useState(null);
@@ -23,6 +24,8 @@ const Dashboard = () => {
     const [qrBaseDataUrl, setQrBaseDataUrl] = useState(null);
     const [qrDataUrl, setQrDataUrl] = useState(null);
     const [isGeneratingQR, setIsGeneratingQR] = useState(false);
+    const { showLoading, hideLoading } = useLoading();
+
     const CatalogIcon = () => (
         <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
             <path d="M7 4h10c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H7c-1.1
@@ -44,6 +47,8 @@ const Dashboard = () => {
             if (storedUserData) {
                 setUserData(storedUserData);
                 try {
+                    showLoading('Carregando Dashboard...'); // Mostra o loading
+
                     const establishmentData = await getEstablishmentByOwnerID(storedUserData.userID);
                     if (establishmentData) {
                         setEstablishment(establishmentData);
@@ -51,6 +56,8 @@ const Dashboard = () => {
                     }
                 } catch (error) {
                     showToast('Erro ao carregar informações do estabelecimento.', 'error');
+                }finally {
+                    hideLoading(); // Esconde o loading
                 }
             } else {
                 showToast('Faça login para acessar o Dashboard', 'error');

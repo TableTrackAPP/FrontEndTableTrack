@@ -17,6 +17,7 @@ import SideBar from "../components/SideBar";
 import {useNavigate} from "react-router-dom";
 import AppFooter from "../components/AppFooter";
 import NotificationListener from '../components/NotificationListener';
+import {useLoading} from "../hooks/LoadingContext";
 
 const Orders = () => {
     const [orders, setOrders] = useState([]);
@@ -32,9 +33,12 @@ const Orders = () => {
     const navigate = useNavigate();
     const [itemsToShow, setItemsToShow] = useState(10);
     const [showFilters, setShowFilters] = useState(true);
+    const { showLoading, hideLoading } = useLoading();
 
     const fetchOrders = useCallback(async () => {
         try {
+            showLoading('Carregando pedidos...'); // Mostra o loading
+
             const storedUserData = getFromLocalStorage('userData');
             const establishment = await getEstablishmentByOwnerID(storedUserData.userID);
             const data = await getOrdersByEstablishmentId(establishment.EstablishmentID);
@@ -42,6 +46,8 @@ const Orders = () => {
             setFilteredOrders(data); // Inicialmente, mostrar todos os pedidos
         } catch (error) {
             showToast('Erro ao carregar pedidos.', 'error');
+        }finally {
+            hideLoading(); // Esconde o loading
         }
     }, [showToast]);
 
