@@ -507,3 +507,57 @@
         right: 20px;
     }
 }
+/* garante posicionamento pro badge */
+.catalog-product-card {
+    position: relative;
+    overflow: hidden;
+}
+
+/* badge de confirmação */
+.catalog-added-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(34, 197, 94, 0.95);
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.2px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+    opacity: 0;
+    transform: scale(0.85);
+    pointer-events: none;
+}
+
+.catalog-added-badge.show {
+    animation: catalog-popFade 900ms ease forwards;
+}
+
+@keyframes catalog-popFade {
+    0% { opacity: 0; transform: scale(0.85) translateY(-4px); }
+    15% { opacity: 1; transform: scale(1.07) translateY(0); }
+    60% { opacity: 1; transform: scale(1.0); }
+    100% { opacity: 0; transform: scale(0.95) translateY(-2px); }
+}
+
+/* efeito ring no botão flutuante */
+.catalog-cart-floating-button {
+    overflow: visible;
+}
+
+.catalog-cart-floating-button.catalog-cart-ping::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50px;
+    pointer-events: none;
+    animation: catalog-ring 700ms ease-out forwards;
+    border: 2px solid rgba(253, 160, 133, 0.9);
+}
+
+@keyframes catalog-ring {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(1.25); opacity: 0; }
+}

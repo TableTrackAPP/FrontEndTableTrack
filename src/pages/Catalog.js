@@ -22,6 +22,9 @@ const Catalog = () => {
     const [showCartModal, setShowCartModal] = useState(false);
     const { showToast } = useToast();
     const [selectedGroupID, setSelectedGroupID] = useState('all');
+    const [justAddedId, setJustAddedId] = useState(null);
+    const [cartPing, setCartPing] = useState(false);
+
     const { showLoading, hideLoading } = useLoading();
 
     useEffect(() => {
@@ -58,8 +61,13 @@ const Catalog = () => {
     }, [establishmentID, showToast]);
 
     const addToCart = (product) => {
-        setCart([...cart, product]); // Adiciona o produto ao carrinho como um novo item
+        setCart(prev => [...prev, product]);
+        setJustAddedId(product.ProductID);
+        setTimeout(() => setJustAddedId(null), 900);
+        setCartPing(true);
+        setTimeout(() => setCartPing(false), 700);
     };
+
 
 
     const removeFromCart = (index) => {
@@ -109,7 +117,7 @@ const Catalog = () => {
                 </div>
             </div>
             <button
-                className="catalog-cart-floating-button"
+                className={`catalog-cart-floating-button ${cartPing ? 'catalog-cart-ping' : ''}`}
                 onClick={() => setShowCartModal(true)}
             >
                 🛒 Ver Carrinho
@@ -161,22 +169,31 @@ const Catalog = () => {
                                 selectedGroupID === 'all' || product.GroupID === selectedGroupID
                             )
                             .map(product => (
-                                <div className="product-card" key={product.ProductID}>
+                                <div className="catalog-product-card" key={product.ProductID}>
                                     <img
                                         src={product.ImageURL || 'https://via.placeholder.com/300x140'}
                                         alt={product.ProductName}
-                                        className="product-image"
+                                        className="catalog-product-image"
                                     />
-                                    <div className="product-content">
-                                        <h3 className="product-title">{product.ProductName}</h3>
-                                        <p className="product-description">{product.Description}</p>
-                                        <p className="product-price">R$ {product.Price.toFixed(2)}</p>
+
+                                    <div
+                                        className={`catalog-added-badge ${justAddedId === product.ProductID ? 'show' : ''}`}>
+                                        ✓ Adicionado
                                     </div>
-                                    <div className="product-actions">
+
+
+                                    <div className="catalog-product-content">
+                                        <h3 className="catalog-product-title">{product.ProductName}</h3>
+                                        <p className="catalog-product-description">{product.Description}</p>
+                                        <p className="catalog-product-price">R$ {product.Price.toFixed(2)}</p>
+                                    </div>
+
+                                    <div className="catalog-product-actions">
                                         <button onClick={() => {
                                             setSelectedProduct(product);
                                             setShowProductCartModal(true);
-                                        }}>Ver
+                                        }}>
+                                            Ver
                                         </button>
                                         <button onClick={() => addToCart(product)}>Adicionar</button>
                                     </div>
