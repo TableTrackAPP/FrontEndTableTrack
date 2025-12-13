@@ -435,7 +435,8 @@ const Dashboard = () => {
                                 className="dashboard-action-image"
                             />
                             <div className="dashboard-action-content">
-                                <h3 className="dashboard-action-title">Acessar Catálogo</h3>
+                                <h3 className="dashboard-action-title">Acessar Catálogo / QR Code
+                                </h3>
                                 <p className="dashboard-action-description">
                                     Veja o catálogo do seu estabelecimento como o cliente vê.
                                 </p>

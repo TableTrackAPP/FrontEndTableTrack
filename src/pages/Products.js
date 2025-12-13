@@ -41,7 +41,7 @@ const Products = () => {
     useEffect(() => {
         const fetchEstablishmentAndData = async () => {
             try {
-                showLoading('Carregando dados...'); // Mostra o loading
+                showLoading('Carregando produtos...'); // Mostra o loading
                 const userData = getFromLocalStorage('userData');
                 if (!userData) throw new Error('Usuário não autenticado.');
 

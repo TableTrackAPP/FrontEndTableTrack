@@ -7,6 +7,7 @@ import { getProductGroupsByEstablishmentId } from '../services/productGroupsServ
 import ProductCartModal from '../components/ProductCartModal';
 import CartModal from '../components/CartModal';
 import './../styles/Catalog.css'
+import {useLoading} from "../hooks/LoadingContext";
 const Catalog = () => {
     const { establishmentID } = useParams(); // Recebe establishmentID da rota
     const [searchParams] = useSearchParams(); // Permite obter query params
@@ -21,10 +22,14 @@ const Catalog = () => {
     const [showCartModal, setShowCartModal] = useState(false);
     const { showToast } = useToast();
     const [selectedGroupID, setSelectedGroupID] = useState('all');
+    const { showLoading, hideLoading } = useLoading();
 
     useEffect(() => {
         const fetchCatalogData = async () => {
             try {
+
+                showLoading('Carregando produtos...'); // Mostra o loading
+
                 const establishmentData = await getEstablishment(establishmentID);
                 setEstablishment(establishmentData);
 
@@ -42,6 +47,8 @@ const Catalog = () => {
                 );
             } catch (error) {
                 showToast('Erro ao carregar dados do catálogo.', 'error');
+            }finally {
+                hideLoading(); // Esconde o loading
             }
         };
 
