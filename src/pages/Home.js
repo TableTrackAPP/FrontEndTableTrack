@@ -170,7 +170,7 @@ function Home() {
                             <p>E CRIE SEU CATÁLOGO DIGITAL</p>
                         </div>
                         <div className="card-price">
-                            <span>R$<sup>19,99</sup></span>
+                            <span>R$<sup>24,99</sup></span>
                             <span className="price-period">POR 1 MES</span>
                         </div>
                         <button className="buy-button" onClick={() => navigate('/login')}>ASSINAR</button>
@@ -183,7 +183,7 @@ function Home() {
                             <p>E CRIE SEU CATÁLOGO DIGITAL</p>
                         </div>
                         <div className="card-price">
-                            <span>R$<sup>149,99</sup></span>
+                            <span>R$<sup>249,99</sup></span>
                             <span className="price-period">POR 1 ANO</span>
                         </div>
                         <button className="buy-button" onClick={() => navigate('/login')}>ASSINAR</button>
