@@ -34,6 +34,8 @@ const Orders = () => {
     const [itemsToShow, setItemsToShow] = useState(10);
     const [showFilters, setShowFilters] = useState(true);
     const { showLoading, hideLoading } = useLoading();
+    const [batchPreview, setBatchPreview] = useState(null);
+    const [establishmentName, setEstablishmentName] = useState('Estabelecimento');
 
     const fetchOrders = useCallback(async () => {
         try {
@@ -44,6 +46,9 @@ const Orders = () => {
             const data = await getOrdersByEstablishmentId(establishment.EstablishmentID);
             setOrders(data);
             setFilteredOrders(data); // Inicialmente, mostrar todos os pedidos
+            if (establishment?.EstablishmentName) {
+                setEstablishmentName(establishment.EstablishmentName);
+            }
         } catch (error) {
             showToast('Erro ao carregar pedidos.', 'error');
         }finally {
@@ -104,6 +109,89 @@ const Orders = () => {
         setFilteredOrders(orders);
     };
 
+// === LOTE: fechar todos os pedidos COMPLETED da mesma mesa ===
+    const handleBatchPayTable = async (tableNumber) => {
+        if (!tableNumber) {
+            showToast('Mesa não informada para fechamento em lote.', 'warning');
+            return;
+        }
+
+        const norm = s => (s || '').toString().trim().toLowerCase();
+
+        const group = orders.filter(o => {
+            const st = norm(o.Status);
+            return o.TableNumber === tableNumber &&
+                st !== 'cancelled' &&
+                st !== 'paid';
+        });
+
+
+
+        if (group.length === 0) {
+            showToast(`Não há pedidos elegíveis para fechar na mesa ${tableNumber}.`, 'info');
+            return;
+        }
+
+
+        const ids = group.map(o => o.OrderID);
+        const total = group.reduce((acc, o) => acc + Number(o.TotalAmount || 0), 0);
+
+        const ok = window.confirm(
+            `Fechar todas as contas da mesa ${tableNumber}?\n` +
+            `Pedidos: #${ids.join(', #')}\n` +
+            `Total: ${total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`
+        );
+        if (!ok) return;
+
+        try {
+            await Promise.all(ids.map(id => updateStatusOrder(id, { status: 'Paid' })));
+            setOrders(prev => prev.map(o => ids.includes(o.OrderID) ? { ...o, Status: 'Paid' } : o));
+            showToast('Contas da mesa fechadas com sucesso!', 'success');
+        } catch {
+            showToast('Falha ao fechar contas da mesa.', 'error');
+        }
+    };
+
+// === LOTE: fechar todos os pedidos COMPLETED da mesma mesa e cliente ===
+    const handleBatchPayTableCustomer = async (tableNumber, customerName) => {
+        if (!tableNumber || !customerName) {
+            showToast('Mesa e cliente são necessários para fechamento em lote.', 'warning');
+            return;
+        }
+
+        // agora: qualquer status, exceto Cancelled e Paid
+        const norm = (s) => (s || '').trim().toLowerCase();
+        const group = orders.filter(
+            o => o.TableNumber === tableNumber &&
+                norm(o.CustomerName) === norm(customerName) &&
+                o.Status !== 'Cancelled' && o.Status !== 'Paid'
+        );
+
+
+        if (group.length === 0) {
+            showToast(`Não há pedidos elegíveis para fechar de ${customerName} na mesa ${tableNumber}.`, 'info');
+            return;
+        }
+
+
+        const ids = group.map(o => o.OrderID);
+        const total = group.reduce((acc, o) => acc + Number(o.TotalAmount || 0), 0);
+
+        const ok = window.confirm(
+            `Fechar todas as contas da mesa (${tableNumber}) de (${customerName})?\n` +
+            `Pedidos: #${ids.join(', #')}\n` +
+            `Total: ${total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`
+        );
+        if (!ok) return;
+
+        try {
+            await Promise.all(ids.map(id => updateStatusOrder(id, { status: 'Paid' })));
+            setOrders(prev => prev.map(o => ids.includes(o.OrderID) ? { ...o, Status: 'Paid' } : o));
+            showToast('Contas da mesa (cliente) fechadas com sucesso!', 'success');
+        } catch {
+            showToast('Falha ao fechar contas da mesa (cliente).', 'error');
+        }
+    };
 
     const handleUpdateOrder = async (newStatus) => {
         console.log('Atualizando pedido:', {
@@ -196,6 +284,123 @@ const Orders = () => {
     };
     const handleNavigation = (path) => {
         navigate(path);
+    };
+
+// Monta preview: todos COMPLETED da mesma mesa
+    const buildBatchPreviewForTable = (tableNumber) => {
+        if (!tableNumber) {
+            showToast('Mesa não informada para fechamento em lote.', 'warning');
+            return;
+        }
+        const group = orders.filter(
+            o => o.TableNumber === tableNumber && o.Status !== 'Cancelled' && o.Status !== 'Paid'
+        );
+        if (group.length === 0) {
+            showToast(`Não há pedidos elegíveis para fechar na mesa ${tableNumber}.`, 'info');
+            return;
+        }
+
+        setBatchPreview({ scope: `Mesa ${tableNumber}`, orders: group });
+    };
+
+// Monta preview: todos COMPLETED da mesma mesa + mesmo cliente
+    const buildBatchPreviewForTableCustomer = (tableNumber, customerName) => {
+        if (!tableNumber || !customerName) {
+            showToast('Mesa e cliente são necessários para fechamento em lote.', 'warning');
+            return;
+        }
+        const norm = (s) => (s || '').trim().toLowerCase();
+        const group = orders.filter(o =>
+            o.TableNumber === tableNumber &&
+            norm(o.CustomerName) === norm(customerName) &&
+            o.Status !== 'Cancelled' && o.Status !== 'Paid'
+        );
+        if (group.length === 0) {
+            showToast(`Não há pedidos elegíveis para fechar na mesa ${tableNumber} de ${customerName}.`, 'info');
+            return;
+        }
+
+        setBatchPreview({ scope: `Mesa ${tableNumber} de ${customerName}`, orders: group });
+    };
+
+// Executa o fechamento em lote (confirmação)
+    const handleConfirmBatchPay = async (ids) => {
+        try {
+            await Promise.all(ids.map(id => updateStatusOrder(id, { status: 'Paid' })));
+            setOrders(prev => prev.map(o => ids.includes(o.OrderID) ? { ...o, Status: 'Paid' } : o));
+            showToast('Contas fechadas com sucesso!', 'success');
+
+        } catch (e) {
+            showToast('Falha ao fechar contas (lote).', 'error');
+        }
+    };
+
+
+    const formatBRL = (v) =>
+        Number(v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+    const printBatchReceipt = (ordersToPrint, titleScope = '') => {
+        const total = ordersToPrint.reduce((acc, o) => acc + Number(o.TotalAmount || 0), 0);
+
+        const itemsHTML = ordersToPrint.map(o => {
+            const dateStr = new Date(o.CreatedAt).toLocaleString('pt-BR', {
+                dateStyle: 'short',
+                timeStyle: 'short'
+            });
+
+            const lines = (o.items || []).map(it => `
+      <tr>
+        <td style="text-align:left">(#${o.OrderID}) ${it.ProductName}</td>
+        <td style="text-align:right">${formatBRL(it.UnitPrice)}</td>
+      </tr>
+    `).join('') || `<tr><td colspan="2" style="text-align:center">Sem itens</td></tr>`;
+
+            return `
+      <div style="margin-bottom:10px">
+        <div><strong>Pedido #${o.OrderID}</strong> — ${dateStr}</div>
+        <div>Mesa: ${o.TableNumber ?? 'N/A'} | Cliente: ${o.CustomerName ?? '—'}</div>
+        <table style="width:100%; border-collapse:collapse; margin-top:6px">
+          <tbody>${lines}</tbody>
+          <tfoot>
+            <tr>
+              <td style="text-align:left"><strong>Subtotal</strong></td>
+              <td style="text-align:right"><strong>${formatBRL(o.TotalAmount)}</strong></td>
+            </tr>
+          </tfoot>
+        </table>
+        <div style="border-top:1px dashed #999; margin:8px 0"></div>
+      </div>
+    `;
+        }).join('');
+
+        const html = `
+    <html>
+      <head>
+        <meta charset="utf-8" />
+        <title>Recibo Geral</title>
+        <style>
+          @page { size: 80mm auto; margin: 8mm; }
+          body { font-family: Arial, sans-serif; font-size: 12px; }
+          .center { text-align: center; }
+          .mb8 { margin-bottom: 8px; }
+          .mb12 { margin-bottom: 12px; }
+        </style>
+      </head>
+      <body onload="window.print(); setTimeout(()=>window.close(), 300);">
+        <div class="center mb8"><strong>${establishmentName}</strong></div>
+        <div class="center mb12">RECIBO GERAL ${titleScope ? `– ${titleScope}` : ''}</div>
+        ${itemsHTML}
+        <div class="center"><strong>Total Geral: ${formatBRL(total)}</strong></div>
+        <div class="center" style="margin-top:8px">Obrigado pela preferência!</div>
+      </body>
+    </html>
+  `;
+
+        const w = window.open('', '_blank', 'width=480,height=700');
+        if (!w) return;
+        w.document.open();
+        w.document.write(html);
+        w.document.close();
     };
 
 
@@ -302,7 +507,7 @@ const Orders = () => {
                     <div className="search-bar-sticky">
                         <input
                             type="text"
-                            placeholder="Pesquisar"
+                            placeholder="Pesquisar por mesa, nome"
                             value={searchText}
                             onChange={e => setSearchText(e.target.value)}
                             className="search-input"
@@ -374,11 +579,23 @@ const Orders = () => {
             <OrderDetailModal
                 order={selectedOrder}
                 show={showModal}
-                onClose={() => setShowModal(false)}
+                onClose={() => { setShowModal(false); setBatchPreview(null); }}
                 orderStatus={orderStatus}
                 setOrderStatus={setOrderStatus}
                 onUpdateStatus={handleUpdateOrder}
+
+                // === NOVAS PROPS PARA PREVIEW/CONFIRMAÇÃO ===
+                batchPreview={batchPreview}
+                onBuildPreviewTable={() => buildBatchPreviewForTable(selectedOrder?.TableNumber)}
+                onBuildPreviewTableCustomer={() =>
+                    buildBatchPreviewForTableCustomer(selectedOrder?.TableNumber, selectedOrder?.CustomerName)
+                }
+                onConfirmBatchPay={handleConfirmBatchPay}
+                onClearBatchPreview={() => setBatchPreview(null)}
+                establishmentName={establishmentName}
             />
+
+
             <button className="scroll-to-top-btn" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
                 ↑
             </button>
