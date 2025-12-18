@@ -151,14 +151,26 @@ const Subscribe = () => {
 
     const traduzirPlano = (plano) => {
         if (plano === 'Monthly') return 'Mensal';
-        if (plano === 'Trial') return 'Gratuito (Trial)';
+        if (plano === 'Trial') return 'Gratuito (Trial) ';
         return plano;
     };
 
     const traduzirStatus = (status) => {
-        if (status === 'Active') return 'Ativo';
-        if (status === 'Inactive') return 'Inativo';
-        return status;
+
+            const map = {
+                Active: 'Ativo',
+                Inactive: 'Inativo',
+                Trialing: 'Em período de teste',
+                Past_Due: 'Pagamento pendente',
+                Canceled: 'Cancelado',
+                Expired: 'Expirado',
+                Incomplete: 'Pagamento incompleto',
+                Paid: 'Pago',
+                Unpaid: 'Não pago',
+                Failed: 'Falhou',
+            };
+
+        return map[status] || status;
     };
 
     const handleNavigation = (path) => {

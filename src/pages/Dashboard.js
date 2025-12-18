@@ -11,6 +11,8 @@ import NotificationListener from '../components/NotificationListener';
 import CatalogImage from '../assets/catalog.png';
 import ProductsImage from '../assets/products.png';
 import {useLoading} from "../hooks/LoadingContext";
+import { saveToLocalStorage } from '../utils/storageUtils';
+import { syncSubscriptionStatus } from '../services/subscriptions';
 
 const Dashboard = () => {
     const [userData, setUserData] = useState(null);
@@ -39,28 +41,47 @@ const Dashboard = () => {
                 return;
             }
 
-            setUserData(storedUserData);
-
-            // ✅ AQUI você calcula o status
-            const status =
-                storedUserData?.SubscriptionStatus ||
-                storedUserData?.subscriptionStatus;
-
-            const isSubscriberNow = status === 'Active';
-
-            // 🔐 Se não é assinante, NÃO chama o backend
-            if (!isSubscriberNow) return;
-
             try {
+                showLoading('Verificando assinatura...');
+
+                const sync = await syncSubscriptionStatus(storedUserData.userID);
+
+                const updatedUserData = {
+                    ...storedUserData,
+                    SubscriptionStatus: sync.subscriptionStatus,
+                    subscriptionStatus: sync.subscriptionStatus,
+                };
+
+                setUserData(updatedUserData);
+                saveToLocalStorage('userData', updatedUserData);
+
+                const isSubscriberNow = sync.subscriptionStatus === 'Active';
+                if (!isSubscriberNow) return;
+
+
+                // 3) se não é assinante, para aqui
+                if (!isSubscriberNow) return;
+
+                // 4) se é assinante, busca establishment
                 showLoading('Carregando Dashboard...');
-                const establishmentData = await getEstablishmentByOwnerID(
-                    storedUserData.userID
-                );
+                const establishmentData = await getEstablishmentByOwnerID(updatedUserData.userID);
 
                 setEstablishment(establishmentData);
                 setEstablishmentID(establishmentData.EstablishmentID);
+
             } catch (error) {
-                showToast('Erro ao carregar informações do estabelecimento.', 'error');
+                console.error(error);
+
+                // se 401/403, token expirou → manda login
+                const code = error?.response?.status;
+                if (code === 401 || code === 403) {
+                    showToast('Sessão expirada. Faça login novamente.', 'warning');
+                    navigate('/login');
+                    return;
+                }
+
+                showToast('Erro ao verificar assinatura.', 'error');
+                setUserData(storedUserData); // fallback
             } finally {
                 hideLoading();
             }
@@ -68,7 +89,6 @@ const Dashboard = () => {
 
         fetchUserAndEstablishment();
     }, [navigate, showToast]);
-
 
 
 

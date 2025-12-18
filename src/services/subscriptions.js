@@ -45,3 +45,11 @@ export const startFreeTrial = async (userID) => {
     });
     return response.data; // { message, subscription }
 };
+
+export const syncSubscriptionStatus = async (userID) => {
+    const response = await axios.get(`${API_URL}/status/${userID}`, {
+        headers: getAuthHeader(),
+    });
+    return response.data; // { subscriptionStatus, subscription, userStatus }
+};
+
