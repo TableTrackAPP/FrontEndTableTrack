@@ -25,6 +25,7 @@ export const getEstablishment = async (establishmentID) => {
 // Função para obter um estabelecimento pelo ID
 export const getEstablishmentByOwnerID = async (OwnerID) => {
     try {
+        console.log("Passa por aqui");
         const response = await axios.get(`${API_URL}/ByOwnerID/${OwnerID}`, {
             headers: getAuthHeader(),
         });

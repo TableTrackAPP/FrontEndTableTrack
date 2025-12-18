@@ -3,7 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useToast } from '../hooks/ToastContext';
 import { useLoading } from '../hooks/LoadingContext';
 import { getFromLocalStorage } from '../utils/storageUtils';
-import { getUserSubscriptions, getCustomerPortalLink, createCheckoutSession } from '../services/subscriptions';
+import {
+    getUserSubscriptions,
+    getCustomerPortalLink,
+    createCheckoutSession,
+    getFreeTrialStatus,
+    startFreeTrial
+} from '../services/subscriptions';
 import '../styles/Subscribe.css';
 import {Box, Button, Typography} from "@mui/material";
 import SideBar from "../components/SideBar";
@@ -13,40 +19,82 @@ import NotificationListener from "../components/NotificationListener";
 
 
 const Subscribe = () => {
-    const [subscriptions, setSubscriptions] = useState(); // 🔹 Agora começa com um array vazio
+    const [subscriptions, setSubscriptions] = useState(null);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const { showToast } = useToast();
     const { showLoading, hideLoading } = useLoading();
+    const [trialStatus, setTrialStatus] = useState(null);
 
     useEffect(() => {
-        const fetchSubscriptions = async () => {
+        const fetchData = async () => {
             const userData = getFromLocalStorage('userData');
+
             if (!userData) {
                 showToast('Você precisa estar logado para acessar essa página.', 'error');
                 navigate('/login');
                 return;
             }
 
+            setLoading(true);
+
             try {
-                console.log('user id', userData.userID);
-                const userSubscriptions = await getUserSubscriptions(userData.userID);
-                console.log('se tem subscriptions',userSubscriptions);
-                setSubscriptions(userSubscriptions); // 🔹 Garante que seja um array
-                console.log('teste', userSubscriptions.SubscriptionStatus)
-            } catch (error) {
-                console.error('Erro ao buscar assinaturas:', error);
-                setSubscriptions([]); // 🔹 Evita que subscriptions seja undefined/null
+                // 1) Assinatura (última)
+                try {
+                    const userSubscriptions = await getUserSubscriptions(userData.userID);
+                    setSubscriptions(userSubscriptions);
+                } catch (err) {
+                    // usuário pode não ter assinatura ainda
+                    setSubscriptions(null);
+                }
+
+                // 2) Trial status (elegível / já usou / tem ativa)
+                try {
+                    const ts = await getFreeTrialStatus(userData.userID);
+                    setTrialStatus(ts);
+                } catch (err) {
+                    // se der erro, só não mostra o card do trial
+                    setTrialStatus(null);
+                }
+
+            } catch (err) {
+                console.error('Erro geral ao carregar dados:', err);
+                showToast('Erro ao carregar informações de assinatura.', 'error');
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchSubscriptions();
+        fetchData();
     }, [navigate, showToast]);
 
-    // Verifica se o usuário tem uma assinatura ativa
-    const hasActiveSubscription = subscriptions && subscriptions.SubscriptionStatus === 'Active';
+    const hasAccess = !!(trialStatus?.hasActiveSubscription || subscriptions?.SubscriptionStatus === 'Active');
+    const isStripeSubscription =
+        !!subscriptions?.StripeSubscriptionID && subscriptions?.PaymentMethod !== 'FreeTrial';
+
+
+    const handleStartFreeTrial = async () => {
+        try {
+            showLoading('Iniciando trial grátis...');
+            const userData = getFromLocalStorage('userData');
+
+            await startFreeTrial(userData.userID);
+
+            showToast('Trial grátis ativado por 7 dias!', 'success');
+
+            // Recarrega status/assinatura
+            const ts = await getFreeTrialStatus(userData.userID);
+            setTrialStatus(ts);
+
+            const userSubscriptions = await getUserSubscriptions(userData.userID);
+            setSubscriptions(userSubscriptions);
+        } catch (error) {
+            const msg = error?.response?.data?.message || 'Não foi possível iniciar o trial.';
+            showToast(msg, 'error');
+        } finally {
+            hideLoading();
+        }
+    };
 
     // Abre o portal do Stripe em uma nova aba
     const handleManageSubscription = async () => {
@@ -103,7 +151,7 @@ const Subscribe = () => {
 
     const traduzirPlano = (plano) => {
         if (plano === 'Monthly') return 'Mensal';
-        if (plano === 'Free') return 'Gratuito';
+        if (plano === 'Trial') return 'Gratuito (Trial)';
         return plano;
     };
 
@@ -158,28 +206,42 @@ const Subscribe = () => {
                 </div>
             </Box>
 
-            {hasActiveSubscription ? (
+                {hasAccess ? (
                 <div className="subscribe-page">
                     <h2 className="subscribe-title">Suas Assinaturas</h2>
 
                     <div className="plan-card">
                         <div>
-                        <p><strong>Plano:</strong> {traduzirPlano(subscriptions.SubscriptionPlan)}</p>
-                            <p><strong>Status:</strong> {traduzirStatus(subscriptions.SubscriptionStatus)}</p>
                             <p>
-                                <strong>Vencimento:</strong> {new Date(subscriptions.SubscriptionEndDate).toLocaleDateString()}
+                                <strong>Plano:</strong>{' '}
+                                {traduzirPlano(subscriptions?.SubscriptionPlan || 'Trial')}
                             </p>
+                            <p>
+                                <strong>Status:</strong>{' '}
+                                {traduzirStatus(subscriptions?.SubscriptionStatus || 'Active')}
+                            </p>
+                            {subscriptions?.SubscriptionEndDate && (
+                                <p>
+                                    <strong>Vencimento:</strong>{' '}
+                                    {new Date(subscriptions.SubscriptionEndDate).toLocaleDateString()}
+                                </p>
+                            )}
+
 
                         </div>
 
 
                     </div>
-                    <button
-                        onClick={handleManageSubscription}
-                        className="manage-subscription-button"
-                    >
-                        Cancelar e gerenciar Assinatura
-                    </button>
+                    {isStripeSubscription ? (
+                        <button onClick={handleManageSubscription} className="manage-subscription-button">
+                            Cancelar e gerenciar Assinatura
+                        </button>
+                    ) : (
+                        <p className="subscribe-subtitle">
+                            Seu acesso é via <strong>trial grátis</strong>. Ao final do período, escolha um plano para continuar.
+                        </p>
+                    )}
+
 
                 </div>
             ) : (
@@ -189,8 +251,10 @@ const Subscribe = () => {
                         Escolha um plano que se encaixe com o seu negócio e comece agora mesmo.
                     </p>
 
+
+
                     <div className="plans">
-                        <div className="plan-card">
+                    <div className="plan-card">
                             <div className="plan-title">Mensal</div>
                             <div className="plan-price">R$ 24,99</div>
                             <div className="plan-period">/ mês</div>
@@ -215,6 +279,30 @@ const Subscribe = () => {
                                 ASSINAR
                             </button>
                         </div>
+
+                        {trialStatus?.eligible && (
+                            <div className="plan-card">
+                                <div className="plan-title">Gratuito</div>
+                                <div className="plan-price">7 dias</div>
+                                <div className="plan-period">sem cartão</div>
+                                <ul className="plan-features">
+                                    <li>Acesso completo ao sistema</li>
+                                    <li>Sem cadastro de cartão</li>
+                                    <li>Ativação imediata</li>
+                                </ul>
+                                <button onClick={handleStartFreeTrial} className="subscribe-button">
+                                    ATIVAR TRIAL
+                                </button>
+                            </div>
+                        )}
+                        {trialStatus && !trialStatus.eligible && trialStatus.used && (
+                            <p className="subscribe-subtitle" style={{marginTop: 12}}>
+                                Você já utilizou o trial grátis.
+                                <div className="plan-period"> Aproveite os melhores preços do mercado com os outros
+                                    planos </div>
+                            </p>
+
+                        )}
                     </div>
                 </div>
             )}

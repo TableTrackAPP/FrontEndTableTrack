@@ -25,49 +25,52 @@ const Dashboard = () => {
     const [qrDataUrl, setQrDataUrl] = useState(null);
     const [isGeneratingQR, setIsGeneratingQR] = useState(false);
     const { showLoading, hideLoading } = useLoading();
+    const status =
+        userData?.SubscriptionStatus || userData?.subscriptionStatus;
 
-    const CatalogIcon = () => (
-        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M7 4h10c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H7c-1.1
-        0-2-.9-2-2V6c0-1.1.9-2 2-2zm0 2v12h10V6H7zm2
-        3h6v2H9V9zm0 4h6v2H9v-2z"/>
-        </svg>
-    );
-    const QrIcon = () => (
-        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm6 6h8v8h-8v-8zm2
-        2v4h4v-4h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm14-8h-2V5h-2V3h4v4zm0
-        12h-4v-2h2v-2h2v4z"/>
-        </svg>
-    );
+    const isSubscriber = status === 'Active';
 
     useEffect(() => {
         const fetchUserAndEstablishment = async () => {
             const storedUserData = getFromLocalStorage('userData');
-            if (storedUserData) {
-                setUserData(storedUserData);
-                try {
-                    showLoading('Carregando Dashboard...'); // Mostra o loading
-
-                    const establishmentData = await getEstablishmentByOwnerID(storedUserData.userID);
-                    if (establishmentData) {
-                        setEstablishment(establishmentData);
-                        setEstablishmentID(establishmentData.EstablishmentID);
-                    }
-                } catch (error) {
-                    showToast('Erro ao carregar informações do estabelecimento.', 'error');
-                }finally {
-                    hideLoading(); // Esconde o loading
-                }
-            } else {
+            if (!storedUserData) {
                 showToast('Faça login para acessar o Dashboard', 'error');
                 navigate('/login');
+                return;
+            }
+
+            setUserData(storedUserData);
+
+            // ✅ AQUI você calcula o status
+            const status =
+                storedUserData?.SubscriptionStatus ||
+                storedUserData?.subscriptionStatus;
+
+            const isSubscriberNow = status === 'Active';
+
+            // 🔐 Se não é assinante, NÃO chama o backend
+            if (!isSubscriberNow) return;
+
+            try {
+                showLoading('Carregando Dashboard...');
+                const establishmentData = await getEstablishmentByOwnerID(
+                    storedUserData.userID
+                );
+
+                setEstablishment(establishmentData);
+                setEstablishmentID(establishmentData.EstablishmentID);
+            } catch (error) {
+                showToast('Erro ao carregar informações do estabelecimento.', 'error');
+            } finally {
+                hideLoading();
             }
         };
+
         fetchUserAndEstablishment();
     }, [navigate, showToast]);
 
-    const isSubscriber = userData?.subscriptionStatus === 'Active';
+
+
 
     useEffect(() => {
         if (!isSubscriber) {
