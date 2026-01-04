@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes as SwitchRoutes, Route } from 'react-router-dom';
+
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
@@ -10,46 +11,57 @@ import Products from '../pages/Products';
 import Orders from '../pages/Orders';
 import Catalog from '../pages/Catalog';
 import Dashboard from '../pages/Dashboard';
-import ServicesTerms from '../pages/ServicesTerms'; // Importing the updated ProtectedRoute
-import PrivacyPolicy from '../pages/PrivacyPolicy'; // Importing the updated ProtectedRoute
-import Subscribe from '../pages/Subscribe'; // Importing the Subscribe page
-import ProtectedRoute from '../components/ProtectedRoute'; // Importing the updated ProtectedRoute
+import ServicesTerms from '../pages/ServicesTerms';
+import PrivacyPolicy from '../pages/PrivacyPolicy';
+import Subscribe from '../pages/Subscribe';
+
+import ProtectedRoute from '../components/ProtectedRoute';
+
+import { OrderNotificationsProvider } from "../hooks/OrderNotificationsContext";
+import NotificationListener from "../components/NotificationListener";
 
 function AppRoutes() {
     return (
         <Router>
-            <SwitchRoutes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/validate-reset-code" element={<ValidateResetCode />} />
-                <Route path="/reset-password" element={<ResetPassword />} />
-                <Route path="/Establishments" element={<Establishments />} />
-                <Route path="/Products" element={<Products />} />
-                <Route path="/Orders" element={<Orders />} />
-                <Route path="/Catalog/:establishmentID" element={<Catalog />} /> {/* Ajuste para receber establishmentID como parâmetro */}
-                <Route path="/terms" element={<ServicesTerms />} />
-                <Route path="/privacy" element={<PrivacyPolicy />} />
+            <OrderNotificationsProvider>
+                <NotificationListener /> {/* fica fixo, não desmonta ao trocar de rota */}
 
-                {/* Protected Routes */}
-                <Route
-                    path="/dashboard"
-                    element={
-                        <ProtectedRoute requireSubscription={false}>
-                            <Dashboard />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/subscribe"
-                    element={
-                        <ProtectedRoute requireSubscription={false}>
-                            <Subscribe />
-                        </ProtectedRoute>
-                    }
-                />
-            </SwitchRoutes>
+                <SwitchRoutes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/forgot-password" element={<ForgotPassword />} />
+                    <Route path="/validate-reset-code" element={<ValidateResetCode />} />
+                    <Route path="/reset-password" element={<ResetPassword />} />
+
+                    <Route path="/terms" element={<ServicesTerms />} />
+                    <Route path="/privacy" element={<PrivacyPolicy />} />
+
+                    {/* (se quiser, pode proteger também Establishments/Products/Orders/Catalog) */}
+                    <Route path="/Establishments" element={<Establishments />} />
+                    <Route path="/Products" element={<Products />} />
+                    <Route path="/Orders" element={<Orders />} />
+                    <Route path="/Catalog/:establishmentID" element={<Catalog />} />
+
+                    <Route
+                        path="/dashboard"
+                        element={
+                            <ProtectedRoute requireSubscription={false}>
+                                <Dashboard />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/subscribe"
+                        element={
+                            <ProtectedRoute requireSubscription={false}>
+                                <Subscribe />
+                            </ProtectedRoute>
+                        }
+                    />
+                </SwitchRoutes>
+            </OrderNotificationsProvider>
         </Router>
     );
 }

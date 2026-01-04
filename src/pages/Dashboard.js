@@ -5,6 +5,7 @@ import { getFromLocalStorage } from '../utils/storageUtils';
 import { getEstablishmentByOwnerID } from '../services/establishmentService';
 import SideBar from '../components/SideBar';
 import AppFooter from '../components/AppFooter';
+import { useOrderNotifications } from "../hooks/OrderNotificationsContext";
 
 import '../styles/Dashboard.css';
 import NotificationListener from '../components/NotificationListener';
@@ -31,6 +32,7 @@ const Dashboard = () => {
         userData?.SubscriptionStatus || userData?.subscriptionStatus;
 
     const isSubscriber = status === 'Active';
+    const { unreadCount, clearUnread } = useOrderNotifications();
 
     useEffect(() => {
         const fetchUserAndEstablishment = async () => {
@@ -442,12 +444,26 @@ const Dashboard = () => {
                             </div>
                         </div>
 
-                        <div className="dashboard-action-card" onClick={() => navigate('/orders')}>
+                        <div
+                            className="dashboard-action-card"
+                            onClick={() => {
+                                clearUnread();       // limpa notificações ao entrar
+                                navigate('/orders');
+                            }}
+                        >
+                            {/* Badge de novos pedidos */}
+                            {unreadCount > 0 && (
+                                <div className="dashboard-order-badge">
+                                    {unreadCount} NOVO(S) PEDIDO(S){unreadCount > 1 ? 's' : ''}
+                                </div>
+                            )}
+
                             <img
                                 src="https://i.pinimg.com/736x/60/61/6e/60616ea80a6c86b0db76cc5625ad6636.jpg"
                                 alt="Visualizar Pedidos"
                                 className="dashboard-action-image"
                             />
+
                             <div className="dashboard-action-content">
                                 <h3 className="dashboard-action-title">Visualizar Pedidos</h3>
                                 <p className="dashboard-action-description">
@@ -455,6 +471,7 @@ const Dashboard = () => {
                                 </p>
                             </div>
                         </div>
+
 
                         <div className="dashboard-action-card" onClick={openCatalogModal}>
 

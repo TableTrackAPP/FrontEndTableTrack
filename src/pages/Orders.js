@@ -18,6 +18,8 @@ import {useNavigate} from "react-router-dom";
 import AppFooter from "../components/AppFooter";
 import NotificationListener from '../components/NotificationListener';
 import {useLoading} from "../hooks/LoadingContext";
+import { orderNotificationBus } from "../services/orderNotificationBus";
+import { useOrderNotifications } from "../hooks/OrderNotificationsContext";
 
 const Orders = () => {
     const [orders, setOrders] = useState([]);
@@ -36,6 +38,7 @@ const Orders = () => {
     const { showLoading, hideLoading } = useLoading();
     const [batchPreview, setBatchPreview] = useState(null);
     const [establishmentName, setEstablishmentName] = useState('Estabelecimento');
+    const { clearUnread } = useOrderNotifications();
 
     const fetchOrders = useCallback(async () => {
         try {
@@ -100,6 +103,15 @@ const Orders = () => {
     useEffect(() => {
         applyFilters();
     }, [applyFilters]);
+
+    useEffect(() => {
+        // Ao entrar na tela Orders, zera o contador
+        clearUnread();
+
+        // Limpa as mensagens do NotificationListener (persistidas)
+        localStorage.removeItem("tt_order_messages");
+    }, [clearUnread]);
+
 
     const resetFilters = () => {
         setStatusFilter('Todos');

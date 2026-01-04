@@ -39,3 +39,159 @@
         transform: translate(-50%, 0);
     }
 }
+/* ===== Notificação flutuante (canto superior esquerdo) ===== */
+
+.tt-order-float {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 9999;
+
+    width: 340px;
+    max-width: calc(100vw - 32px);
+
+    background: rgba(17, 24, 39, 0.92);
+    color: #fff;
+    border-radius: 14px;
+
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(10px);
+
+    overflow: hidden;
+    animation: ttFloatIn 180ms ease-out;
+}
+
+@keyframes ttFloatIn {
+    from { transform: translateY(-8px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+}
+
+.tt-order-float-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.tt-order-float-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 800;
+    flex: 1;
+}
+
+.tt-order-float-badge {
+    min-width: 24px;
+    height: 24px;
+    padding: 0 8px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 999px;
+    background: #ef4444;
+    color: #fff;
+
+    font-size: 12px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.tt-order-float-btn {
+    border: none;
+    cursor: pointer;
+
+    padding: 8px 10px;
+    border-radius: 12px;
+
+    font-weight: 800;
+    font-size: 12px;
+}
+
+.tt-order-float-btn-ghost {
+    background: rgba(255, 255, 255, 0.10);
+    color: #fff;
+}
+
+.tt-order-float-btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.16);
+}
+
+.tt-order-float-close {
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.85);
+    cursor: pointer;
+
+    width: 32px;
+    height: 32px;
+    border-radius: 12px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tt-order-float-close:hover {
+    background: rgba(255, 255, 255, 0.10);
+    color: #fff;
+}
+
+.tt-order-float-body {
+    padding: 10px 12px 12px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.tt-order-float-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+
+    padding: 10px 10px;
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.tt-order-float-msg {
+    font-size: 13px;
+    line-height: 1.35;
+    color: rgba(255, 255, 255, 0.92);
+    flex: 1;
+}
+
+.tt-order-float-item-close {
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.75);
+    cursor: pointer;
+
+    width: 28px;
+    height: 28px;
+    border-radius: 10px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tt-order-float-item-close:hover {
+    background: rgba(255, 255, 255, 0.10);
+    color: #fff;
+}
+
+/* ===== Mobile: centraliza horizontalmente a notificação ===== */
+@media (max-width: 768px) {
+    .tt-order-float {
+        left: 50%;
+        transform: translateX(-50%);
+        top: 16px; /* mantém no topo */
+    }
+}
