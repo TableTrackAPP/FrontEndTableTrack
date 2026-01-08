@@ -12,6 +12,120 @@ body {
     background-color: var(--background-light);
     color: var(--text-dark);
 }
+header.header {
+    height: 64px;              /* antes ficava alto por causa do padding/margens */
+
+}
+
+
+
+.first-card.first-card--hero {
+    width: 100%;
+    padding: 0;
+    border-bottom-right-radius: 0; /* remove o arredondado antigo */
+    background: #E9E6DD;          /* bege da referência */
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    min-height: 630px;
+}
+
+.first-card.first-card--hero .first-card__left {
+    width: 50%;
+    padding: 70px 70px 60px 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
+}
+
+.first-card.first-card--hero .first-card__handle {
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: #6C6A63;
+    text-transform: uppercase;
+}
+
+.first-card.first-card--hero .first-card__title {
+    margin: 0;
+    font-size: 56px;
+    line-height: 1.05;
+    font-weight: 500;
+    color: #7A786F; /* cinza/oliva do título */
+}
+
+.first-card.first-card--hero .first-card__title span {
+    color: #14A66B; /* verde do TableTrack */
+    font-weight: 600;
+}
+
+.first-card.first-card--hero .first-card__subtitle {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.5;
+    color: #8A887F;
+    max-width: 560px;
+}
+
+.first-card.first-card--hero .first-card__cta {
+    margin-top: 10px;
+    width: fit-content;
+    padding: 14px 26px;
+    border: none;
+    border-radius: 999px;
+    background: #5B5A54; /* cinza do botão */
+    color: #FFFFFF;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform .15s ease, opacity .15s ease;
+}
+
+.first-card.first-card--hero .first-card__cta:hover {
+    transform: translateY(-1px);
+    opacity: 0.92;
+}
+
+.first-card.first-card--hero .first-card__right {
+    width: 50%;
+    position: relative;
+    overflow: hidden;
+}
+
+.first-card.first-card--hero .first-card__right img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;   /* chave pra ficar igual referência */
+    object-position: center;
+    transform: scale(1);
+    animation: heroKenBurns 14s ease-in-out infinite;
+    will-change: transform;
+}
+@keyframes heroKenBurns {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.02); } /* ajuste aqui (1.05 a 1.12) */
+    100% { transform: scale(1); }
+}
+
+/* Acessibilidade */
+@media (prefers-reduced-motion: reduce) {
+    .first-card--hero .first-card__right img {
+        animation: none;
+        transform: none;
+    }
+}
+
+.first-card__handle {
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.first-card__handle:hover {
+    color: #14A66B;   /* verde TableTrack */
+    opacity: 0.85;
+}
+
 @media (max-width: 768px) {
 
     .app-container {
@@ -20,6 +134,31 @@ body {
     max-width: 100%;
     overflow-x: hidden;
 }
+    .first-card.first-card--hero {
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    .first-card.first-card--hero .first-card__left,
+    .first-card.first-card--hero .first-card__right {
+        width: 100%;
+    }
+
+    .first-card.first-card--hero .first-card__left {
+        padding: 36px 22px 24px 22px;
+    }
+
+    .first-card.first-card--hero .first-card__title {
+        font-size: 36px;
+    }
+
+    .first-card.first-card--hero .first-card__subtitle {
+        font-size: 15px;
+    }
+
+    .first-card.first-card--hero .first-card__right {
+        height: 320px; /* foto fica bonita no mobile */
+    }
 
     .firstCard-text-section {
         flex: 1;
@@ -40,6 +179,7 @@ body {
 
 .headerText {
    font-size: 11px;
+    cursor: pointer;
 
 }
 
@@ -51,7 +191,7 @@ body {
 }
 
 .small-image {
-    width: 70px;
+    width: 50px;
     height: auto;
 }
 
@@ -59,7 +199,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #D7FEC9;
+    background-color: #e1dfd4;
 }
     .header button {
         padding: 3px 23px;
@@ -88,7 +228,7 @@ header nav a {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #D7FEC9;
+    background-color: #e1dfd4;
     padding: 10px;
     border-bottom-right-radius: 70px;
 }
@@ -344,6 +484,8 @@ zoom: 90%;
 
     .headerText {
         font-size: 17px;
+        cursor: pointer;
+
     }
 
     .headerTextInscrevaSe {
@@ -354,7 +496,7 @@ zoom: 90%;
     }
 
     .small-image {
-        width: 100px;
+        width: 60px;
         height: auto;
     }
 
@@ -362,7 +504,7 @@ zoom: 90%;
         display: flex;
         justify-content: space-evenly;
         align-items: center;
-        background-color: #D7FEC9;
+        background-color: #f5f5f0;
     }
     .header button {
         padding: 7px 23px;
@@ -402,7 +544,7 @@ zoom: 90%;
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #D7FEC9;
+        background-color: #e1dfd4;
         padding: 20px;
         border-bottom-right-radius: 70px;
         width: 100%;
@@ -645,4 +787,55 @@ zoom: 90%;
     }
 
 
+}
+
+/* =========================
+   ANIMAÇÃO TEXTO HERO
+   ========================= */
+
+/* Estado inicial (antes de animar) */
+.first-card--hero .first-card__handle,
+.first-card--hero .first-card__title,
+.first-card--hero .first-card__subtitle,
+.first-card--hero .first-card__cta {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: heroFadeUp 700ms ease forwards;
+}
+
+/* Sequência (stagger) */
+.first-card--hero .first-card__handle {
+    animation-delay: 120ms;
+}
+
+.first-card--hero .first-card__title {
+    animation-delay: 220ms;
+}
+
+.first-card--hero .first-card__subtitle {
+    animation-delay: 360ms;
+}
+
+.first-card--hero .first-card__cta {
+    animation-delay: 520ms;
+}
+
+/* Keyframes */
+@keyframes heroFadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Acessibilidade: respeita quem não quer animação */
+@media (prefers-reduced-motion: reduce) {
+    .first-card--hero .first-card__handle,
+    .first-card--hero .first-card__title,
+    .first-card--hero .first-card__subtitle,
+    .first-card--hero .first-card__cta {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
 }

@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import '../styles/Home.css';
 import logoImageUrl from '../assets/logoProvisoria.png';
-import handImage from '../assets/handphone.png'; // adjust the path according to your project structure
+import firstCardImage from '../assets/FirstCardImage.jpg'; // adjust the path according to your project structure
 import PlansImage from '../assets/planosexemplo.png'; // adjust the path according to your project structure
 import BuildStoreImage from '../assets/pickshop.png'; // adjust the path according to your project structure
 import ExploreAndSelectImage from '../assets/shop.png'; // adjust the path according to your project structure
@@ -53,11 +53,11 @@ function Home() {
         <div className="app-container">
             <header className="header">
 
-                <div style={{marginLeft: '5px', marginTop: '10px'}}>
+                <div style={{marginLeft: '5px', marginTop: '10px', cursor: 'pointer'}}>
                     <img src={logoImageUrl} alt="Logo" className="small-image"/>
                 </div>
                 <nav>
-                    <div className="headerText" onClick={handleScrollToPlans}>Planos</div>
+                    <div  className="headerText" onClick={handleScrollToPlans}>Planos</div>
                 </nav>
                 <nav>
                     <div className="headerText" onClick={handleScrollToHowItWorks}>Como funciona</div>
@@ -75,25 +75,42 @@ function Home() {
             </header>
 
 
-            <section className="first-card">
+            <section className="first-card first-card--hero">
+                <div className="first-card__left">
+                    <a
+                        href="https://www.instagram.com/tabletrackapp/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="first-card__handle"
+                    >
+                        @TABLETRACKAPP
+                    </a>
 
-                <div className="firstCard-text-section">
-                    <h2 style={{color: '#129666'}}>Transforme seu atendimento com <span>TableTrack</span></h2>
-                    <p style={{color: '#889F7C'}}>
-                        Cadastre seu cardápio digital e organize os pedidos do seu estabelecimento de forma simples e eficiente
+
+                    <h1 className="first-card__title">
+                        Transforme seu atendimento com <span>TableTrack</span>
+                    </h1>
+
+                    <p className="first-card__subtitle">
+                        Cadastre seu cardápio digital e organize os pedidos do seu estabelecimento de forma simples e
+                        eficiente
                     </p>
-                    <button onClick={() => navigate('/login')}>Comece Agora</button>
+
+                    <button className="first-card__cta" onClick={() => navigate('/login')}>
+                        Comece Agora
+                    </button>
                 </div>
 
-                <div className="image-container">
-                    <img src={handImage} className="contained-image"/>
+                <div className="first-card__right">
+                    <img src={firstCardImage} alt="Ambiente de cafeteria"/>
                 </div>
             </section>
 
+
             <div className="second-card" ref={howItWorksRef}>
-                <div className="secondCard-text-title" >Fácil e rápido</div>
+                <div className="secondCard-text-title">Fácil e rápido</div>
                 <div className="secondCard-text-subtitle">Comece agora seguindo os seguintes passos</div>
-                <div className="card-row" >
+                <div className="card-row">
                     <div style={{backgroundColor: '#fdf6e3'}} className="secondCard-image-container">
                         <img src={PlansImage} className="secondCard-image-container"/>
                         <div className="secondCard-text-section">
@@ -110,9 +127,11 @@ function Home() {
                         <img src={BuildStoreImage}
                              className="secondCard-image-container"/>
                         <div className="secondCard-text-section">
-                            <div className='secondCard-text-section-title' style={{color: '#333333'}}>Cadastre seu estabelecimento
+                            <div className='secondCard-text-section-title' style={{color: '#333333'}}>Cadastre seu
+                                estabelecimento
                             </div>
-                            <div className='secondCard-text-section-description'>Configure seu cardápio digital com produtos e preços
+                            <div className='secondCard-text-section-description'>Configure seu cardápio digital com
+                                produtos e preços
                             </div>
 
                         </div>
@@ -123,9 +142,11 @@ function Home() {
                     <div style={{backgroundColor: '#fdf6e3'}} className="secondCard-image-container">
                         <img src={ExploreAndSelectImage} className="secondCard-image-container"/>
                         <div style={{marginLeft: '5px'}} className="secondCard-text-section">
-                            <div className='secondCard-text-section-title' style={{color: '#333333'}}>Clientes fazem pedidos
+                            <div className='secondCard-text-section-title' style={{color: '#333333'}}>Clientes fazem
+                                pedidos
                             </div>
-                            <div className='secondCard-text-section-description'>Seus clientes acessam o cardápio e montam seus pedidos online
+                            <div className='secondCard-text-section-description'>Seus clientes acessam o cardápio e
+                                montam seus pedidos online
                             </div>
 
                         </div>
@@ -135,9 +156,12 @@ function Home() {
                     <div style={{backgroundColor: '#fdf6e3'}} className="secondCard-image-container">
                         <img src={RedirectToWppImage} className="secondCard-image-container"/>
                         <div style={{marginLeft: '5px'}} className="secondCard-text-section">
-                            <div className='secondCard-text-section-title' style={{color: '#333333'}}>Gerencie pedidos em tempo real
+                            <div className='secondCard-text-section-title' style={{color: '#333333'}}>Gerencie pedidos
+                                em tempo real
                             </div>
-                            <div className='secondCard-text-section-description'>Acompanhe e atualize os pedidos diretamente pelo painel do estabelecimento</div>
+                            <div className='secondCard-text-section-description'>Acompanhe e atualize os pedidos
+                                diretamente pelo painel do estabelecimento
+                            </div>
 
                         </div>
 
@@ -197,7 +221,8 @@ function Home() {
                     <div style={{color: 'white', fontSize: '250%', fontWeight: 'bolder', marginBottom: '10px'}}>Junte-se
                         a nós
                     </div>
-                    <div style={{color: 'white', fontSize: '120%', fontWeight: 'bold', marginBottom: '10px'}}>Ofereça um atendimento rápido e moderno com um
+                    <div style={{color: 'white', fontSize: '120%', fontWeight: 'bold', marginBottom: '10px'}}>Ofereça um
+                        atendimento rápido e moderno com um
                     </div>
                     <div style={{color: 'white', fontSize: '100%'}}>cardápio digital interativo.</div>
                 </div>
@@ -215,14 +240,14 @@ function Home() {
                         termos de serviço
                     </div>
                     <div
-                        style={{ fontSize: "60%", marginLeft: "10px", cursor: "pointer"}}
+                        style={{fontSize: "60%", marginLeft: "10px", cursor: "pointer"}}
                         onClick={() => navigate("/privacy")}
                     >
                         politica de privacidade
                     </div>
 
                     <div
-                        style={{ fontSize: "60%", marginLeft: "10px", cursor: "pointer"}}
+                        style={{fontSize: "60%", marginLeft: "10px", cursor: "pointer"}}
                         onClick={() => setShowContactModal(true)}
                     >
                         Contate-nos
@@ -234,7 +259,7 @@ function Home() {
 
             </footer>
 
-            {showContactModal && <ContactModal onClose={() => setShowContactModal(false)} />}
+            {showContactModal && <ContactModal onClose={() => setShowContactModal(false)}/>}
 
         </div>
     );
