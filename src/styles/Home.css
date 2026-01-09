@@ -1,3 +1,6 @@
+
+/*region PRINCIPAL*/
+
 :root {
     --primary-green: #006A42;
     --secondary-green: #3EB489;
@@ -126,7 +129,333 @@ header.header {
     opacity: 0.85;
 }
 
+/* =========================
+   HOW STEPS (layout da imagem)
+   ========================= */
+
+.how-steps {
+    width: 100%;
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    padding: 90px 80px;
+    font-family: 'Ruda', sans-serif;
+}
+
+.how-steps__left {
+    flex: 1;
+    max-width: 520px;
+}
+
+.how-steps__title {
+    font-size: 56px;
+    font-weight: 500;
+    color: #7A786F;
+    margin-bottom: 14px;
+}
+
+.how-steps__subtitle {
+    font-size: 28px;
+    color: #9f9c8f;
+    line-height: 1.2;
+}
+
+.how-steps__right {
+    flex: 1;
+    max-width: 720px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.how-steps__item {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.how-steps__avatar {
+    width: 92px;
+    height: 92px;
+    border-radius: 999px;
+    overflow: hidden;
+    flex: 0 0 92px;
+}
+
+.how-steps__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.how-steps__item-title {
+    font-size: 30px;
+    color: #7A786F;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.how-steps__item-desc {
+    font-size: 16px;
+    color: #9f9c8f;
+    opacity: 0.9;
+    max-width: 520px;
+    line-height: 1.5;
+}
+
+.how-steps__divider {
+    height: 1px;
+    background: rgba(0, 0, 0, 0.18);
+    margin-left: 114px;
+}
+
+.plans-grid {
+    width: 100%;
+    display: flex;
+    gap: 26px;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+    padding: 10px 0 0 0;
+}
+.plans-title {
+    text-align: center;
+    font-size: 48px;
+    font-weight: 500;
+    color: #7A786F; /* mesma paleta do resto do site */
+    margin-bottom: 40px;
+    font-family: 'Ruda', sans-serif;
+}
+
+
+
+.plan-card {
+    width: 300px;
+    min-height: 520px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 26px 22px 22px 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.plan-card__top {
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 14px;
+    min-height: 34px;
+}
+
+.plan-card__title {
+    font-size: 24px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    color: #8b6b55; /* marrom do print */
+}
+
+.plan-card__badge {
+    position: absolute;
+    right: -6px;
+    top: -10px;
+    width: 86px;
+    height: 86px;
+    border-radius: 999px;
+    background: #24124f; /* roxo do print */
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+    line-height: 1.1;
+}
+
+.plan-card__badge--free {
+    background: #1f7a5a; /* um verde bonito pro "Gratuito" */
+    font-size: 13px;
+}
+
+.plan-card__icon {
+    width: 180px;
+    height: 180px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 18px 0 22px 0;
+}
+
+.plan-card__icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* se for ícone */
+    display: block;
+}
+
+.plan-card__text1 {
+    font-size: 24px;
+    font-weight: 800;
+    color: #8b6b55;
+    text-align: center;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    line-height: 1.1;
+    text-transform: uppercase;
+}
+
+.plan-card__text2 {
+    font-size: 15px;
+    color: #7a7a7a;
+    text-align: center;
+    line-height: 1.35;
+    max-width: 240px;
+    margin-bottom: 22px;
+    text-transform: uppercase;
+}
+
+.plan-card__btn {
+    margin-top: auto;
+    width: 100%;
+    border: none;
+    background: #24124f;
+    color: #ffffff;
+    height: 54px;
+    border-radius: 6px;
+    font-size: 16px;
+    letter-spacing: 2px;
+    font-weight: 800;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 10px 18px rgba(36, 18, 79, 0.25);
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.plan-card__btn:hover {
+    transform: translateY(-1px);
+    opacity: 0.95;
+}
+/*endregion*/
+
+/*region MOBILE*/
+
 @media (max-width: 768px) {
+
+
+    .plans-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 2 por linha */
+        gap: 14px;
+        justify-content: center;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .plans-title {
+        font-size: 30px;
+        margin-bottom: 24px;
+    }
+
+
+    .plan-card__text1 {
+        font-size: 18px;
+    }
+
+    .plan-card__text2 {
+        font-size: 12px;
+        max-width: 180px;
+    }
+    .plan-card__btn {
+        height: 44px;
+        font-size: 13px;
+        letter-spacing: 1px;
+    }
+
+    .plan-card{
+        width: 100%;
+        min-width: 0;          /* MUITO importante em grid */
+        padding: 12px 8px;
+        min-height: 310px;
+        box-sizing: border-box;
+    }
+    .plan-card__icon {
+        width: 120px;
+        height: 120px;
+        margin: 12px 0 16px 0;
+    }
+
+
+    .plan-card__badge {
+        width: 78px;
+        height: 78px;
+        right: -4px;
+        top: -8px;
+        font-size: 13px;
+    }
+
+    .plan-card__title {
+        font-size: 22px;
+    }
+
+
+    .how-steps {
+        flex-direction: column;
+        gap: 32px;
+        padding: 50px 20px;
+    }
+
+    .how-steps__title {
+        font-size: 38px;
+    }
+
+    .how-steps__subtitle {
+        font-size: 20px;
+    }
+
+    .how-steps__right {
+        max-width: 100%;
+    }
+
+    .how-steps__left {
+        text-align: center;
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* garante centralização mesmo com widths diferentes */
+    }
+
+    .how-steps__title,
+    .how-steps__subtitle {
+        text-align: center;
+        width: 100%;
+    }
+    .how-steps__avatar {
+        width: 72px;
+        height: 72px;
+        flex: 0 0 72px;
+    }
+
+    .how-steps__item-title {
+        font-size: 22px;
+    }
+
+    .how-steps__item-desc {
+        font-size: 14px;
+    }
+
+    .how-steps__divider {
+        margin-left: 94px; /* ajusta por causa do avatar menor */
+    }
 
     .app-container {
     font-family: 'Arial';
@@ -345,17 +674,21 @@ footer {
 
 
 .third-card-container {
-    margin-top: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px;
-    padding: 70px;
+    padding: 28px 14px;     /* antes era 70px -> isso estava empurrando pra fora */
     position: relative;
-zoom: 90%;
-    background-color: #006A42;
+    flex-direction: column;   /* <<< ESSA LINHA resolve */
+    width: 100%;
+    zoom: 90%;
+    background-color: #f8f7f7;
+    box-sizing: border-box;
+
 
 }
+
+
 
 .third-card-contained-square {
     position: absolute;
@@ -457,6 +790,8 @@ zoom: 90%;
 }
 }
 
+/*endregion*/
+
 .header button:hover {
     background-color: #555;
 }
@@ -464,10 +799,14 @@ zoom: 90%;
     background-color: #555;
 }
 
+/*region DESKTOP*/
+
 @media (min-width: 769px) {
 
 
-
+    .how-steps {
+        padding: 120px 80px; /* antes: 90px 80px */
+    }
     .app-container {
         font-family: 'Arial';
         width: 100%;
@@ -671,15 +1010,13 @@ zoom: 90%;
 
 
     .third-card-container {
-        margin-top: 100px;
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
-        gap: 20px;
         padding: 70px;
         position: relative;
-
-        background-color: #006A42;
+        flex-direction: column;   /* <<< ESSA LINHA resolve */
+        background-color: #f8f7f7;
 
     }
 
@@ -789,6 +1126,8 @@ zoom: 90%;
 
 }
 
+/*endregion*/
+
 /* =========================
    ANIMAÇÃO TEXTO HERO
    ========================= */
@@ -837,5 +1176,123 @@ zoom: 90%;
         animation: none;
         opacity: 1;
         transform: none;
+    }
+}
+.how-steps .how-steps__left,
+.how-steps .how-steps__right {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.how-steps .how-steps__title,
+.how-steps .how-steps__subtitle {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 650ms ease, transform 650ms ease;
+}
+
+/* Itens */
+.how-steps .how-steps__item {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 650ms ease, transform 650ms ease;
+}
+
+/* Avatar com “pop” */
+.how-steps .how-steps__avatar {
+    transform: scale(0.92);
+    transition: transform 650ms ease;
+}
+
+/* Quando ficar visível */
+.how-steps.is-visible .how-steps__left,
+.how-steps.is-visible .how-steps__right {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger da esquerda */
+.how-steps.is-visible .how-steps__title {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 120ms;
+}
+
+.how-steps.is-visible .how-steps__subtitle {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 240ms;
+}
+
+/* Quando ficar visível: libera TODOS os itens (sem depender do nth-of-type) */
+.how-steps.is-visible .how-steps__item {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger usando nth-child (conta divider também, então a gente mira nas posições corretas) */
+.how-steps.is-visible .how-steps__right > .how-steps__item:nth-child(1) {
+    transition-delay: 200ms;
+}
+.how-steps.is-visible .how-steps__right > .how-steps__item:nth-child(3) {
+    transition-delay: 340ms;
+}
+.how-steps.is-visible .how-steps__right > .how-steps__item:nth-child(5) {
+    transition-delay: 480ms;
+}
+
+
+.how-steps.is-visible .how-steps__avatar {
+    transform: scale(1);
+}
+
+/* Acessibilidade */
+@media (prefers-reduced-motion: reduce) {
+    .how-steps .how-steps__left,
+    .how-steps .how-steps__right,
+    .how-steps .how-steps__title,
+    .how-steps .how-steps__subtitle,
+    .how-steps .how-steps__item,
+    .how-steps .how-steps__avatar {
+        transition: none !important;
+        transform: none !important;
+        opacity: 1 !important;
+    }
+}
+
+/* =========================
+   ANIMAÇÃO PLANOS
+   ========================= */
+
+.plans .plans-title,
+.plans .plan-card {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 2200ms ease, transform 2200ms ease;
+}
+
+/* Quando fica visível */
+.plans.is-visible .plans-title,
+.plans.is-visible .plan-card {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger (cada card entra depois) */
+.plans.is-visible .plans-grid .plan-card:nth-child(1) { transition-delay: 180ms; }
+.plans.is-visible .plans-grid .plan-card:nth-child(2) { transition-delay: 320ms; }
+.plans.is-visible .plans-grid .plan-card:nth-child(3) { transition-delay: 460ms; }
+
+/* Título entra antes */
+.plans.is-visible .plans-title { transition-delay: 80ms; }
+
+/* Acessibilidade */
+@media (prefers-reduced-motion: reduce) {
+    .plans .plans-title,
+    .plans .plan-card {
+        transition: none !important;
+        transform: none !important;
+        opacity: 1 !important;
     }
 }
