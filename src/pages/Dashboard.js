@@ -534,7 +534,7 @@ const Dashboard = () => {
                                 image: OrdersImage,
                             },
                             {
-                                title: 'Acessar Catálogo',
+                                title: 'Acessar Catálogo / QR Code',
                                 description: 'Veja o catálogo do seu estabelecimento como o cliente vê.',
                                 image: CatalogImage,
                             }
