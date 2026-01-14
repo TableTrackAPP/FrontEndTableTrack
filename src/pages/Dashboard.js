@@ -9,8 +9,10 @@ import { useOrderNotifications } from "../hooks/OrderNotificationsContext";
 
 import '../styles/Dashboard.css';
 import NotificationListener from '../components/NotificationListener';
-import CatalogImage from '../assets/catalog.png';
-import ProductsImage from '../assets/products.png';
+import CatalogImage from '../assets/Dashboard4.png';
+import ProductsImage from '../assets/Dashboard2.png';
+import StablishmentImage from '../assets/Dashboard1.png';
+import OrdersImage from '../assets/Dashboard3.png';
 import {useLoading} from "../hooks/LoadingContext";
 import { saveToLocalStorage } from '../utils/storageUtils';
 import { syncSubscriptionStatus } from '../services/subscriptions';
@@ -420,7 +422,7 @@ const Dashboard = () => {
 
                         <div className="dashboard-action-card" onClick={() => navigate('/establishments')}>
                             <img
-                                src={"https://i.pinimg.com/736x/a4/c0/61/a4c061994fc29ccbb0e6fd829f6951e7.jpg"}
+                                src={StablishmentImage}
                                 alt="Gerenciar Produtos"
                                 className="dashboard-action-image"
                             />
@@ -461,7 +463,7 @@ const Dashboard = () => {
                             )}
 
                             <img
-                                src="https://i.pinimg.com/736x/60/61/6e/60616ea80a6c86b0db76cc5625ad6636.jpg"
+                                src={OrdersImage}
                                 alt="Visualizar Pedidos"
                                 className="dashboard-action-image"
                             />
@@ -519,7 +521,7 @@ const Dashboard = () => {
                             {
                                 title: 'Seu estabelecimento',
                                 description: 'Edite as informações do seu estabelecimento',
-                                image: 'https://i.pinimg.com/736x/a4/c0/61/a4c061994fc29ccbb0e6fd829f6951e7.jpg',
+                                image: StablishmentImage,
                             },
                             {
                                 title: 'Gerenciar Produtos',
@@ -529,7 +531,7 @@ const Dashboard = () => {
                             {
                                 title: 'Visualizar Pedidos',
                                 description: 'Acompanhe e atualize os pedidos recebidos no sistema',
-                                image: 'https://i.pinimg.com/736x/60/61/6e/60616ea80a6c86b0db76cc5625ad6636.jpg',
+                                image: OrdersImage,
                             },
                             {
                                 title: 'Acessar Catálogo',
