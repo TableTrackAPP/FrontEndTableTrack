@@ -33,6 +33,7 @@ const Dashboard = () => {
 
     const isSubscriber = status === 'Active';
     const { unreadCount, clearUnread } = useOrderNotifications();
+    const [pageReady, setPageReady] = useState(false);
 
     useEffect(() => {
         const fetchUserAndEstablishment = async () => {
@@ -86,6 +87,7 @@ const Dashboard = () => {
                 setUserData(storedUserData); // fallback
             } finally {
                 hideLoading();
+                requestAnimationFrame(() => setPageReady(true));
             }
         };
 
@@ -378,10 +380,10 @@ const Dashboard = () => {
 
 
     return (
-        <div className="dashboard-container">
-            <NotificationListener />
+        <div className={`dashboard-container ${pageReady ? 'page-enter page-enter--on' : 'page-enter'}`}>
+            <NotificationListener/>
             <div className="dashboard-topbar">
-                <div className="topbar-row">
+            <div className="topbar-row">
                     <h2 className="dashboard-title">Bem-vindo, {userData.userName}!</h2>
                     <div className="mobile-sidebar">
                         <SideBar/>

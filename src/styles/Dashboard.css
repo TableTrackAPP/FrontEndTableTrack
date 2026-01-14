@@ -632,3 +632,76 @@
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
     }
 }
+
+/* ========= Animação de entrada da página ========= */
+
+.page-enter {
+    opacity: 0;
+    transform: translateY(16px);
+    filter: blur(6px);
+    transition: opacity 520ms ease, transform 520ms ease, filter 520ms ease;
+    will-change: opacity, transform, filter;
+}
+
+.page-enter--on {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+}
+
+/* Topbar entra um pouco antes */
+.page-enter .dashboard-topbar {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 520ms ease, transform 520ms ease;
+    transition-delay: 80ms;
+}
+
+.page-enter--on .dashboard-topbar {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Painel entra depois */
+.page-enter .dashboard-panel {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 520ms ease, transform 520ms ease;
+    transition-delay: 140ms;
+}
+
+.page-enter--on .dashboard-panel {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Cards com “stagger” (um por um) */
+.page-enter .dashboard-action-card {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+    transition: opacity 520ms ease, transform 520ms ease;
+}
+
+.page-enter--on .dashboard-action-card {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Delay progressivo por posição */
+.page-enter--on .dashboard-action-card:nth-child(1) { transition-delay: 220ms; }
+.page-enter--on .dashboard-action-card:nth-child(2) { transition-delay: 280ms; }
+.page-enter--on .dashboard-action-card:nth-child(3) { transition-delay: 340ms; }
+.page-enter--on .dashboard-action-card:nth-child(4) { transition-delay: 400ms; }
+
+/* Acessibilidade: respeita reduzir movimento */
+@media (prefers-reduced-motion: reduce) {
+    .page-enter,
+    .page-enter .dashboard-topbar,
+    .page-enter .dashboard-panel,
+    .page-enter .dashboard-action-card {
+        transition: none !important;
+        transform: none !important;
+        filter: none !important;
+        opacity: 1 !important;
+    }
+}
