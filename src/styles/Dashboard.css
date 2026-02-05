@@ -2,6 +2,7 @@
 
 .tt-establishment-card-wrap {
     position: relative;
+    overflow: visible;
 }
 
 .tt-floating-hint {
@@ -22,7 +23,19 @@
     animation: tt-float 3s ease-in-out infinite;
 }
 
-
+.tt-establishment-card-wrap.tt-establishment-highlight::before {
+    content: "";
+    position: absolute;
+    inset: -10px;
+    border-radius: 18px;
+    pointer-events: none;
+    z-index: 0;
+    box-shadow:
+            0 0 24px rgba(245, 158, 11, 0.35),
+            0 0 60px rgba(245, 158, 11, 0.22),
+            0 0 110px rgba(245, 158, 11, 0.12);
+    animation: tt-orange-glow 1.8s ease-in-out infinite;
+}
 /* setinha */
 .tt-floating-hint::after {
     content: "";
@@ -537,32 +550,30 @@
 }
 
 .dashboard-action-card.tt-establishment-highlight {
-    overflow: visible !important;
+    position: relative;
+    overflow: visible;
+    z-index: 0; /* cria contexto */
 }
+
 .dashboard-action-card.tt-establishment-highlight::before {
     content: "";
     position: absolute;
     inset: -10px;
     border-radius: 18px;
     pointer-events: none;
-    z-index: 5;
-
-    /* Glow laranja suave */
+    z-index: -1;               /* <-- ESSENCIAL: fica atrás */
+    background: transparent;   /* garante que não vira "placa" */
     box-shadow:
             0 0 24px rgba(245, 158, 11, 0.35),
             0 0 60px rgba(245, 158, 11, 0.22),
             0 0 110px rgba(245, 158, 11, 0.12);
-
     animation: tt-orange-glow 1.8s ease-in-out infinite;
 }
 
 
 
+
 /* garante que imagem/texto fiquem abaixo do glow */
-.dashboard-action-card.tt-establishment-highlight > * {
-    position: relative;
-    z-index: 1;
-}
 
 .dashboard-action-card.tt-establishment-highlight:hover {
     transform: scale(1.03);

@@ -1,27 +1,28 @@
 // src/hooks/LoadingContext.js
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useMemo, useState, useCallback } from 'react';
 
-const LoadingContext = createContext();
+const LoadingContext = createContext(null);
 
 export const LoadingProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [loadingMessage, setLoadingMessage] = useState('');
 
-    const showLoading = (message = 'carregando') => {
+    const showLoading = useCallback((message = 'carregando') => {
         setLoadingMessage(message);
         setIsLoading(true);
-    };
+    }, []);
 
-    const hideLoading = () => {
+    const hideLoading = useCallback(() => {
         setIsLoading(false);
-        setLoadingMessage(''); // limpa a mensagem ao sair
-    };
+        setLoadingMessage('');
+    }, []);
 
-    return (
-        <LoadingContext.Provider value={{ isLoading, loadingMessage, showLoading, hideLoading }}>
-            {children}
-        </LoadingContext.Provider>
+    const value = useMemo(
+        () => ({ isLoading, loadingMessage, showLoading, hideLoading }),
+        [isLoading, loadingMessage, showLoading, hideLoading]
     );
+
+    return <LoadingContext.Provider value={value}>{children}</LoadingContext.Provider>;
 };
 
 export const useLoading = () => useContext(LoadingContext);

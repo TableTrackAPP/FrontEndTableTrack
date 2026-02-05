@@ -95,7 +95,7 @@ const Dashboard = () => {
         };
 
         fetchUserAndEstablishment();
-    }, [navigate, showToast]);
+    }, [navigate, showToast, showLoading, hideLoading]);
 
 
 
@@ -112,26 +112,6 @@ const Dashboard = () => {
 
     const shouldShowCreateEstablishmentMsg = isSubscriber && !establishmentID;
 
-    const renderCard = (card, index) => (
-        <div className={`dashboard-card ${card.cardClass}`} key={index}>
-            <div className="card-content">
-                <div className={`dashboard-avatar ${card.avatarClass}`}>{card.icon}</div>
-                <h3 className="card-title">{card.title}</h3>
-                <div className="card-buttons-centered">
-                    {card.buttons.map((btn, i) => (
-                        <button
-                            key={i}
-                            className={`btn-card ${card.buttonClass}`}
-                            onClick={btn.onClick}
-                            disabled={btn.disabled}
-                        >
-                            {btn.text}
-                        </button>
-                    ))}
-                </div>
-            </div>
-        </div>
-    );
 
     // Estados do modal de catálogo/mesa
 
@@ -422,7 +402,7 @@ const Dashboard = () => {
                         }}
                     >
 
-                        <div className="tt-establishment-card-wrap">
+                        <div className={`tt-establishment-card-wrap ${shouldShowCreateEstablishmentMsg ? 'tt-establishment-highlight' : ''}`}>
                             {shouldShowCreateEstablishmentMsg && (
                                 <div className="tt-floating-hint">
                                     Antes de tudo, crie seu estabelecimento
