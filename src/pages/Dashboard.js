@@ -428,6 +428,7 @@ const Dashboard = () => {
                                     Antes de tudo, crie seu estabelecimento
                                 </div>
                             )}
+
                             <div
                                 className={`dashboard-action-card ${shouldShowCreateEstablishmentMsg ? 'tt-establishment-highlight' : ''}`}
                                 onClick={() => navigate('/establishments')}
