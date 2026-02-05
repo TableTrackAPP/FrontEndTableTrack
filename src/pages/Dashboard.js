@@ -429,7 +429,10 @@ const Dashboard = () => {
                                 </div>
                             )}
 
-                            <div className="dashboard-action-card" onClick={() => navigate('/establishments')}>
+                            <div
+                                className={`dashboard-action-card ${shouldShowCreateEstablishmentMsg ? 'tt-establishment-highlight' : ''}`}
+                                onClick={() => navigate('/establishments')}
+                            >
                                 <img
                                     src={StablishmentImage}
                                     alt="Seu estabelecimento"
