@@ -73,6 +73,7 @@ const Dashboard = () => {
 
                 setEstablishment(establishmentData);
                 setEstablishmentID(establishmentData.EstablishmentID);
+                console.log("ID do establishment", establishmentData.EstablishmentID);
 
             } catch (error) {
                 console.error(error);
@@ -109,6 +110,7 @@ const Dashboard = () => {
 
     if (!userData) return <div>Carregando...</div>;
 
+    const shouldShowCreateEstablishmentMsg = isSubscriber && !establishmentID;
 
     const renderCard = (card, index) => (
         <div className={`dashboard-card ${card.cardClass}`} key={index}>
@@ -420,19 +422,28 @@ const Dashboard = () => {
                         }}
                     >
 
-                        <div className="dashboard-action-card" onClick={() => navigate('/establishments')}>
-                            <img
-                                src={StablishmentImage}
-                                alt="Gerenciar Produtos"
-                                className="dashboard-action-image"
-                            />
-                            <div className="dashboard-action-content">
-                                <h3 className="dashboard-action-title">Seu estabelecimento</h3>
-                                <p className="dashboard-action-description">
-                                    Edite as informações do seu estabelecimento
-                                </p>
+                        <div className="tt-establishment-card-wrap">
+                            {shouldShowCreateEstablishmentMsg && (
+                                <div className="tt-floating-hint">
+                                    Antes de tudo, crie seu estabelecimento
+                                </div>
+                            )}
+
+                            <div className="dashboard-action-card" onClick={() => navigate('/establishments')}>
+                                <img
+                                    src={StablishmentImage}
+                                    alt="Seu estabelecimento"
+                                    className="dashboard-action-image"
+                                />
+                                <div className="dashboard-action-content">
+                                    <h3 className="dashboard-action-title">Seu estabelecimento</h3>
+                                    <p className="dashboard-action-description">
+                                        Edite as informações do seu estabelecimento
+                                    </p>
+                                </div>
                             </div>
                         </div>
+
 
                         <div className="dashboard-action-card" onClick={() => navigate('/products')}>
                             <img

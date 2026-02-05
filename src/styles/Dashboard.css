@@ -1,4 +1,41 @@
 /* Modal básico */
+
+.tt-establishment-card-wrap {
+    position: relative;
+}
+
+.tt-floating-hint {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 13px;
+    color: #111827;
+    background: #ffffff;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+    z-index: 10;
+    white-space: nowrap;
+
+    animation: tt-float 3s ease-in-out infinite;
+}
+
+
+/* setinha */
+.tt-floating-hint::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -8px;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #ffffff;
+}
 .tt-variant-actions {
     display: flex;
     gap: 8px;
@@ -704,4 +741,33 @@
         filter: none !important;
         opacity: 1 !important;
     }
+}
+
+@keyframes tt-float {
+    0% {
+        transform: translate(-50%, -100%) translateY(0);
+    }
+    50% {
+        transform: translate(-50%, -100%) translateY(-6px);
+    }
+    100% {
+        transform: translate(-50%, -100%) translateY(0);
+    }
+}
+
+@keyframes tt-fade-in {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -110%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -100%);
+    }
+}
+
+.tt-floating-hint {
+    animation:
+            tt-fade-in 0.4s ease-out,
+            tt-float 3s ease-in-out infinite;
 }
