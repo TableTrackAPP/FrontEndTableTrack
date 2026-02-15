@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { register } from '../services/authService';
+import {login, register} from '../services/authService';
 import { useToast } from '../hooks/ToastContext';
 import { useLoading } from '../hooks/LoadingContext';
 import { useNavigate, Link } from 'react-router-dom';
 import '../styles/Register.css';
 import logoImageUrl from '../assets/logoProvisoria.png';
+import {saveToLocalStorage} from "../utils/storageUtils";
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -40,10 +41,33 @@ const Register = () => {
                 passwordHash: formData.password,
             };
             showLoading('Registrando usuário...');
+            console.log('Fazendo cadastro');
             await register(userData);
+
+            console.log('usuário cadastrado com sucesso');
+
+            console.log('Fazendo login:', userData.email, ', ', userData.passwordHash);
+
+            const response = await login(userData.email, userData.passwordHash);
+
+            console.log('Autenticacação feira com sucesso, salvando local storage:', response.email, ', ', userData.passwordHash);
+            console.log(response.userID);
+            console.log(response.userName);
+            console.log(response.email);
+            console.log(response.subscriptionStatus);
+
+            saveToLocalStorage('userData', {
+                userID: response.userID,
+                userName: response.userName,
+                email: response.email,
+                subscriptionStatus: response.subscriptionStatus,
+            });
+
+            console.log('Storage salvo com sucesso');
+
             hideLoading();
-            showToast('Registro realizado com sucesso! Faça o login.', 'success');
-            navigate('/login');
+            showToast('Registro realizado com sucesso!', 'success');
+            navigate('/dashboard');
         } catch (err) {
             hideLoading();
             if (err.response?.data?.error.includes('duplicate')) {
