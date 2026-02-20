@@ -10,6 +10,7 @@ import Establishments from '../pages/Establishments';
 import Products from '../pages/Products';
 import Orders from '../pages/Orders';
 import Catalog from '../pages/Catalog';
+import CatalogWhatsapp from '../pages/CatalogWhatsapp';
 import Dashboard from '../pages/Dashboard';
 import ServicesTerms from '../pages/ServicesTerms';
 import PrivacyPolicy from '../pages/PrivacyPolicy';
@@ -42,6 +43,7 @@ function AppRoutes() {
                     <Route path="/Products" element={<Products />} />
                     <Route path="/Orders" element={<Orders />} />
                     <Route path="/Catalog/:establishmentID" element={<Catalog />} />
+                    <Route path="/catalog-whatsapp/:establishmentID" element={<CatalogWhatsapp />} />
 
                     <Route
                         path="/dashboard"

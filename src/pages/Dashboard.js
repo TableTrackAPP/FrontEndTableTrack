@@ -13,6 +13,7 @@ import CatalogImage from '../assets/Dashboard4.png';
 import ProductsImage from '../assets/Dashboard2.png';
 import StablishmentImage from '../assets/Dashboard1.png';
 import OrdersImage from '../assets/Dashboard3.png';
+import WhatsAppCatalogImage from '../assets/Dashboard4.png'; // troque por uma imagem própria se quiser
 import {useLoading} from "../hooks/LoadingContext";
 import { saveToLocalStorage } from '../utils/storageUtils';
 import { syncSubscriptionStatus } from '../services/subscriptions';
@@ -36,7 +37,12 @@ const Dashboard = () => {
     const isSubscriber = status === 'Active';
     const { unreadCount, clearUnread } = useOrderNotifications();
     const [pageReady, setPageReady] = useState(false);
-
+    const [showCatalogChoiceModal, setShowCatalogChoiceModal] = useState(false);
+    const [showWhatsAppCatalogModal, setShowWhatsAppCatalogModal] = useState(false);
+    const buildWhatsAppCatalogUrl = () => {
+        if (!establishmentID) return '';
+        return `/catalog-whatsapp/${establishmentID}`;
+    };
     useEffect(() => {
         const fetchUserAndEstablishment = async () => {
             const storedUserData = getFromLocalStorage('userData');
@@ -135,6 +141,14 @@ const Dashboard = () => {
 
     const goToCatalog = () => {
         const url = buildCatalogUrl();
+        if (!url) {
+            showToast('Estabelecimento não encontrado.', 'error');
+            return;
+        }
+        navigate(url);
+    };
+    const goToWhatsAppCatalog = () => {
+        const url = buildWhatsAppCatalogUrl();
         if (!url) {
             showToast('Estabelecimento não encontrado.', 'error');
             return;
@@ -327,10 +341,11 @@ const Dashboard = () => {
     };
 
 
-    const generateQRCode = async () => {
+    const generateQRCode = async (mode = 'normal') => {
         try {
             setIsGeneratingQR(true);
-            const url = buildCatalogUrl();
+
+            const url = mode === 'whatsapp' ? buildWhatsAppCatalogUrl() : buildCatalogUrl();
             if (!url) {
                 showToast('Estabelecimento não encontrado.', 'error');
                 return;
@@ -347,11 +362,11 @@ const Dashboard = () => {
             const base = await toDataURL(fullUrl, {
                 errorCorrectionLevel: 'M',
                 margin: 2,
-                scale: 6, // boa resolução pra imprimir
+                scale: 6,
             });
 
-            setQrBaseDataUrl(base); // <- guarda o QR puro
-            setQrDataUrl(base);     // <- exibe o normal inicialmente
+            setQrBaseDataUrl(base);
+            setQrDataUrl(base);
             showToast('QR Code gerado!', 'success');
         } catch (e) {
             console.error(e);
@@ -360,8 +375,29 @@ const Dashboard = () => {
             setIsGeneratingQR(false);
         }
     };
+    const closeCatalogChoiceModal = () => setShowCatalogChoiceModal(false);
 
+    const openNormalCatalogModalFromChoice = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setShowCatalogChoiceModal(false);
+        setQrDataUrl(null);
+        setQrBaseDataUrl(null);
+        setShowCatalogModal(true);
+    };
 
+    const openWhatsAppCatalogModalFromChoice = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setShowCatalogChoiceModal(false);
+        setQrDataUrl(null);
+        setQrBaseDataUrl(null);
+        setShowWhatsAppCatalogModal(true);
+    };
+
+    const closeWhatsAppCatalogModal = () => {
+        setShowWhatsAppCatalogModal(false);
+        setQrDataUrl(null);
+        setQrBaseDataUrl(null);
+    };
 
     return (
         <div className={`dashboard-container ${pageReady ? 'page-enter page-enter--on' : 'page-enter'}`}>
@@ -471,8 +507,13 @@ const Dashboard = () => {
                         </div>
 
 
-                        <div className="dashboard-action-card" onClick={openCatalogModal}>
-
+                        <div className="dashboard-action-card" onClick={() => {
+                            setTableIDInput('');
+                            setQrDataUrl(null);
+                            setQrBaseDataUrl(null);
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                            setShowCatalogChoiceModal(true);
+                        }}>
 
                             <img
                                 src={CatalogImage}
@@ -550,6 +591,113 @@ const Dashboard = () => {
                         ))}
                     </div>
                 </div>)}
+            {showCatalogChoiceModal && (
+                <div className="tt-modal-backdrop">
+                    <div className="tt-modal tt-modal-choice">
+                        <div className="tt-choice-header">
+                            <h3 style={{ margin: 0 }}>Escolha o tipo de catálogo</h3>
+                            <button className="tt-choice-close" onClick={closeCatalogChoiceModal}>✕</button>
+                        </div>
+
+                        <div className="tt-choice-grid">
+                            {/* Card 1 - Normal */}
+                            <button
+                                type="button"
+                                className="tt-choice-card"
+                                onClick={openNormalCatalogModalFromChoice}
+                            >
+                                <img src={CatalogImage} alt="Catálogo TableTrack" className="tt-choice-img" />
+                                <div className="tt-choice-body">
+                                    <h4 className="tt-choice-title">Catálogo TableTrack</h4>
+                                    <p className="tt-choice-desc">Pedidos entram no sistema e aparecem na tela de pedidos.</p>
+                                    <span className="tt-choice-cta">Selecionar</span>
+                                </div>
+                            </button>
+
+                            {/* Card 2 - WhatsApp */}
+                            {(() => {
+                                const hasWhatsApp = Boolean(establishment?.WhatsAppNumber);
+                                return (
+                                    <button
+                                        type="button"
+                                        className={`tt-choice-card ${!hasWhatsApp ? 'tt-choice-card--disabled' : ''}`}
+                                        onClick={() => {
+                                            if (!hasWhatsApp) {
+                                                showToast('Configure o WhatsApp do estabelecimento na tela "Seu estabelecimento".', 'warning');
+                                                return;
+                                            }
+                                            openWhatsAppCatalogModalFromChoice();
+                                        }}
+                                        disabled={!hasWhatsApp}
+                                    >
+                                        <img src={WhatsAppCatalogImage} alt="Catálogo WhatsApp" className="tt-choice-img" />
+                                        <div className="tt-choice-body">
+                                            <h4 className="tt-choice-title">Catálogo WhatsApp</h4>
+                                            <p className="tt-choice-desc">Pedidos vão direto para o WhatsApp do seu estabelecimento.</p>
+
+                                            {!hasWhatsApp ? (
+                                                <span className="tt-choice-warning">
+                    Configure o WhatsApp em “Seu estabelecimento”
+                  </span>
+                                            ) : (
+                                                <span className="tt-choice-cta">Selecionar</span>
+                                            )}
+                                        </div>
+                                    </button>
+                                );
+                            })()}
+                        </div>
+                    </div>
+                </div>
+            )}
+            {showWhatsAppCatalogModal && (
+                <div className="tt-modal-backdrop">
+                    <div className="tt-modal">
+                        <h3 style={{ marginTop: 0 }}>Catálogo WhatsApp</h3>
+
+                        <div className="tt-actions">
+                            <button className="btn-card" onClick={goToWhatsAppCatalog}>
+                                Ir para catálogo
+                            </button>
+
+                            <button
+                                className="btn-card"
+                                onClick={() => generateQRCode('whatsapp')}
+                                disabled={isGeneratingQR}
+                            >
+                                {isGeneratingQR ? 'Gerando...' : 'Gerar QR Code'}
+                            </button>
+
+                            <button className="btn-card btn-ghost" onClick={closeWhatsAppCatalogModal}>
+                                Fechar
+                            </button>
+                        </div>
+
+                        {qrDataUrl && (
+                            <div className="tt-qr-wrapper">
+                                <img src={qrDataUrl} alt="QR Code do catálogo WhatsApp" className="tt-qr-image" />
+                                <a
+                                    className="tt-download"
+                                    href={qrDataUrl}
+                                    download={`qrcode-whatsapp-catalogo.png`}
+                                >
+                                    Baixar QR Code
+                                </a>
+                                <p className="tt-url-hint">
+                                    URL: <code>{window.location.origin + buildWhatsAppCatalogUrl()}</code>
+                                </p>
+                            </div>
+                        )}
+
+                        {qrBaseDataUrl && (
+                            <div className="tt-variant-actions">
+                                <button className="tt-btn tt-btn-light" onClick={showNormalQR}>Normal</button>
+                                <button className="tt-btn tt-btn-logo" onClick={showLogoQR}>Com logo</button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
             {showCatalogModal && (
                 <div className="tt-modal-backdrop">
                     <div className="tt-modal">
