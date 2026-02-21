@@ -10,10 +10,11 @@ import { useOrderNotifications } from "../hooks/OrderNotificationsContext";
 import '../styles/Dashboard.css';
 import NotificationListener from '../components/NotificationListener';
 import CatalogImage from '../assets/Dashboard4.png';
+import CatalogOrder from '../assets/Dashboard6.png';
+import CatalogWhatsappImage from '../assets/Dashboard5.png';
 import ProductsImage from '../assets/Dashboard2.png';
 import StablishmentImage from '../assets/Dashboard1.png';
 import OrdersImage from '../assets/Dashboard3.png';
-import WhatsAppCatalogImage from '../assets/Dashboard4.png'; // troque por uma imagem própria se quiser
 import {useLoading} from "../hooks/LoadingContext";
 import { saveToLocalStorage } from '../utils/storageUtils';
 import { syncSubscriptionStatus } from '../services/subscriptions';
@@ -128,11 +129,11 @@ const Dashboard = () => {
             : `/catalog/${establishmentID}`;
     };
 
-    const openCatalogModal = () => {
+   /* const openCatalogModal = () => {
         setTableIDInput('');
         setQrDataUrl(null);
         setShowCatalogModal(true);
-    };
+    };*/
 
     const closeCatalogModal = () => {
         setShowCatalogModal(false);
@@ -606,7 +607,7 @@ const Dashboard = () => {
                                 className="tt-choice-card"
                                 onClick={openNormalCatalogModalFromChoice}
                             >
-                                <img src={CatalogImage} alt="Catálogo TableTrack" className="tt-choice-img" />
+                                <img src={CatalogOrder} alt="Catálogo TableTrack" className="tt-choice-img" />
                                 <div className="tt-choice-body">
                                     <h4 className="tt-choice-title">Catálogo TableTrack</h4>
                                     <p className="tt-choice-desc">Pedidos entram no sistema e aparecem na tela de pedidos.</p>
@@ -630,7 +631,7 @@ const Dashboard = () => {
                                         }}
                                         disabled={!hasWhatsApp}
                                     >
-                                        <img src={WhatsAppCatalogImage} alt="Catálogo WhatsApp" className="tt-choice-img" />
+                                        <img src={CatalogWhatsappImage} alt="Catálogo WhatsApp" className="tt-choice-img" />
                                         <div className="tt-choice-body">
                                             <h4 className="tt-choice-title">Catálogo WhatsApp</h4>
                                             <p className="tt-choice-desc">Pedidos vão direto para o WhatsApp do seu estabelecimento.</p>
