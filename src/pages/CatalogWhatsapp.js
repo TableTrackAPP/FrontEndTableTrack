@@ -114,7 +114,7 @@ const CatalogWhatsapp = () => {
                 className={`catalog-cart-floating-button ${cartPing ? 'catalog-cart-ping' : ''}`}
                 onClick={() => setShowCartModal(true)}
             >
-                🟢 WhatsApp (Carrinho)
+                 WhatsApp (Carrinho)
             </button>
 
             <div style={{ padding: '20px' }}>
