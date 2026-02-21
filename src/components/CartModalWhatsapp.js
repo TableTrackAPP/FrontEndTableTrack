@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import '../styles/Modal.css';
 import { useToast } from '../hooks/ToastContext';
 import { useLoading } from '../hooks/LoadingContext';
@@ -7,12 +7,12 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart }) =
     const [customerName, setCustomerName] = useState('');
     const [customerPhone, setCustomerPhone] = useState('');
     const [observation, setObservation] = useState('');
+    const [errorMsg, setErrorMsg] = useState('');
 
     const { showToast } = useToast();
     const { showLoading, hideLoading } = useLoading();
 
     const total = useMemo(() => cart.reduce((sum, item) => sum + item.Price, 0), [cart]);
-
 
     const groupedItems = useMemo(() => {
         const map = new Map();
@@ -31,6 +31,13 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart }) =
         }
         return Array.from(map.values());
     }, [cart]);
+
+    // limpa o erro quando o usuário corrigir
+    useEffect(() => {
+        if (errorMsg && cart.length > 0 && customerName.trim()) {
+            setErrorMsg('');
+        }
+    }, [cart.length, customerName, errorMsg]);
 
     const normalizePhone = (phone) => (phone || '').replace(/\D/g, '');
 
@@ -66,18 +73,22 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart }) =
     };
 
     const handleSendToWhatsApp = async () => {
+        // validações com mensagem no próprio modal
         if (cart.length === 0) {
-            showToast('O carrinho está vazio. Adicione itens antes de enviar.', 'error');
+            setErrorMsg('Seu carrinho está vazio. Adicione pelo menos 1 item antes de enviar.');
             return;
         }
 
         if (!customerName.trim()) {
-            showToast('O nome do cliente é obrigatório.', 'error');
+            setErrorMsg('Informe seu nome para enviar o pedido.');
             return;
         }
 
+        setErrorMsg('');
+
         const wa = normalizePhone(establishment?.WhatsAppNumber);
         if (!wa) {
+            // esse é mais “configuração do sistema”, pode manter toast
             showToast('WhatsApp do estabelecimento não configurado.', 'error');
             return;
         }
@@ -88,14 +99,13 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart }) =
             const message = buildWhatsAppMessage();
             const url = `https://wa.me/${wa}?text=${encodeURIComponent(message)}`;
 
-            // abre em nova aba/janela
             window.open(url, '_blank', 'noopener,noreferrer');
 
             showToast('Pedido pronto! Envie a mensagem no WhatsApp.', 'success');
             setCart([]);
             onHide();
         } catch (e) {
-            showToast('Falha ao abrir o WhatsApp.', 'error');
+            setErrorMsg('Falha ao abrir o WhatsApp. Tente novamente.');
         } finally {
             hideLoading();
         }
@@ -106,11 +116,18 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart }) =
             <div className="cart-modal-box">
                 <h2 className="cart-modal-title">Carrinho (WhatsApp)</h2>
 
+                {/* ALERTA NO MODAL */}
+                {errorMsg && (
+                    <div className="cart-modal-alert cart-modal-alert-error" role="alert">
+                        {errorMsg}
+                    </div>
+                )}
+
                 <ul className="cart-modal-list">
                     {cart.map((item, index) => (
                         <li key={`${item.ProductID}-${index}`} className="cart-modal-item">
                             <span>{item.ProductName}</span>
-                            <span style={{ marginLeft: "auto" }}>R$ {item.Price.toFixed(2)}</span>
+                            <span style={{ marginLeft: 'auto' }}>R$ {item.Price.toFixed(2)}</span>
                             <button className="cart-modal-remove" onClick={() => onRemove(index)}>✕</button>
                         </li>
                     ))}
@@ -121,9 +138,12 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart }) =
                 <input
                     type="text"
                     className="cart-modal-input"
-                    placeholder="Nome do cliente"
+                    placeholder="Nome do cliente (Obrigatório)"
                     value={customerName}
-                    onChange={(e) => setCustomerName(e.target.value)}
+                    onChange={(e) => {
+                        setCustomerName(e.target.value);
+                        if (errorMsg) setErrorMsg('');
+                    }}
                     required
                 />
 
