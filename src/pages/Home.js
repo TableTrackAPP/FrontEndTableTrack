@@ -1,39 +1,32 @@
-import React, { useState, useRef, useEffect  } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import '../styles/Home.css';
 import logoImageUrl from '../assets/logoProvisoria.png';
-import firstCardImage from '../assets/FirstCardImage.jpg'; // adjust the path according to your project structure
-import PlansImage from '../assets/planosexemplo.png'; // adjust the path according to your project structure
-import BuildStoreImage from '../assets/StablishmentManagment.png'; // adjust the path according to your project structure
-import ExploreAndSelectImage from '../assets/ReadingQrCode.png'; // adjust the path according to your project structure
-import RedirectToWppImage from '../assets/CaptureOrdering.png'; // adjust the path according to your project structure
-import AssinaturaMensal from '../assets/AssinaturaMensal.png'; // adjust the path according to your project structure
-import AssinaturaAnual from '../assets/AssinaturaAnual.png'; // adjust the path according to your project structure
-import AssinaturaGratuita from '../assets/AssinaturaGratuita.png'; // adjust the path according to your project structure
-import Login from './Login'; // adjust path if needed
-import SignUp from './Register'; // adjust path if needed
-import { useNavigate } from 'react-router-dom'; // Importa o hook de navegação
-import ContactModal from "../components/ContactModal"; // Importa o modal de contato
-
+import firstCardImage from '../assets/FirstCardImage.jpg';
+import BuildStoreImage from '../assets/StablishmentManagment.png';
+import ExploreAndSelectImage from '../assets/ReadingQrCode.png';
+import RedirectToWppImage from '../assets/CaptureOrdering.png';
+import AssinaturaMensal from '../assets/AssinaturaMensal.png';
+import AssinaturaAnual from '../assets/AssinaturaAnual.png';
+import AssinaturaGratuita from '../assets/AssinaturaGratuita.png';
+import { useNavigate } from 'react-router-dom';
+import ContactModal from "../components/ContactModal";
 
 function Home() {
-
-    const [showLoginModal, setShowLoginModal] = useState(false);
-    const [showSignUpModal, setShowSignUpModal] = useState(false);
-    const [loginResponse, setLoginResponse] = useState(null);
-    const handleLoginSuccess = (response) => {
-        setLoginResponse(response);
-        setShowLoginModal(false);
-        // You can also navigate to Manager or change UI based on response
-    };
-
-    const navigate = useNavigate(); // Hook para redirecionamento
     const [showContactModal, setShowContactModal] = useState(false);
+    const navigate = useNavigate();
 
     const plansSectionRef = useRef(null);
     const howItWorksRef = useRef(null);
+    const plansTitleRef = useRef(null);
 
     const [howStepsVisible, setHowStepsVisible] = useState(false);
+    const [plansVisible, setPlansVisible] = useState(false);
+    const featuresRef = useRef(null);
+    const businessTypesRef = useRef(null);
 
+    const [featuresVisible, setFeaturesVisible] = useState(false);
+    const [businessTypesVisible, setBusinessTypesVisible] = useState(false);
     useEffect(() => {
         const el = howItWorksRef.current;
         if (!el) return;
@@ -42,19 +35,15 @@ function Home() {
             ([entry]) => {
                 if (entry.isIntersecting) {
                     setHowStepsVisible(true);
-                    obs.disconnect(); // anima só 1 vez
+                    obs.disconnect();
                 }
             },
-            { threshold: 0.25 } // 25% visível já anima
+            { threshold: 0.25 }
         );
 
         obs.observe(el);
-
         return () => obs.disconnect();
     }, []);
-
-    const plansTitleRef = useRef(null);
-    const [plansVisible, setPlansVisible] = useState(false);
 
     useEffect(() => {
         const el = plansTitleRef.current;
@@ -67,15 +56,47 @@ function Home() {
                     obs.disconnect();
                 }
             },
-            { threshold: 0.6 } // 60% do título visível
+            { threshold: 0.4 }
+        );
+
+        obs.observe(el);
+        return () => obs.disconnect();
+    }, []);
+    useEffect(() => {
+        const el = featuresRef.current;
+        if (!el) return;
+
+        const obs = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setFeaturesVisible(true);
+                    obs.disconnect();
+                }
+            },
+            { threshold: 0.2 }
         );
 
         obs.observe(el);
         return () => obs.disconnect();
     }, []);
 
+    useEffect(() => {
+        const el = businessTypesRef.current;
+        if (!el) return;
 
+        const obs = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setBusinessTypesVisible(true);
+                    obs.disconnect();
+                }
+            },
+            { threshold: 0.25 }
+        );
 
+        obs.observe(el);
+        return () => obs.disconnect();
+    }, []);
     const handleScrollToPlans = () => {
         plansSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
@@ -86,47 +107,91 @@ function Home() {
 
     const handleEnterClick = () => {
         const savedUser = localStorage.getItem('userData');
-
         if (savedUser) {
-            // Já está logado → manda para o dashboard
             navigate('/dashboard');
         } else {
-            // Não está logado → manda para login
             navigate('/login');
         }
     };
 
-
     return (
         <div className="app-container">
-            <header className="header">
+            <Helmet>
+                <title>TableTrack | Cardápio digital com QR Code e pedidos via WhatsApp</title>
+                <meta
+                    name="description"
+                    content="TableTrack é uma plataforma de cardápio digital para restaurantes, bares, cafeterias e lanchonetes. Receba pedidos pelo sistema ou WhatsApp, use QR Code por mesa e gerencie tudo em um só lugar."
+                />
+                <meta
+                    name="robots"
+                    content="index, follow"
+                />
+                <meta
+                    property="og:title"
+                    content="TableTrack | Cardápio digital com QR Code e pedidos via WhatsApp"
+                />
+                <meta
+                    property="og:description"
+                    content="Modernize o atendimento do seu estabelecimento com cardápio digital, QR Code por mesa e pedidos organizados em tempo real."
+                />
+                <meta property="og:type" content="website"/>
+                <meta property="og:image" content={firstCardImage}/>
+                <meta
+                    name="twitter:card"
+                    content="summary_large_image"
+                />
 
+                <script type="application/ld+json">
+                    {JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "SoftwareApplication",
+                        "name": "TableTrack",
+                        "applicationCategory": "BusinessApplication",
+                        "operatingSystem": "Web",
+                        "description": "Plataforma de cardápio digital com QR Code por mesa, pedidos pelo sistema e catálogo com pedido via WhatsApp para restaurantes, bares, cafeterias e lanchonetes.",
+                        "offers": [
+                            {
+                                "@type": "Offer",
+                                "name": "Plano Gratuito"
+                            },
+                            {
+                                "@type": "Offer",
+                                "name": "Plano Mensal"
+                            },
+                            {
+                                "@type": "Offer",
+                                "name": "Plano Anual"
+                            }
+                        ]
+                    })}
+                </script>
+            </Helmet>
+
+            <header className="header">
                 <div style={{marginLeft: '5px', marginTop: '10px', cursor: 'pointer'}}>
-                    <img src={logoImageUrl} alt="Logo" className="small-image"/>
+                    <img src={logoImageUrl} alt="Logo TableTrack" className="small-image"/>
                 </div>
+
                 <nav>
                     <div className="headerText" onClick={handleScrollToHowItWorks}>Como funciona</div>
                 </nav>
+
                 <nav>
                     <div className="headerText" onClick={handleScrollToPlans}>Planos</div>
                 </nav>
 
-
                 <nav>
-                    <div className="headerTextInscrevaSe" onClick={() => navigate('/register')}>Se inscrever</div>
+                    <div className="headerTextInscrevaSe" onClick={() => navigate('/register')}>Criar conta</div>
                 </nav>
+
                 <nav>
                     <button onClick={handleEnterClick}>Entrar</button>
-                    {/* Redireciona para Login */}
                 </nav>
-
-
             </header>
-
 
             <section className="first-card first-card--hero">
                 <div className="first-card__left">
-                <a
+                    <a
                         href="https://www.instagram.com/tabletrackapp/"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -135,45 +200,54 @@ function Home() {
                         @TABLETRACKAPP
                     </a>
 
-
                     <h1 className="first-card__title">
-                        Transforme seu atendimento com <span>TableTrack</span>
+                        Cardápio digital com <span>QR Code, pedidos online e WhatsApp</span>
                     </h1>
 
                     <p className="first-card__subtitle">
-                        Cadastre seu cardápio digital e organize os pedidos do seu estabelecimento de forma simples e
-                        eficiente
+                        O TableTrack ajuda restaurantes, bares, cafeterias e lanchonetes a vender melhor com
+                        cardápio digital, QR Code por mesa, painel de pedidos em tempo real e catálogo com pedido via
+                        WhatsApp.
                     </p>
 
-                    <button className="first-card__cta" onClick={() => navigate('/login')}>
-                        Comece Agora
+                    <div className="hero-badges">
+                        <span>Cardápio digital</span>
+                        <span>QR Code por mesa</span>
+                        <span>Pedidos via WhatsApp</span>
+                        <span>Painel em tempo real</span>
+                    </div>
+
+                    <button className="first-card__cta" onClick={() => navigate('/register')}>
+                        Começar agora
                     </button>
                 </div>
 
                 <div className="first-card__right">
-                    <img src={firstCardImage} alt="Ambiente de cafeteria"/>
+                    <img src={firstCardImage} alt="Cliente acessando cardápio digital em um restaurante"/>
                 </div>
             </section>
+
             <section
                 ref={howItWorksRef}
                 className={`how-steps ${howStepsVisible ? "is-visible" : ""}`}
             >
                 <div className="how-steps__left">
-                    <div className="how-steps__title">Fácil e rápido</div>
+                    <div className="how-steps__title">Como funciona</div>
                     <div className="how-steps__subtitle">
-                        Comece agora seguindo os<br/>seguintes passos
+                        Comece rápido e modernize o atendimento do seu negócio
                     </div>
                 </div>
 
                 <div className="how-steps__right">
                     <div className="how-steps__item">
                         <div className="how-steps__avatar">
-                            <img src={BuildStoreImage} alt="Cadastre seu estabelecimento"/>
+                            <img src={BuildStoreImage} alt="Cadastro do estabelecimento e do cardápio digital"/>
                         </div>
                         <div className="how-steps__text">
                             <div className="how-steps__item-title">Cadastre seu estabelecimento</div>
                             <div className="how-steps__item-desc">
-                                Configure seu cardápio digital com produtos e preços
+                                Configure seu negócio, adicione a logo, organize categorias e monte seu cardápio digital
+                                com facilidade.
                             </div>
                         </div>
                     </div>
@@ -182,12 +256,13 @@ function Home() {
 
                     <div className="how-steps__item">
                         <div className="how-steps__avatar">
-                            <img src={ExploreAndSelectImage} alt="Clientes fazem pedidos"/>
+                            <img src={ExploreAndSelectImage} alt="Cliente escaneando QR Code e escolhendo produtos"/>
                         </div>
                         <div className="how-steps__text">
-                            <div className="how-steps__item-title">Clientes fazem pedidos</div>
+                            <div className="how-steps__item-title">Clientes acessam pelo QR Code</div>
                             <div className="how-steps__item-desc">
-                                Seus clientes acessam o cardápio e montam seus pedidos online
+                                Seus clientes escaneiam o QR Code da mesa, visualizam os produtos e montam o pedido pelo
+                                celular.
                             </div>
                         </div>
                     </div>
@@ -196,98 +271,159 @@ function Home() {
 
                     <div className="how-steps__item">
                         <div className="how-steps__avatar">
-                            <img src={RedirectToWppImage} alt="Gerencie pedidos em tempo real"/>
+                            <img src={RedirectToWppImage} alt="Painel com gestão de pedidos e opção de WhatsApp"/>
                         </div>
                         <div className="how-steps__text">
-                            <div className="how-steps__item-title">Gerencie pedidos em tempo real</div>
+                            <div className="how-steps__item-title">Receba pedidos do seu jeito</div>
                             <div className="how-steps__item-desc">
-                                Acompanhe e atualize os pedidos diretamente pelo painel do estabelecimento
+                                Escolha entre receber pedidos direto no sistema ou enviar pedidos estruturados para o
+                                WhatsApp do estabelecimento.
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
+            <section
+                ref={featuresRef}
+                className={`features-section ${featuresVisible ? 'is-visible' : ''}`}
+            >
+
+                <div className="features-header">
+                    <h2>Recursos que ajudam no atendimento</h2>
+                    <p>
+                        Tudo o que você precisa para oferecer um atendimento mais moderno, organizado e prático.
+                    </p>
+                </div>
+
+                <div className="features-grid">
+                    <div className="feature-card">
+                        <h3>Cardápio digital</h3>
+                        <p>Organize produtos, preços, descrições e fotos em um catálogo online fácil de atualizar.</p>
+                    </div>
+
+                    <div className="feature-card">
+                        <h3>QR Code por mesa</h3>
+                        <p>Crie QR Codes personalizados para identificar mesas e agilizar o fluxo de pedidos.</p>
+                    </div>
+
+                    <div className="feature-card">
+                        <h3>Pedidos via sistema</h3>
+                        <p>Receba pedidos diretamente no painel do estabelecimento com mais controle da operação.</p>
+                    </div>
+
+                    <div className="feature-card">
+                        <h3>Pedidos via WhatsApp</h3>
+                        <p>Ofereça uma opção prática para negócios que preferem receber pedidos direto no WhatsApp.</p>
+                    </div>
+
+                    <div className="feature-card">
+                        <h3>Painel em tempo real</h3>
+                        <p>Acompanhe os pedidos e organize o atendimento com mais clareza para a equipe.</p>
+                    </div>
+
+                    <div className="feature-card">
+                        <h3>Gestão simples</h3>
+                        <p>Edite estabelecimento, produtos e catálogo sem complicação e sem depender de designer.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section
+                ref={businessTypesRef}
+                className={`business-types-section ${businessTypesVisible ? 'is-visible' : ''}`}
+            >
+                <h2>Ideal para diferentes tipos de negócio</h2>
+                <div className="business-types-grid">
+                    <span>Restaurantes</span>
+                    <span>Lanchonetes</span>
+                    <span>Bares</span>
+                    <span>Cafeterias</span>
+                    <span>Hamburguerias</span>
+                    <span>Docerias</span>
+                </div>
+            </section>
 
             <div className="third-card-container" ref={plansSectionRef}>
-                <h2
-                    ref={plansTitleRef}
-                    className={`plans-title ${plansVisible ? "is-visible" : ""}`}
-                >
+                <h2 ref={plansTitleRef} className="plans-title">
                     Planos
                 </h2>
 
                 <div className={`plans-grid plans ${plansVisible ? "is-visible" : ""}`}>
-                    {/* Card 1 - Gratuito */}
                     <div className="plan-card">
                         <div className="plan-card__top">
-                            <div className="plan-card__title">Gratuito</div>
+                            <div className="plan-card__title">Grátis</div>
+                            {/* <div className="plan-card__badge plan-card__badge--free">7 dias grátis</div>*/}
                         </div>
 
                         <div className="plan-card__icon">
-                            <img src={AssinaturaGratuita} alt="Plano gratuito"/>
+                            <img src={AssinaturaGratuita} alt="Plano gratuito do TableTrack"/>
                         </div>
 
-                        <div className="plan-card__text1">Teste 7 dias grátis</div>
-                        <div className="plan-card__text2">Sem cadastro de cartão de crédito</div>
+                        <div className="plan-card__text1">Teste grátis</div>
+                        <div className="plan-card__text2">
+                            Experimente o TableTrack por 7 dias e conheça o catálogo digital do seu negócio
+                        </div>
 
-                        <button className="plan-card__btn" onClick={() => navigate("/login")}>
-                            ASSINAR
+                        <button className="plan-card__btn" onClick={() => navigate("/register")}>
+                            Começar
                         </button>
                     </div>
 
-                    {/* Card 2 - Mensal */}
                     <div className="plan-card">
                         <div className="plan-card__top">
                             <div className="plan-card__title">Mensal</div>
                         </div>
 
                         <div className="plan-card__icon">
-                            <img src={AssinaturaMensal} alt="Plano mensal"/>
+                            <img src={AssinaturaMensal} alt="Plano mensal do TableTrack"/>
                         </div>
 
-                        <div className="plan-card__text1">Assine mensalmente</div>
-                        <div className="plan-card__text2">E crie seu catálogo digital</div>
+                        <div className="plan-card__text1">Assinatura mensal</div>
+                        <div className="plan-card__text2">
+                            Ideal para começar a usar o cardápio digital e testar no seu negócio
+                        </div>
 
-                        <button className="plan-card__btn" onClick={() => navigate("/login")}>
+                        <button className="plan-card__btn" onClick={() => navigate("/register")}>
                             Assinar
                         </button>
                     </div>
 
-                    {/* Card 3 - Anual */}
                     <div className="plan-card">
                         <div className="plan-card__top">
                             <div className="plan-card__title">Anual</div>
+                            {/*    <div className="plan-card__badge">Melhor opção</div> */}
                         </div>
 
                         <div className="plan-card__icon">
-                            <img src={AssinaturaAnual} alt="Plano anual"/>
+                            <img src={AssinaturaAnual} alt="Plano anual do TableTrack"/>
                         </div>
 
-                        <div className="plan-card__text1">Assine anualmente</div>
-                        <div className="plan-card__text2">E crie seu catálogo digital</div>
+                        <div className="plan-card__text1">Assinatura anual</div>
+                        <div className="plan-card__text2">
+                            Mais economia para quem quer manter o cardápio digital ativo o ano inteiro
+                        </div>
 
-                        <button className="plan-card__btn" onClick={() => navigate("/login")}>
+                        <button className="plan-card__btn" onClick={() => navigate("/register")}>
                             Assinar
                         </button>
                     </div>
                 </div>
             </div>
-            {/*
-            <div style={{backgroundColor: '#006A42'}}>
-                <div className='fourth-card-container'>
-                    <div style={{color: 'white', fontSize: '250%', fontWeight: 'bolder', marginBottom: '10px'}}>Junte-se
-                        a nós
-                    </div>
-                    <div style={{color: 'white', fontSize: '120%', fontWeight: 'bold', marginBottom: '10px'}}>Ofereça um
-                        atendimento rápido e moderno com um
-                    </div>
-                    <div style={{color: 'white', fontSize: '100%'}}>cardápio digital interativo.</div>
-                </div>
+            <section className="seo-text-section">
+                <h2>TableTrack: cardápio digital para atendimento mais moderno</h2>
+                <p>
+                    O TableTrack é uma plataforma para cardápio digital com QR Code e gestão de pedidos.
+                    Ideal para restaurantes, bares, cafeterias e lanchonetes que querem melhorar o atendimento,
+                    organizar os pedidos e facilitar a experiência do cliente.
+                </p>
+                <p>
+                    Com o TableTrack, seu estabelecimento pode oferecer acesso ao cardápio pelo celular,
+                    gerar QR Code por mesa, receber pedidos em um painel próprio ou encaminhar pedidos estruturados pelo
+                    WhatsApp.
+                </p>
+            </section>
 
-            </div>
-
-*/}
             <footer>
                 <p style={{marginLeft: '10px'}}>Table Track</p>
                 <div style={{display: 'flex'}}>
@@ -297,11 +433,12 @@ function Home() {
                     >
                         termos de serviço
                     </div>
+
                     <div
                         style={{fontSize: "60%", marginLeft: "10px", cursor: "pointer"}}
                         onClick={() => navigate("/privacy")}
                     >
-                        politica de privacidade
+                        política de privacidade
                     </div>
 
                     <div
@@ -310,15 +447,14 @@ function Home() {
                     >
                         Contate-nos
                     </div>
-                    <div style={{fontSize: '60%', marginLeft: '10px', marginRight: '10px'}}>Table Track 2025. All rights
-                        reserved
+
+                    <div style={{fontSize: '60%', marginLeft: '10px', marginRight: '10px'}}>
+                        Table Track 2026. All rights reserved
                     </div>
                 </div>
-
             </footer>
 
             {showContactModal && <ContactModal onClose={() => setShowContactModal(false)}/>}
-
         </div>
     );
 }

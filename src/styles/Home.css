@@ -20,7 +20,9 @@ header.header {
 
 }
 
-
+.first-card__right img {
+    filter: drop-shadow(0px 25px 40px rgba(0,0,0,0.35));
+}
 
 .first-card.first-card--hero {
     width: 100%;
@@ -1126,6 +1128,159 @@ footer {
 
 }
 
+.hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.hero-badges span {
+    background: rgba(20, 166, 107, 0.10);
+    color: #0f7e55;
+    border: 1px solid rgba(20, 166, 107, 0.18);
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.features-section {
+    padding: 90px 80px;
+    background: #f8f9fa;
+}
+
+.features-header {
+    text-align: center;
+    max-width: 820px;
+    margin: 0 auto 40px auto;
+}
+
+.features-header h2 {
+    font-size: 42px;
+    color: #7A786F;
+    margin-bottom: 12px;
+}
+
+.features-header p {
+    font-size: 18px;
+    color: #8A887F;
+    line-height: 1.6;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.feature-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 26px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.feature-card h3 {
+    margin: 0 0 10px 0;
+    color: #2f5444;
+    font-size: 22px;
+}
+
+.feature-card p {
+    margin: 0;
+    color: #6e6b63;
+    line-height: 1.6;
+    font-size: 15px;
+}
+
+.business-types-section {
+    padding: 70px 80px;
+    background: #ffffff;
+    text-align: center;
+}
+
+.business-types-section h2 {
+    font-size: 40px;
+    color: #7A786F;
+    margin-bottom: 28px;
+}
+
+.business-types-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+}
+
+.business-types-grid span {
+    padding: 12px 18px;
+    border-radius: 999px;
+    background: #eef7f2;
+    color: #0f7e55;
+    font-weight: 600;
+    border: 1px solid rgba(20, 166, 107, 0.15);
+}
+
+.seo-text-section {
+    padding: 80px;
+    background: #f5f5f0;
+    max-width: 100%;
+}
+
+.seo-text-section h2 {
+    font-size: 36px;
+    color: #5f5d57;
+    margin-bottom: 18px;
+    text-align: center;
+}
+
+.seo-text-section p {
+    max-width: 920px;
+    margin: 0 auto 16px auto;
+    font-size: 17px;
+    line-height: 1.7;
+    color: #6d6a61;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .hero-badges {
+        gap: 8px;
+    }
+
+    .hero-badges span {
+        font-size: 12px;
+        padding: 7px 12px;
+    }
+
+    .features-section,
+    .business-types-section,
+    .seo-text-section {
+        padding: 50px 20px;
+    }
+
+    .features-header h2,
+    .business-types-section h2,
+    .seo-text-section h2 {
+        font-size: 28px;
+    }
+
+    .features-header p,
+    .seo-text-section p {
+        font-size: 15px;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .feature-card h3 {
+        font-size: 20px;
+    }
+}
+
 /*endregion*/
 
 /* =========================
@@ -1286,11 +1441,74 @@ footer {
 
 /* Título entra antes */
 .plans.is-visible .plans-title { transition-delay: 80ms; }
+/* =========================
+   ANIMAÇÃO FEATURES
+   ========================= */
 
+.features-section .features-header h2,
+.features-section .features-header p,
+.features-section .feature-card {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.features-section.is-visible .features-header h2,
+.features-section.is-visible .features-header p,
+.features-section.is-visible .feature-card {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.features-section.is-visible .features-header h2 {
+    transition-delay: 80ms;
+}
+
+.features-section.is-visible .features-header p {
+    transition-delay: 180ms;
+}
+
+.features-section.is-visible .features-grid .feature-card:nth-child(1) { transition-delay: 220ms; }
+.features-section.is-visible .features-grid .feature-card:nth-child(2) { transition-delay: 320ms; }
+.features-section.is-visible .features-grid .feature-card:nth-child(3) { transition-delay: 420ms; }
+.features-section.is-visible .features-grid .feature-card:nth-child(4) { transition-delay: 520ms; }
+.features-section.is-visible .features-grid .feature-card:nth-child(5) { transition-delay: 620ms; }
+.features-section.is-visible .features-grid .feature-card:nth-child(6) { transition-delay: 720ms; }
+
+/* =========================
+   ANIMAÇÃO BUSINESS TYPES
+   ========================= */
+
+.business-types-section h2,
+.business-types-section .business-types-grid span {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 650ms ease, transform 650ms ease;
+}
+
+.business-types-section.is-visible h2,
+.business-types-section.is-visible .business-types-grid span {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.business-types-section.is-visible h2 {
+    transition-delay: 80ms;
+}
+
+.business-types-section.is-visible .business-types-grid span:nth-child(1) { transition-delay: 180ms; }
+.business-types-section.is-visible .business-types-grid span:nth-child(2) { transition-delay: 260ms; }
+.business-types-section.is-visible .business-types-grid span:nth-child(3) { transition-delay: 340ms; }
+.business-types-section.is-visible .business-types-grid span:nth-child(4) { transition-delay: 420ms; }
+.business-types-section.is-visible .business-types-grid span:nth-child(5) { transition-delay: 500ms; }
+.business-types-section.is-visible .business-types-grid span:nth-child(6) { transition-delay: 580ms; }
 /* Acessibilidade */
 @media (prefers-reduced-motion: reduce) {
-    .plans .plans-title,
-    .plans .plan-card {
+    .features-section .features-header h2,
+    .features-section .features-header p,
+    .features-section .feature-card,
+    .business-types-section h2,
+    .business-types-section .business-types-grid span {
         transition: none !important;
         transform: none !important;
         opacity: 1 !important;
