@@ -45,7 +45,7 @@ function AppRoutes() {
                     <Route path="/Orders" element={<Orders />} />
                     <Route path="/Catalog/:establishmentID" element={<Catalog />} />
                     <Route path="/catalog-whatsapp/:establishmentID" element={<CatalogWhatsapp />} />
-                    <Route path="/catalog-vintage/:establishmentID" element={<VintageCatalog />} />
+                    <Route path="/catalog-vintage/:establishmentSlug" element={<VintageCatalog />} />
 
                     <Route
                         path="/dashboard"

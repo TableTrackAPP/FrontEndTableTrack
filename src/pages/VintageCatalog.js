@@ -44,7 +44,7 @@ const ArrowIcon = () => (
 );
 
 const VintageCatalog = () => {
-    const { establishmentID } = useParams();
+    const { establishmentSlug } = useParams();
     const {
         establishment,
         productGroups,
@@ -58,7 +58,7 @@ const VintageCatalog = () => {
         catalogError,
         addToCart,
         removeFromCart,
-    } = useWhatsappCatalog(establishmentID);
+    } = useWhatsappCatalog(establishmentSlug, 'slug');
 
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [showProductCartModal, setShowProductCartModal] = useState(false);

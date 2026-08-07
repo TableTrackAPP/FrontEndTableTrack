@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useToast } from './ToastContext';
 import { useLoading } from './LoadingContext';
-import { getEstablishment } from '../services/establishmentService';
+import {
+    getEstablishment,
+    getEstablishmentByCatalogSlug,
+} from '../services/establishmentService';
 import { getProductsByEstablishmentId } from '../services/productsService';
 import { getProductGroupsByEstablishmentId } from '../services/productGroupsService';
 
@@ -16,7 +19,23 @@ const normalizeProduct = (product) => {
     };
 };
 
-const useWhatsappCatalog = (establishmentID) => {
+const getCatalogEstablishment = async (establishmentIdentifier, lookupMode) => {
+    if (lookupMode !== 'slug') {
+        return getEstablishment(establishmentIdentifier);
+    }
+
+    try {
+        return await getEstablishmentByCatalogSlug(establishmentIdentifier);
+    } catch (error) {
+        if (error?.response?.status === 404) {
+            return getEstablishment(establishmentIdentifier);
+        }
+
+        throw error;
+    }
+};
+
+const useWhatsappCatalog = (establishmentIdentifier, lookupMode = 'id') => {
     const [establishment, setEstablishment] = useState(null);
     const [productGroups, setProductGroups] = useState([ALL_PRODUCTS_GROUP]);
     const [products, setProducts] = useState([]);
@@ -46,10 +65,19 @@ const useWhatsappCatalog = (establishmentID) => {
                 setCatalogError('');
                 showLoading('Carregando produtos...');
 
-                const [establishmentData, productGroupsData, productsData] = await Promise.all([
-                    getEstablishment(establishmentID),
-                    getProductGroupsByEstablishmentId(establishmentID),
-                    getProductsByEstablishmentId(establishmentID),
+                const establishmentData = await getCatalogEstablishment(
+                    establishmentIdentifier,
+                    lookupMode,
+                );
+                const resolvedEstablishmentID = establishmentData?.EstablishmentID;
+
+                if (!resolvedEstablishmentID) {
+                    throw new Error('Estabelecimento sem identificador válido.');
+                }
+
+                const [productGroupsData, productsData] = await Promise.all([
+                    getProductGroupsByEstablishmentId(resolvedEstablishmentID),
+                    getProductsByEstablishmentId(resolvedEstablishmentID),
                 ]);
 
                 if (!isCurrentRequest) return;
@@ -67,12 +95,12 @@ const useWhatsappCatalog = (establishmentID) => {
             }
         };
 
-        if (establishmentID) fetchCatalogData();
+        if (establishmentIdentifier) fetchCatalogData();
 
         return () => {
             isCurrentRequest = false;
         };
-    }, [establishmentID, hideLoading, showLoading, showToast]);
+    }, [establishmentIdentifier, hideLoading, lookupMode, showLoading, showToast]);
 
     const addToCart = useCallback((product) => {
         setCart((currentCart) => [...currentCart, product]);

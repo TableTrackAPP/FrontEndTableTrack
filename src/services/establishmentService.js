@@ -22,6 +22,18 @@ export const getEstablishment = async (establishmentID) => {
     }
 };
 
+export const getEstablishmentByCatalogSlug = async (catalogSlug) => {
+    try {
+        const response = await axios.get(
+            `${API_URL}/by-catalog-slug/${encodeURIComponent(catalogSlug)}`
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao obter o estabelecimento pelo slug do catálogo:', error);
+        throw error;
+    }
+};
+
 // Função para obter um estabelecimento pelo ID
 export const getEstablishmentByOwnerID = async (OwnerID) => {
     try {

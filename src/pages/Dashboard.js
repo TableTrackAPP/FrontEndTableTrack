@@ -12,6 +12,7 @@ import NotificationListener from '../components/NotificationListener';
 import CatalogImage from '../assets/Dashboard4.png';
 import CatalogOrder from '../assets/Dashboard6.png';
 import CatalogWhatsappImage from '../assets/Dashboard5.png';
+import CatalogBrechoImage from '../assets/Dashboard7.png';
 import ProductsImage from '../assets/Dashboard2.png';
 import StablishmentImage from '../assets/Dashboard1.png';
 import OrdersImage from '../assets/Dashboard3.png';
@@ -40,9 +41,15 @@ const Dashboard = () => {
     const [pageReady, setPageReady] = useState(false);
     const [showCatalogChoiceModal, setShowCatalogChoiceModal] = useState(false);
     const [showWhatsAppCatalogModal, setShowWhatsAppCatalogModal] = useState(false);
+    const [showBrechoCatalogModal, setShowBrechoCatalogModal] = useState(false);
     const buildWhatsAppCatalogUrl = () => {
         if (!establishmentID) return '';
         return `/catalog-whatsapp/${establishmentID}`;
+    };
+    const buildBrechoCatalogUrl = () => {
+        const catalogIdentifier = establishment?.CatalogSlug || establishmentID;
+        if (!catalogIdentifier) return '';
+        return `/catalog-vintage/${encodeURIComponent(catalogIdentifier)}`;
     };
     useEffect(() => {
         const fetchUserAndEstablishment = async () => {
@@ -150,6 +157,14 @@ const Dashboard = () => {
     };
     const goToWhatsAppCatalog = () => {
         const url = buildWhatsAppCatalogUrl();
+        if (!url) {
+            showToast('Estabelecimento não encontrado.', 'error');
+            return;
+        }
+        navigate(url);
+    };
+    const goToBrechoCatalog = () => {
+        const url = buildBrechoCatalogUrl();
         if (!url) {
             showToast('Estabelecimento não encontrado.', 'error');
             return;
@@ -346,7 +361,11 @@ const Dashboard = () => {
         try {
             setIsGeneratingQR(true);
 
-            const url = mode === 'whatsapp' ? buildWhatsAppCatalogUrl() : buildCatalogUrl();
+            const url = mode === 'whatsapp'
+                ? buildWhatsAppCatalogUrl()
+                : mode === 'brecho'
+                    ? buildBrechoCatalogUrl()
+                    : buildCatalogUrl();
             if (!url) {
                 showToast('Estabelecimento não encontrado.', 'error');
                 return;
@@ -394,8 +413,22 @@ const Dashboard = () => {
         setShowWhatsAppCatalogModal(true);
     };
 
+    const openBrechoCatalogModalFromChoice = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setShowCatalogChoiceModal(false);
+        setQrDataUrl(null);
+        setQrBaseDataUrl(null);
+        setShowBrechoCatalogModal(true);
+    };
+
     const closeWhatsAppCatalogModal = () => {
         setShowWhatsAppCatalogModal(false);
+        setQrDataUrl(null);
+        setQrBaseDataUrl(null);
+    };
+
+    const closeBrechoCatalogModal = () => {
+        setShowBrechoCatalogModal(false);
         setQrDataUrl(null);
         setQrBaseDataUrl(null);
     };
@@ -647,7 +680,87 @@ const Dashboard = () => {
                                     </button>
                                 );
                             })()}
+
+                            {(() => {
+                                const hasWhatsApp = Boolean(establishment?.WhatsAppNumber);
+                                return (
+                                    <button
+                                        type="button"
+                                        className={`tt-choice-card ${!hasWhatsApp ? 'tt-choice-card--disabled' : ''}`}
+                                        onClick={() => {
+                                            if (!hasWhatsApp) {
+                                                showToast('Configure o WhatsApp do estabelecimento na tela "Seu estabelecimento".', 'warning');
+                                                return;
+                                            }
+                                            openBrechoCatalogModalFromChoice();
+                                        }}
+                                        disabled={!hasWhatsApp}
+                                    >
+                                        <img src={CatalogBrechoImage} alt="WhatsApp para Brechó" className="tt-choice-img" />
+                                        <div className="tt-choice-body">
+                                            <h4 className="tt-choice-title">WhatsApp para Brechó</h4>
+                                            <p className="tt-choice-desc">Catálogo com visual de brechó e pedidos enviados pelo WhatsApp.</p>
+
+                                            {!hasWhatsApp ? (
+                                                <span className="tt-choice-warning">
+                                                    Configure o WhatsApp em “Seu estabelecimento”
+                                                </span>
+                                            ) : (
+                                                <span className="tt-choice-cta">Selecionar</span>
+                                            )}
+                                        </div>
+                                    </button>
+                                );
+                            })()}
                         </div>
+                    </div>
+                </div>
+            )}
+            {showBrechoCatalogModal && (
+                <div className="tt-modal-backdrop">
+                    <div className="tt-modal">
+                        <h3 style={{ marginTop: 0 }}>WhatsApp para Brechó</h3>
+
+                        <div className="tt-actions">
+                            <button className="btn-card" onClick={goToBrechoCatalog}>
+                                Ir para catálogo
+                            </button>
+
+                            <button
+                                className="btn-card"
+                                onClick={() => generateQRCode('brecho')}
+                                disabled={isGeneratingQR}
+                            >
+                                {isGeneratingQR ? 'Gerando...' : 'Gerar QR Code'}
+                            </button>
+
+                            <button className="btn-card btn-ghost" onClick={closeBrechoCatalogModal}>
+                                Fechar
+                            </button>
+                        </div>
+
+                        {qrDataUrl && (
+                            <div className="tt-qr-wrapper">
+                                <img src={qrDataUrl} alt="QR Code do catálogo para brechó" className="tt-qr-image" />
+                                <a
+                                    className="tt-download"
+                                    href={qrDataUrl}
+                                    download="qrcode-whatsapp-brecho.png"
+                                >
+                                    Baixar QR Code
+                                </a>
+                                <p className="tt-url-hint">
+                                    URL: <code>{window.location.origin + buildBrechoCatalogUrl()}</code>
+                                </p>
+                            </div>
+                        )}
+
+                        {qrBaseDataUrl && (
+                            <div className="tt-variant-actions">
+                                <button className="tt-btn tt-btn-light" onClick={showNormalQR}>Normal</button>
+                                <button className="tt-btn tt-btn-logo" onClick={showLogoQR}>Com logo</button>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
