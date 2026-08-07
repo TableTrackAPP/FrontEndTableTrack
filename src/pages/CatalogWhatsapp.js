@@ -1,74 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useToast } from '../hooks/ToastContext';
-import { getEstablishment } from '../services/establishmentService';
-import { getProductsByEstablishmentId } from '../services/productsService';
-import { getProductGroupsByEstablishmentId } from '../services/productGroupsService';
 import ProductCartModal from '../components/ProductCartModal';
 import CartModalWhatsapp from '../components/CartModalWhatsapp';
+import useWhatsappCatalog from '../hooks/useWhatsappCatalog';
 import './../styles/Catalog.css';
-import { useLoading } from "../hooks/LoadingContext";
 
 const CatalogWhatsapp = () => {
     const { establishmentID } = useParams();
 
-    const [establishment, setEstablishment] = useState(null);
-    const [productGroups, setProductGroups] = useState([]);
-    const [products, setProducts] = useState([]);
-    const [cart, setCart] = useState([]);
-
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [showProductCartModal, setShowProductCartModal] = useState(false);
     const [showCartModal, setShowCartModal] = useState(false);
-
-    const { showToast } = useToast();
-    const [selectedGroupID, setSelectedGroupID] = useState('all');
-    const [justAddedId, setJustAddedId] = useState(null);
-    const [cartPing, setCartPing] = useState(false);
-
-    const { showLoading, hideLoading } = useLoading();
-
-    useEffect(() => {
-        const fetchCatalogData = async () => {
-            try {
-                showLoading('Carregando produtos...');
-
-                const establishmentData = await getEstablishment(establishmentID);
-                setEstablishment(establishmentData);
-
-                const productGroupsData = await getProductGroupsByEstablishmentId(establishmentID);
-                const todosGroup = { GroupID: 'all', GroupName: 'Todos' };
-                setProductGroups([todosGroup, ...productGroupsData]);
-
-                const productsData = await getProductsByEstablishmentId(establishmentID);
-                setProducts(
-                    productsData.map((product) => ({
-                        ...product,
-                        Price: parseFloat(product.Price),
-                    }))
-                );
-            } catch (error) {
-                showToast('Erro ao carregar dados do catálogo.', 'error');
-            } finally {
-                hideLoading();
-            }
-        };
-
-        if (establishmentID) fetchCatalogData();
-    }, [establishmentID, showToast, showLoading, hideLoading]);
-
-    const addToCart = (product) => {
-        setCart(prev => [...prev, product]);
-        setJustAddedId(product.ProductID);
-        setTimeout(() => setJustAddedId(null), 900);
-        setCartPing(true);
-        setTimeout(() => setCartPing(false), 700);
-    };
-
-    const removeFromCart = (index) => {
-        setCart(cart.filter((_, i) => i !== index));
-        showToast('Produto removido do carrinho.', 'info');
-    };
+    const {
+        establishment,
+        productGroups,
+        products,
+        cart,
+        setCart,
+        selectedGroupID,
+        setSelectedGroupID,
+        justAddedId,
+        cartPing,
+        addToCart,
+        removeFromCart,
+    } = useWhatsappCatalog(establishmentID);
 
     return (
         <div style={{ padding: '20px' }}>

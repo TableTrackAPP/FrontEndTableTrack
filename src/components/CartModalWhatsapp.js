@@ -39,6 +39,15 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart }) =
         }
     }, [cart.length, customerName, errorMsg]);
 
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape') onHide();
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [onHide]);
+
     const normalizePhone = (phone) => (phone || '').replace(/\D/g, '');
 
     const buildWhatsAppMessage = () => {
@@ -113,8 +122,13 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart }) =
 
     return (
         <div className="modal-overlay">
-            <div className="cart-modal-box">
-                <h2 className="cart-modal-title">Carrinho (WhatsApp)</h2>
+            <div
+                className="cart-modal-box"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="whatsapp-cart-title"
+            >
+                <h2 className="cart-modal-title" id="whatsapp-cart-title">Carrinho (WhatsApp)</h2>
 
                 {/* ALERTA NO MODAL */}
                 {errorMsg && (
@@ -139,6 +153,7 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart }) =
                     type="text"
                     className="cart-modal-input"
                     placeholder="Nome do cliente (Obrigatório)"
+                    aria-label="Nome do cliente"
                     value={customerName}
                     onChange={(e) => {
                         setCustomerName(e.target.value);
@@ -151,6 +166,7 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart }) =
                     type="text"
                     className="cart-modal-input"
                     placeholder="Contato do cliente (opcional)"
+                    aria-label="Contato do cliente"
                     value={customerPhone}
                     onChange={(e) => setCustomerPhone(e.target.value)}
                 />
@@ -158,6 +174,7 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart }) =
                 <textarea
                     className="cart-modal-textarea"
                     placeholder="Observações do pedido..."
+                    aria-label="Observações do pedido"
                     value={observation}
                     onChange={(e) => setObservation(e.target.value)}
                 />
