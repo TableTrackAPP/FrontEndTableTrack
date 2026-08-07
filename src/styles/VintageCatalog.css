@@ -822,6 +822,15 @@
     border-color: var(--vintage-border);
 }
 
+.vintage-catalog .cart-modal-address {
+    border-color: var(--vintage-border);
+}
+
+.vintage-catalog .cart-modal-address legend,
+.vintage-catalog .cart-modal-address-grid label {
+    color: var(--vintage-muted);
+}
+
 .vintage-catalog .cart-modal-total {
     color: var(--vintage-olive);
 }

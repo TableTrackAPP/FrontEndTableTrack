@@ -6,6 +6,10 @@ import { useLoading } from '../hooks/LoadingContext';
 const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart }) => {
     const [customerName, setCustomerName] = useState('');
     const [customerPhone, setCustomerPhone] = useState('');
+    const [addressState, setAddressState] = useState('');
+    const [addressCity, setAddressCity] = useState('');
+    const [addressNeighborhood, setAddressNeighborhood] = useState('');
+    const [addressLine, setAddressLine] = useState('');
     const [observation, setObservation] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
 
@@ -50,6 +54,14 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart }) =
 
     const normalizePhone = (phone) => (phone || '').replace(/\D/g, '');
 
+    const handleObservationChange = (event) => {
+        const textarea = event.target;
+        setObservation(textarea.value);
+
+        textarea.style.height = 'auto';
+        textarea.style.height = `${Math.min(Math.max(textarea.scrollHeight, 128), 260)}px`;
+    };
+
     const buildWhatsAppMessage = () => {
         const estName = establishment?.EstablishmentName || 'Estabelecimento';
         const lines = [];
@@ -72,6 +84,34 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart }) =
 
         lines.push('');
         lines.push(`*Total:* R$ ${total.toFixed(2)}`);
+
+        const hasAddress = [
+            addressState,
+            addressCity,
+            addressNeighborhood,
+            addressLine,
+        ].some((value) => value.trim());
+
+        if (hasAddress) {
+            lines.push('');
+            lines.push('*Endereço:*');
+
+            if (addressLine.trim()) {
+                lines.push(addressLine.trim());
+            }
+
+            if (addressNeighborhood.trim()) {
+                lines.push(`Bairro: ${addressNeighborhood.trim()}`);
+            }
+
+            const cityAndState = [addressCity.trim(), addressState.trim()]
+                .filter(Boolean)
+                .join(' - ');
+
+            if (cityAndState) {
+                lines.push(cityAndState);
+            }
+        }
 
         if (observation.trim()) {
             lines.push('');
@@ -171,12 +211,67 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart }) =
                     onChange={(e) => setCustomerPhone(e.target.value)}
                 />
 
+                <fieldset className="cart-modal-address">
+                    <legend>Endereço de entrega (opcional)</legend>
+
+                    <div className="cart-modal-address-grid">
+                        <label>
+                            <span>Estado</span>
+                            <input
+                                type="text"
+                                className="cart-modal-input"
+                                placeholder="Ex.: São Paulo"
+                                value={addressState}
+                                onChange={(e) => setAddressState(e.target.value)}
+                                autoComplete="address-level1"
+                            />
+                        </label>
+
+                        <label>
+                            <span>Cidade</span>
+                            <input
+                                type="text"
+                                className="cart-modal-input"
+                                placeholder="Ex.: Campinas"
+                                value={addressCity}
+                                onChange={(e) => setAddressCity(e.target.value)}
+                                autoComplete="address-level2"
+                            />
+                        </label>
+
+                        <label>
+                            <span>Bairro</span>
+                            <input
+                                type="text"
+                                className="cart-modal-input"
+                                placeholder="Ex.: Centro"
+                                value={addressNeighborhood}
+                                onChange={(e) => setAddressNeighborhood(e.target.value)}
+                                autoComplete="address-level3"
+                            />
+                        </label>
+
+                        <label className="cart-modal-address-line">
+                            <span>Endereço</span>
+                            <input
+                                type="text"
+                                className="cart-modal-input"
+                                placeholder="Rua, número e complemento"
+                                value={addressLine}
+                                onChange={(e) => setAddressLine(e.target.value)}
+                                autoComplete="street-address"
+                            />
+                        </label>
+                    </div>
+                </fieldset>
+
                 <textarea
                     className="cart-modal-textarea"
                     placeholder="Observações do pedido..."
                     aria-label="Observações do pedido"
                     value={observation}
-                    onChange={(e) => setObservation(e.target.value)}
+                    onChange={handleObservationChange}
+                    rows={5}
                 />
 
                 <div className="cart-modal-buttons">
