@@ -15,6 +15,7 @@ const normalizeProduct = (product) => {
 
     return {
         ...product,
+        RawPrice: product.Price,
         Price: Number.isFinite(parsedPrice) ? parsedPrice : 0,
     };
 };
@@ -44,10 +45,17 @@ const useWhatsappCatalog = (establishmentIdentifier, lookupMode = 'id') => {
     const [justAddedId, setJustAddedId] = useState(null);
     const [cartPing, setCartPing] = useState(false);
     const [catalogError, setCatalogError] = useState('');
+    const [catalogStatus, setCatalogStatus] = useState('loading');
+    const [requestVersion, setRequestVersion] = useState(0);
+    const retryCatalog = useCallback(() => setRequestVersion((version) => version + 1), []);
     const feedbackTimers = useRef([]);
 
     const { showToast } = useToast();
     const { showLoading, hideLoading } = useLoading();
+    // ToastProvider recreates its callback when a toast changes. This must not
+    // restart the catalog request (especially after a failed request).
+    const showToastRef = useRef(showToast);
+    useEffect(() => { showToastRef.current = showToast; }, [showToast]);
 
     useEffect(() => {
         const timers = feedbackTimers.current;
@@ -61,8 +69,10 @@ const useWhatsappCatalog = (establishmentIdentifier, lookupMode = 'id') => {
         let isCurrentRequest = true;
 
         const fetchCatalogData = async () => {
+            let establishmentResolved = false;
             try {
                 setCatalogError('');
+                setCatalogStatus('loading');
                 showLoading('Carregando produtos...');
 
                 const establishmentData = await getCatalogEstablishment(
@@ -74,6 +84,7 @@ const useWhatsappCatalog = (establishmentIdentifier, lookupMode = 'id') => {
                 if (!resolvedEstablishmentID) {
                     throw new Error('Estabelecimento sem identificador válido.');
                 }
+                establishmentResolved = true;
 
                 const [productGroupsData, productsData] = await Promise.all([
                     getProductGroupsByEstablishmentId(resolvedEstablishmentID),
@@ -85,11 +96,13 @@ const useWhatsappCatalog = (establishmentIdentifier, lookupMode = 'id') => {
                 setEstablishment(establishmentData);
                 setProductGroups([ALL_PRODUCTS_GROUP, ...(productGroupsData || [])]);
                 setProducts((productsData || []).map(normalizeProduct));
+                setCatalogStatus('ready');
             } catch (error) {
                 if (!isCurrentRequest) return;
 
                 setCatalogError('Não foi possível carregar este catálogo agora.');
-                showToast('Erro ao carregar dados do catálogo.', 'error');
+                setCatalogStatus(!establishmentResolved && error?.response?.status === 404 ? 'not-found' : 'error');
+                showToastRef.current('Erro ao carregar dados do catálogo.', 'error');
             } finally {
                 hideLoading();
             }
@@ -100,7 +113,7 @@ const useWhatsappCatalog = (establishmentIdentifier, lookupMode = 'id') => {
         return () => {
             isCurrentRequest = false;
         };
-    }, [establishmentIdentifier, hideLoading, lookupMode, showLoading, showToast]);
+    }, [establishmentIdentifier, hideLoading, lookupMode, requestVersion, showLoading]);
 
     const addToCart = useCallback((product) => {
         setCart((currentCart) => [...currentCart, product]);
@@ -129,6 +142,8 @@ const useWhatsappCatalog = (establishmentIdentifier, lookupMode = 'id') => {
         justAddedId,
         cartPing,
         catalogError,
+        catalogStatus,
+        retryCatalog,
         addToCart,
         removeFromCart,
     };

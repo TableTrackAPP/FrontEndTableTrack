@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import SpaOutlined from '@mui/icons-material/SpaOutlined';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '../hooks/ToastContext';
 import { getFromLocalStorage } from '../utils/storageUtils';
@@ -42,6 +43,12 @@ const Dashboard = () => {
     const [showCatalogChoiceModal, setShowCatalogChoiceModal] = useState(false);
     const [showWhatsAppCatalogModal, setShowWhatsAppCatalogModal] = useState(false);
     const [showBrechoCatalogModal, setShowBrechoCatalogModal] = useState(false);
+    const [showAutomotiveCatalogModal, setShowAutomotiveCatalogModal] = useState(false);
+    const [showSeedsCatalogModal, setShowSeedsCatalogModal] = useState(false);
+    const buildSeedsCatalogUrl = () => {
+        if (!establishmentID) return '';
+        return `/catalog-sementes/${encodeURIComponent(establishmentID)}`;
+    };
     const buildWhatsAppCatalogUrl = () => {
         if (!establishmentID) return '';
         return `/catalog-whatsapp/${establishmentID}`;
@@ -50,6 +57,10 @@ const Dashboard = () => {
         const catalogIdentifier = establishment?.CatalogSlug || establishmentID;
         if (!catalogIdentifier) return '';
         return `/catalog-vintage/${encodeURIComponent(catalogIdentifier)}`;
+    };
+    const buildAutomotiveCatalogUrl = () => {
+        if (!establishmentID) return '';
+        return `/catalog-automotivo/${establishmentID}`;
     };
     useEffect(() => {
         const fetchUserAndEstablishment = async () => {
@@ -165,6 +176,22 @@ const Dashboard = () => {
     };
     const goToBrechoCatalog = () => {
         const url = buildBrechoCatalogUrl();
+        if (!url) {
+            showToast('Estabelecimento não encontrado.', 'error');
+            return;
+        }
+        navigate(url);
+    };
+    const goToAutomotiveCatalog = () => {
+        const url = buildAutomotiveCatalogUrl();
+        if (!url) {
+            showToast('Estabelecimento não encontrado.', 'error');
+            return;
+        }
+        navigate(url);
+    };
+    const goToSeedsCatalog = () => {
+        const url = buildSeedsCatalogUrl();
         if (!url) {
             showToast('Estabelecimento não encontrado.', 'error');
             return;
@@ -365,6 +392,10 @@ const Dashboard = () => {
                 ? buildWhatsAppCatalogUrl()
                 : mode === 'brecho'
                     ? buildBrechoCatalogUrl()
+                    : mode === 'automotive'
+                        ? buildAutomotiveCatalogUrl()
+                    : mode === 'seeds'
+                        ? buildSeedsCatalogUrl()
                     : buildCatalogUrl();
             if (!url) {
                 showToast('Estabelecimento não encontrado.', 'error');
@@ -421,6 +452,21 @@ const Dashboard = () => {
         setShowBrechoCatalogModal(true);
     };
 
+    const openAutomotiveCatalogModalFromChoice = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setShowCatalogChoiceModal(false);
+        setQrDataUrl(null);
+        setQrBaseDataUrl(null);
+        setShowAutomotiveCatalogModal(true);
+    };
+    const openSeedsCatalogModalFromChoice = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setShowCatalogChoiceModal(false);
+        setQrDataUrl(null);
+        setQrBaseDataUrl(null);
+        setShowSeedsCatalogModal(true);
+    };
+
     const closeWhatsAppCatalogModal = () => {
         setShowWhatsAppCatalogModal(false);
         setQrDataUrl(null);
@@ -429,6 +475,17 @@ const Dashboard = () => {
 
     const closeBrechoCatalogModal = () => {
         setShowBrechoCatalogModal(false);
+        setQrDataUrl(null);
+        setQrBaseDataUrl(null);
+    };
+
+    const closeAutomotiveCatalogModal = () => {
+        setShowAutomotiveCatalogModal(false);
+        setQrDataUrl(null);
+        setQrBaseDataUrl(null);
+    };
+    const closeSeedsCatalogModal = () => {
+        setShowSeedsCatalogModal(false);
         setQrDataUrl(null);
         setQrBaseDataUrl(null);
     };
@@ -712,7 +769,175 @@ const Dashboard = () => {
                                     </button>
                                 );
                             })()}
+
+                            {(() => {
+                                const hasWhatsApp = Boolean(establishment?.WhatsAppNumber);
+                                return (
+                                    <button
+                                        type="button"
+                                        className={`tt-choice-card ${!hasWhatsApp ? 'tt-choice-card--disabled' : ''}`}
+                                        onClick={() => {
+                                            if (!hasWhatsApp) {
+                                                showToast('Configure o WhatsApp do estabelecimento na tela "Seu estabelecimento".', 'warning');
+                                                return;
+                                            }
+                                            openAutomotiveCatalogModalFromChoice();
+                                        }}
+                                        disabled={!hasWhatsApp}
+                                    >
+                                        <div className="tt-choice-automotive-preview" aria-hidden="true">
+                                            <span>CATÁLOGO</span>
+                                            <strong>AUTO</strong>
+                                            <i />
+                                        </div>
+                                        <div className="tt-choice-body">
+                                            <h4 className="tt-choice-title">WhatsApp Automotivo</h4>
+                                            <p className="tt-choice-desc">Visual premium para peças e acessórios, com pedidos pelo WhatsApp.</p>
+
+                                            {!hasWhatsApp ? (
+                                                <span className="tt-choice-warning">
+                                                    Configure o WhatsApp em “Seu estabelecimento”
+                                                </span>
+                                            ) : (
+                                                <span className="tt-choice-cta">Selecionar</span>
+                                            )}
+                                        </div>
+                                    </button>
+                                );
+                            })()}
+
+                            {(() => {
+                                const hasWhatsApp = Boolean(establishment?.WhatsAppNumber);
+                                return (
+                                    <button
+                                        type="button"
+                                        className={`tt-choice-card ${!hasWhatsApp ? 'tt-choice-card--disabled' : ''}`}
+                                        onClick={() => {
+                                            if (!hasWhatsApp) {
+                                                showToast('Configure o WhatsApp do estabelecimento na tela "Seu estabelecimento".', 'warning');
+                                                return;
+                                            }
+                                            openSeedsCatalogModalFromChoice();
+                                        }}
+                                        disabled={!hasWhatsApp}
+                                    >
+                                        <div className="tt-choice-seeds-preview" aria-hidden="true">
+                                            <span>CATÁLOGO</span>
+                                            <strong>Sementes</strong>
+                                            <SpaOutlined />
+                                        </div>
+                                        <div className="tt-choice-body">
+                                            <h4 className="tt-choice-title">WhatsApp para Sementes</h4>
+                                            <p className="tt-choice-desc">Catálogo de sementes para pastagens, com pedidos pelo WhatsApp.</p>
+
+                                            {!hasWhatsApp ? (
+                                                <span className="tt-choice-warning">
+                                                    Configure o WhatsApp em “Seu estabelecimento”
+                                                </span>
+                                            ) : (
+                                                <span className="tt-choice-cta">Selecionar</span>
+                                            )}
+                                        </div>
+                                    </button>
+                                );
+                            })()}
                         </div>
+                    </div>
+                </div>
+            )}
+            {showAutomotiveCatalogModal && (
+                <div className="tt-modal-backdrop">
+                    <div className="tt-modal">
+                        <h3 style={{ marginTop: 0 }}>WhatsApp Automotivo</h3>
+
+                        <div className="tt-actions">
+                            <button className="btn-card" onClick={goToAutomotiveCatalog}>
+                                Ir para catálogo
+                            </button>
+
+                            <button
+                                className="btn-card"
+                                onClick={() => generateQRCode('automotive')}
+                                disabled={isGeneratingQR}
+                            >
+                                {isGeneratingQR ? 'Gerando...' : 'Gerar QR Code'}
+                            </button>
+
+                            <button className="btn-card btn-ghost" onClick={closeAutomotiveCatalogModal}>
+                                Fechar
+                            </button>
+                        </div>
+
+                        {qrDataUrl && (
+                            <div className="tt-qr-wrapper">
+                                <img src={qrDataUrl} alt="QR Code do catálogo automotivo" className="tt-qr-image" />
+                                <a
+                                    className="tt-download"
+                                    href={qrDataUrl}
+                                    download="qrcode-whatsapp-automotivo.png"
+                                >
+                                    Baixar QR Code
+                                </a>
+                                <p className="tt-url-hint">
+                                    URL: <code>{window.location.origin + buildAutomotiveCatalogUrl()}</code>
+                                </p>
+                            </div>
+                        )}
+
+                        {qrBaseDataUrl && (
+                            <div className="tt-variant-actions">
+                                <button className="tt-btn tt-btn-light" onClick={showNormalQR}>Normal</button>
+                                <button className="tt-btn tt-btn-logo" onClick={showLogoQR}>Com logo</button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+            {showSeedsCatalogModal && (
+                <div className="tt-modal-backdrop">
+                    <div className="tt-modal">
+                        <h3 style={{ marginTop: 0 }}>WhatsApp para Sementes</h3>
+
+                        <div className="tt-actions">
+                            <button className="btn-card" onClick={goToSeedsCatalog}>
+                                Ir para catálogo
+                            </button>
+
+                            <button
+                                className="btn-card"
+                                onClick={() => generateQRCode('seeds')}
+                                disabled={isGeneratingQR}
+                            >
+                                {isGeneratingQR ? 'Gerando...' : 'Gerar QR Code'}
+                            </button>
+
+                            <button className="btn-card btn-ghost" onClick={closeSeedsCatalogModal}>
+                                Fechar
+                            </button>
+                        </div>
+
+                        {qrDataUrl && (
+                            <div className="tt-qr-wrapper">
+                                <img src={qrDataUrl} alt="QR Code do catálogo de sementes" className="tt-qr-image" />
+                                <a
+                                    className="tt-download"
+                                    href={qrDataUrl}
+                                    download="qrcode-whatsapp-sementes.png"
+                                >
+                                    Baixar QR Code
+                                </a>
+                                <p className="tt-url-hint">
+                                    URL: <code>{window.location.origin + buildSeedsCatalogUrl()}</code>
+                                </p>
+                            </div>
+                        )}
+
+                        {qrBaseDataUrl && (
+                            <div className="tt-variant-actions">
+                                <button className="tt-btn tt-btn-light" onClick={showNormalQR}>Normal</button>
+                                <button className="tt-btn tt-btn-logo" onClick={showLogoQR}>Com logo</button>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}

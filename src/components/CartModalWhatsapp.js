@@ -3,7 +3,7 @@ import '../styles/Modal.css';
 import { useToast } from '../hooks/ToastContext';
 import { useLoading } from '../hooks/LoadingContext';
 
-const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart }) => {
+const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart, formatItemPrice, totalLabel, showDeliveryAddress = true }) => {
     const [customerName, setCustomerName] = useState('');
     const [customerPhone, setCustomerPhone] = useState('');
     const [addressState, setAddressState] = useState('');
@@ -24,6 +24,7 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart }) =
             const key = item.ProductID;
             if (!map.has(key)) {
                 map.set(key, {
+                    product: item,
                     ProductID: item.ProductID,
                     ProductName: item.ProductName,
                     unitPrice: item.Price,
@@ -79,11 +80,11 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart }) =
 
         groupedItems.forEach((it) => {
             const itemTotal = it.unitPrice * it.qty;
-            lines.push(`- ${it.qty}x ${it.ProductName} — R$ ${itemTotal.toFixed(2)}`);
+            lines.push(`- ${it.qty}x ${it.ProductName} — ${formatItemPrice ? formatItemPrice(it.product, it.qty) : `R$ ${itemTotal.toFixed(2)}`}`);
         });
 
         lines.push('');
-        lines.push(`*Total:* R$ ${total.toFixed(2)}`);
+        lines.push(`*Total:* ${totalLabel ?? `R$ ${total.toFixed(2)}`}`);
 
         const hasAddress = [
             addressState,
@@ -92,7 +93,7 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart }) =
             addressLine,
         ].some((value) => value.trim());
 
-        if (hasAddress) {
+        if (showDeliveryAddress && hasAddress) {
             lines.push('');
             lines.push('*Endereço:*');
 
@@ -181,13 +182,13 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart }) =
                     {cart.map((item, index) => (
                         <li key={`${item.ProductID}-${index}`} className="cart-modal-item">
                             <span>{item.ProductName}</span>
-                            <span style={{ marginLeft: 'auto' }}>R$ {item.Price.toFixed(2)}</span>
-                            <button className="cart-modal-remove" onClick={() => onRemove(index)}>✕</button>
+                            <span style={{ marginLeft: 'auto' }}>{formatItemPrice ? formatItemPrice(item) : `R$ ${item.Price.toFixed(2)}`}</span>
+                            <button className="cart-modal-remove" onClick={() => onRemove(index)} aria-label={`Remover ${item.ProductName}`}>✕</button>
                         </li>
                     ))}
                 </ul>
 
-                <h3 className="cart-modal-total">Total: R$ {total.toFixed(2)}</h3>
+                <h3 className="cart-modal-total">Total: {totalLabel ?? `R$ ${total.toFixed(2)}`}</h3>
 
                 <input
                     type="text"
@@ -211,7 +212,7 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart }) =
                     onChange={(e) => setCustomerPhone(e.target.value)}
                 />
 
-                <fieldset className="cart-modal-address">
+                {showDeliveryAddress && <fieldset className="cart-modal-address">
                     <legend>Endereço de entrega (opcional)</legend>
 
                     <div className="cart-modal-address-grid">
@@ -263,7 +264,7 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart }) =
                             />
                         </label>
                     </div>
-                </fieldset>
+                </fieldset>}
 
                 <textarea
                     className="cart-modal-textarea"

@@ -1,0 +1,73 @@
+.seeds-catalog { --forest: #123524; --green: #1e4d34; --cream: #f4f0e4; --paper: #fbf8ef; --straw: #c89b3c; --border: #ded6c4; min-height: 100vh; background: var(--cream); color: #183326; font-family: 'Roboto', 'Helvetica', Arial, sans-serif; }
+.seeds-catalog * { box-sizing: border-box; }
+.seeds-catalog button, .seeds-catalog input { font: inherit; }
+.seeds-catalog button, .seeds-catalog a { -webkit-tap-highlight-color: transparent; }
+.seeds-catalog button { cursor: pointer; }
+.seeds-catalog button:disabled { opacity: .55; cursor: default; }
+.seeds-catalog :is(button, a, input, textarea):focus-visible { outline: 3px solid #ad7f27; outline-offset: 4px; }
+.seeds-catalog h1, .seeds-catalog h2, .seeds-catalog h3, .seeds-catalog p { margin: 0; }
+.seeds-catalog h1, .seeds-catalog h2 { font-family: Georgia, 'Times New Roman', serif; font-weight: 500; }
+.seeds-container { width: min(1600px, calc(100% - 80px)); margin-inline: auto; }
+.seeds-header { display: block; background: var(--forest); color: #fffdf8; }
+.seeds-header-main { display: grid; grid-template-columns: minmax(200px, 1fr) minmax(240px, 1.6fr) auto; gap: 40px; align-items: center; padding-block: 16px; }
+.seeds-brand { display: flex; gap: 12px; align-items: center; color: inherit; text-decoration: none; font: 600 24px Georgia, serif; overflow-wrap: anywhere; }
+.seeds-brand svg { color: #d6b56c; font-size: 38px; flex-shrink: 0; }
+.seeds-search { display: flex; align-items: center; gap: 10px; background: #fffdf8; color: #667067; border-radius: 6px; padding: 4px 14px; }
+.seeds-search input { width: 100%; min-width: 0; height: 42px; border: 0; background: transparent; color: #183326; }
+.seeds-search button { border: 0; background: none; font-size: 25px; min-width: 44px; min-height: 44px; color: var(--forest); }
+.seeds-cart { display: flex; align-items: center; gap: 12px; background: transparent; color: inherit; border: 0; min-height: 48px; text-align: left; }
+.seeds-cart span { font-size: 12px; }.seeds-cart strong { display: block; font-size: 15px; margin-top: 4px; }.seeds-cart b { background: #cfac5e; color: var(--forest); border-radius: 50%; min-width: 25px; padding: 4px; text-align: center; }
+.seeds-nav { justify-content: center; display: flex; gap: 28px; overflow-x: auto; border-top: 1px solid #ffffff24; scrollbar-width: thin; }
+.seeds-nav button { flex-shrink: 0; border: 0; border-bottom: 3px solid transparent; background: none; color: #fffdf8; padding: 10px 16px; min-height: 48px; }
+.seeds-nav button[aria-pressed=true] { color: #e8c982; border-color: var(--straw); }
+/* Theme artwork is decorative; product imagery always comes from the catalog. */
+.seeds-hero { position: relative; isolation: isolate; overflow: hidden; display: flex; align-items: center; min-height: 350px; margin: 0 0 12px; background: linear-gradient(90deg, rgba(5,31,17,.9), rgba(8,36,19,.58) 42%, rgba(8,36,19,.06) 78%), url('../assets/seeds-pasture-hero.jpg') center 58% / cover; color: #fffdf8; }
+.seeds-hero-copy { position: relative; z-index: 1; padding: 34px max(40px, calc((100% - 1520px) / 2)); width: 100%; }
+.seeds-eyebrow { text-transform: uppercase; font-size: 11px; letter-spacing: 1.8px; font-weight: 700; color: #6e4b2a; }
+.seeds-hero .seeds-eyebrow { color: #e1c585; }.seeds-hero h1 { font-size: clamp(36px, 4.2vw, 60px); font-weight: 700; max-width: 650px; line-height: 1.04; margin-block: 12px 16px; overflow-wrap: anywhere; }
+.seeds-hero p { color: #eee9da; line-height: 1.7; max-width: 560px; margin-bottom: 28px; white-space: pre-line; }
+.seeds-button { min-height: 46px; display: inline-flex; align-items: center; justify-content: center; gap: 16px; background: var(--forest); color: #fffdf8; border: 1px solid var(--forest); border-radius: 5px; padding: 12px 18px; font-weight: 600 !important; transition: background .18s; }
+.seeds-button:hover { background: var(--green); }.seeds-button-gold { background: #c89b3c; color: #123524; border-color: #c89b3c; }.seeds-button-gold:hover { background: #e1c585; }
+.seeds-section-title { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 20px; }.seeds-section-title h2 { font-size: clamp(27px, 3vw, 34px); margin-top: 7px; overflow-wrap: anywhere; }.seeds-section-title > span { color: #667067; font-size: 14px; }
+.seeds-group-list { display: grid; grid-auto-columns: minmax(210px, 1fr); grid-auto-flow: column; gap: 14px; overflow-x: auto; padding: 4px 3px 8px; scrollbar-width: thin; }
+.seeds-group { min-height: 166px; position: relative; isolation: isolate; overflow: hidden; display: flex; align-items: end; justify-content: space-between; gap: 16px; text-align: left; border: 2px solid transparent; border-radius: 8px; padding: 18px; background: linear-gradient(0deg, rgba(10,40,22,.96), rgba(10,40,22,.18)), url('../assets/seeds-pasture-hero.jpg') center 75% / cover; color: #fffdf8; }
+.seeds-group[aria-pressed=true] { border-color: #c89b3c; box-shadow: 0 0 0 2px var(--cream), 0 0 0 3px #ad7f27; }.seeds-group small { display: block; font-size: 11px; color: #ead6a7; margin-top: 6px; }.seeds-group > svg:last-child { color: #e1c585; flex-shrink: 0; }.seeds-group > span { overflow-wrap: anywhere; }.seeds-group .seeds-group-leaf { display: none; }.seeds-group > span { font-size: 18px; font-weight: 600; }.seeds-group > svg:last-child { border-radius: 50%; background: #c89b3c; color: #123524; padding: 6px; width: 34px; height: 34px; }.seeds-group small { font-weight: 400; }
+.seeds-products { padding-top: 22px; scroll-margin-top: 20px; outline: none; }.seeds-results { font-size: 14px; color: #667067; padding-bottom: 24px; }.seeds-clear { background: transparent; border: 0; text-decoration: underline; color: var(--forest); min-height: 44px; }
+.seeds-product-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.seeds-product { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); grid-template-rows: 1fr auto; gap: 8px 14px; padding: 8px; border: 1px solid var(--border); border-radius: 10px; background: var(--paper); overflow: hidden; transition: transform .18s, box-shadow .18s, border-color .18s; }
+.seeds-product:hover { transform: translateY(-3px); box-shadow: 0 8px 20px #1235240d; border-color: #9da990; }.seeds-product.seeds-added { border-color: #1e4d34; }
+.seeds-product-image { align-self: stretch; border-radius: 6px; overflow: hidden; display: block; width: 100%; border: 0; padding: 0; background: #fffdf8; }.seeds-image { aspect-ratio: 1.15; display: grid; place-items: center; background: #f0ecdf; }.seeds-image img { width: 100%; height: 100%; min-height: 0; object-fit: contain; padding: 16px; background: #fffdf8; }.seeds-image.loading img { opacity: 0; }.seeds-image-fallback { color: #667067; font-size: 12px; display: grid; justify-items: center; gap: 12px; padding: 20px; }.seeds-image-fallback svg { font-size: 45px; color: #72866a; }
+.seeds-product-info { min-width: 0; display: flex; flex-direction: column; padding: 12px 4px 8px 0; }.seeds-product-group { font-size: 11px; color: #6e4b2a; margin-bottom: 8px; }.seeds-product h3 { font-family: Georgia, 'Times New Roman', serif; font-size: 19px; line-height: 1.4; overflow-wrap: anywhere; }.seeds-product-info p { color: #667067; font-size: 13px; line-height: 1.6; margin-top: 10px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }.seeds-price { color: #382b19; display: block; padding-top: 20px; margin-top: auto; font-size: 23px; }
+.seeds-product-actions { grid-column: 1 / -1; padding: 0 2px 4px; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 12px; }.seeds-details { background: transparent; border: 0; text-align: left; color: #536148; font-size: 13px !important; min-height: 44px; padding: 0; text-decoration: underline; }.seeds-product-actions .seeds-button { width: 100%; justify-content: space-between; }
+.seeds-product-image .seeds-image { height: 100%; min-height: 225px; aspect-ratio: auto; }
+.seeds-product-image .seeds-image img { padding: 8px; }.seeds-quantity { display: flex; justify-content: space-between; align-items: center; border: 1px solid #72866a; border-radius: 5px; min-height: 48px; }.seeds-quantity button { min-width: 44px; min-height: 46px; background: transparent; border: 0; color: var(--forest); font-size: 24px; }.seeds-quantity span { text-align: center; font-weight: bold; }.seeds-quantity small { display: block; font-size: 10px; font-weight: normal; }
+.seeds-state { border: 1px solid var(--border); border-radius: 10px; padding: 48px 20px; text-align: center; background: var(--paper); }.seeds-state p { margin: 16px 0 22px; color: #667067; }.seeds-state > svg { color: #72866a; margin-bottom: 16px; }
+.seeds-footer { background: transparent; align-items: center; display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--border); padding: 30px 0; margin-top: 56px; font-size: 14px; }.seeds-footer a { color: var(--forest); min-height: 44px; }.seeds-sr-only, .seeds-skip:not(:focus) { position: absolute; height: 1px; width: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }.seeds-skip:focus { position: absolute; z-index: 2000; padding: 14px; background: #fffdf8; color: var(--forest); }
+/* Existing dialogs keep their behavior. These overrides apply only inside this catalog. */
+.seeds-catalog .product-cart-modal-content, .seeds-catalog .cart-modal-box { background: var(--paper); color: var(--forest); border: 1px solid var(--border); width: min(560px, calc(100% - 24px)); max-height: 90dvh; overflow-y: auto; border-radius: 12px; }
+.seeds-catalog .product-cart-modal-content h2, .seeds-catalog .cart-modal-title { color: var(--forest); padding-right: 30px; }.seeds-catalog .product-cart-image { object-fit: contain; max-height: 280px; }.seeds-catalog .product-cart-image:not([src]), .seeds-catalog .product-cart-image[src=""] { display: none; }
+.seeds-catalog .product-cart-add-button, .seeds-catalog .cart-modal-btn.finalize { background: var(--forest); color: #fffdf8; }.seeds-catalog .cart-modal-total { color: var(--forest); }.seeds-catalog .cart-modal-input, .seeds-catalog .cart-modal-textarea { border-color: var(--border); background: #fffdf8; }.seeds-catalog .cart-modal-remove { min-height: 44px; min-width: 44px; }.seeds-catalog .cart-modal-item { flex-wrap: wrap; }.seeds-catalog .product-cart-close-button { min-width: 44px; min-height: 44px; }.seeds-catalog .cart-modal-buttons { flex-wrap: wrap; }
+@media (max-width: 1199px) { .seeds-header-main { gap: 20px; }.seeds-product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }.seeds-cart span { display: none; }.seeds-hero-copy { width: 100%; padding: 36px; } }
+@media (max-width: 720px) { .seeds-container { width: calc(100% - 32px); }.seeds-header-main { grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding-block: 14px; }.seeds-brand { font-size: 21px; }.seeds-brand svg { font-size: 28px; }.seeds-search { grid-row: 2; grid-column: 1 / -1; }.seeds-nav { justify-content: flex-start; gap: 12px; }.seeds-nav button { padding-block: 10px; font-size: 13px; }.seeds-hero { margin: 0 0 12px; min-height: 280px; }.seeds-hero-copy { width: 100%; padding: 26px; }.seeds-hero p { font-size: 14px; }.seeds-hero h1 { font-size: 36px; }.seeds-hero .seeds-eyebrow { font-size: 9px; }.seeds-product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }.seeds-product { display: flex; flex-direction: column; padding: 7px; gap: 0; }.seeds-product-info { flex: 1; padding: 12px 5px 0; }.seeds-product-image .seeds-image { min-height: 0; height: auto; aspect-ratio: 1; }.seeds-product h3 { font-size: 16px; }.seeds-product-actions { display: grid; grid-template-columns: 1fr; gap: 2px; padding: 4px 5px 8px; }.seeds-price { font-size: 21px; }.seeds-product-actions .seeds-button { padding-inline: 12px; font-size: 14px; }.seeds-products { padding-top: 26px; }.seeds-group-list { grid-auto-columns: 210px; }.seeds-group { min-height: 130px; }.seeds-section-title > span { display: none; }.seeds-catalog { padding-bottom: 80px; }.seeds-footer { margin-top: 32px; }.seeds-catalog .cart-modal-box { padding: 20px; } }
+@media (max-width: 359px) { .seeds-product-grid { grid-template-columns: minmax(0, 1fr); }.seeds-hero-copy { padding: 22px; }.seeds-hero h1 { font-size: 30px; } }
+@media (prefers-reduced-motion: reduce) { .seeds-catalog *, .seeds-catalog *::before, .seeds-catalog *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }.seeds-product:hover { transform: none; } }
+
+.seeds-catalog { padding-bottom: 100px; }
+.seeds-floating-cart { position: fixed; z-index: 30; right: 24px; bottom: calc(24px + env(safe-area-inset-bottom)); display: flex; align-items: center; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: calc(100vw - 32px); min-height: 54px; padding: 14px 22px; border: 1px solid #72866a; border-radius: 32px; background: var(--forest); color: #fffdf8; box-shadow: 0 6px 22px #12352430; }
+.seeds-floating-cart strong { font-size: 14px; }
+@media (max-width: 720px) { .seeds-floating-cart { right: 16px; bottom: calc(16px + env(safe-area-inset-bottom)); padding: 12px 18px; }.seeds-floating-cart strong { max-width: 150px; text-align: center; }.seeds-price { overflow-wrap: anywhere; } }
+
+.seeds-brand-image {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--paper);
+    border: 2px solid #d6b56c;
+    box-shadow: 0 2px 8px #00000020;
+}
+
+@media (max-width: 720px) {
+    .seeds-brand-image { width: 40px; height: 40px; }
+}

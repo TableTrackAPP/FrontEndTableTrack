@@ -12,6 +12,8 @@ import Orders from '../pages/Orders';
 import Catalog from '../pages/Catalog';
 import CatalogWhatsapp from '../pages/CatalogWhatsapp';
 import VintageCatalog from '../pages/VintageCatalog';
+import AutomotiveCatalog from '../pages/AutomotiveCatalog';
+import SeedsCatalog from '../pages/SeedsCatalog';
 import Dashboard from '../pages/Dashboard';
 import ServicesTerms from '../pages/ServicesTerms';
 import PrivacyPolicy from '../pages/PrivacyPolicy';
@@ -46,6 +48,8 @@ function AppRoutes() {
                     <Route path="/Catalog/:establishmentID" element={<Catalog />} />
                     <Route path="/catalog-whatsapp/:establishmentID" element={<CatalogWhatsapp />} />
                     <Route path="/catalog-vintage/:establishmentSlug" element={<VintageCatalog />} />
+                    <Route path="/catalog-automotivo/:establishmentID" element={<AutomotiveCatalog />} />
+                    <Route path="/catalog-sementes/:establishmentID" element={<SeedsCatalog />} />
 
                     <Route
                         path="/dashboard"
