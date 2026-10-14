@@ -1,4 +1,4 @@
-import ProductCover from '../components/ProductCover';
+import ProductCardGallery from '../components/ProductCardGallery';
 import ProductDescription from '../components/ProductDescription';
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -113,10 +113,8 @@ const CatalogWhatsapp = () => {
                             .filter(product => selectedGroupID === 'all' || product.GroupID === selectedGroupID)
                             .map(product => (
                                 <div className="catalog-product-card" key={product.ProductID}>
-                                    <ProductCover product={product}
-                                        alt={product.ProductName}
-                                        className="catalog-product-image"
-                                    />
+                                    <ProductCardGallery product={product} className="catalog-product-image"
+                                        onOpen={() => { setSelectedProduct(product); setShowProductCartModal(true); }} />
 
                                     <div className={`catalog-added-badge ${justAddedId === product.ProductID ? 'show' : ''}`}>
                                         ✓ Adicionado

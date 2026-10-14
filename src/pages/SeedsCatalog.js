@@ -1,3 +1,4 @@
+import ProductCardGallery from '../components/ProductCardGallery';
 import ProductCover from '../components/ProductCover';
 import { productCoverUrl } from '../utils/productImages';
 import { descriptionText } from '../utils/productDescription';
@@ -157,7 +158,7 @@ function SeedsCatalogView({ establishmentID }) {
                             const quantity = counts[product.ProductID] || 0;
                             const group = productGroups.find((item) => item.GroupID === product.GroupID);
                             return <article className={`seeds-product ${justAddedId === product.ProductID ? 'seeds-added' : ''}`} key={product.ProductID}>
-                                <button type="button" className="seeds-product-image" onClick={() => setSelectedProduct(product)} aria-label={`Ver detalhes de ${product.ProductName}`}><ProductImage key={productCoverUrl(product) || product.ProductID} product={product} /></button>
+                                <ProductCardGallery product={product} className="seeds-product-image" onOpen={() => setSelectedProduct(product)} renderImage={photo => <ProductImage key={productCoverUrl(photo) || photo.ProductID} product={photo} />} />
                                 <div className="seeds-product-info">{group && <span className="seeds-product-group">{group.GroupName}</span>}<h3>{product.ProductName}</h3>{product.Description && <ProductDescription value={product.Description} />}<strong className="seeds-price">{formatSeedsPrice(product)}</strong></div>
                                 <div className="seeds-product-actions"><button type="button" className="seeds-details" onClick={() => setSelectedProduct(product)}>Ver detalhes</button>
                                     {quantity > 0 ? <div className="seeds-quantity" role="group" aria-label={`Quantidade de ${product.ProductName}`}><button type="button" onClick={() => removeOne(product)} aria-label={`Remover uma unidade de ${product.ProductName}`}>−</button><span aria-live="polite">{quantity}<small>no pedido</small></span><button type="button" onClick={() => addToCart(product)} aria-label={`Adicionar uma unidade de ${product.ProductName}`}>+</button></div>

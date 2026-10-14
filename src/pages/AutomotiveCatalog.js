@@ -1,4 +1,4 @@
-import ProductCover from '../components/ProductCover';
+import ProductCardGallery from '../components/ProductCardGallery';
 import { productCoverUrl } from '../utils/productImages';
 import { descriptionText } from '../utils/productDescription';
 import ProductDescription from '../components/ProductDescription';
@@ -325,25 +325,9 @@ const AutomotiveCatalog = () => {
                                     className={`automotive-product-card ${justAddedId === product.ProductID ? 'was-added' : ''}`}
                                     key={product.ProductID}
                                 >
-                                    <button
-                                        type="button"
-                                        className="automotive-product-visual"
-                                        onClick={() => openProductDetails(product)}
-                                        aria-label={`Ver detalhes de ${product.ProductName}`}
-                                    >
-                                        {productCoverUrl(product) ? (
-                                            <ProductCover product={product}
-                                                alt={product.ProductName}
-                                                loading="lazy"
-                                                decoding="async"
-                                            />
-                                        ) : (
-                                            <span className="automotive-image-placeholder">
-                                                <span aria-hidden="true">{brandInitials}</span>
-                                                Imagem não disponível
-                                            </span>
-                                        )}
-                                        <span className={`automotive-added-badge ${justAddedId === product.ProductID ? 'is-visible' : ''}`}>
+                                    <ProductCardGallery product={product} className="automotive-product-visual"
+                                        onOpen={() => openProductDetails(product)}>
+                                    <span className={`automotive-added-badge ${justAddedId === product.ProductID ? 'is-visible' : ''}`}>
                                             <CheckRounded aria-hidden="true" /> Adicionado
                                         </span>
                                         {quantityInCart > 0 && (
@@ -351,7 +335,7 @@ const AutomotiveCatalog = () => {
                                                 {quantityInCart} no pedido
                                             </span>
                                         )}
-                                    </button>
+                                    </ProductCardGallery>
 
                                     <div className="automotive-product-info">
                                         <h3>{product.ProductName}</h3>

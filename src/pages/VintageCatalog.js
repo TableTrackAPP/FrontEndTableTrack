@@ -1,4 +1,4 @@
-import ProductCover from '../components/ProductCover';
+import ProductCardGallery from '../components/ProductCardGallery';
 import { productCoverUrl } from '../utils/productImages';
 import { descriptionText } from '../utils/productDescription';
 import ProductDescription from '../components/ProductDescription';
@@ -285,24 +285,12 @@ const VintageCatalog = () => {
                                 className={`vintage-product-card ${justAddedId === product.ProductID ? 'was-added' : ''}`}
                                 key={product.ProductID}
                             >
-                                <button
-                                    className="vintage-product-visual"
-                                    type="button"
-                                    onClick={() => openProductDetails(product)}
-                                    aria-label={`Ver detalhes de ${product.ProductName}`}
-                                >
-                                    {productCoverUrl(product) ? (
-                                        <ProductCover product={product} alt={product.ProductName} />
-                                    ) : (
-                                        <span className="vintage-image-placeholder">
-                                            <span aria-hidden="true">TT</span>
-                                            Imagem não disponível
-                                        </span>
-                                    )}
+                                <ProductCardGallery product={product} className="vintage-product-visual"
+                                        onOpen={() => openProductDetails(product)}>
                                     <span className={`vintage-added-badge ${justAddedId === product.ProductID ? 'is-visible' : ''}`}>
                                         Adicionado
                                     </span>
-                                </button>
+                                </ProductCardGallery>
 
                                 <div className="vintage-product-info">
                                     <div className="vintage-product-main">
