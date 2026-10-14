@@ -1,3 +1,4 @@
+import DescriptionEditor from './DescriptionEditor';
 import React, { useState, useEffect } from 'react';
 import '../styles/Modal.css';
 import { uploadImage } from '../services/firebaseService'; // Importa o serviço de upload
@@ -57,9 +58,8 @@ const ProductModal = ({ show, onHide, product, onSave, productGroups }) => {
                 <label>Nome do Produto</label>
                 <input className="modal-input" value={productName} onChange={(e) => setProductName(e.target.value)}/>
 
-                <label>Descrição</label>
-                <textarea className="modal-textarea" value={description}
-                          onChange={(e) => setDescription(e.target.value)}/>
+                <label id="product-description-label">Descrição</label>
+                <DescriptionEditor value={description} onChange={setDescription} />
 
                 <label>Preço</label>
                 <input className="modal-input" type="number" value={price} onChange={(e) => setPrice(e.target.value)}/>

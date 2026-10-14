@@ -335,7 +335,7 @@
     font-style: normal;
 }
 
-.automotive-hero-copy > p {
+.automotive-hero-copy > p, .automotive-hero-copy > .formatted-description {
     max-width: 620px;
     margin: 0;
     color: #babbbd;
@@ -828,7 +828,7 @@
     line-height: 1.35;
 }
 
-.automotive-product-info p {
+.automotive-product-info p, .automotive-product-info .formatted-description {
     display: -webkit-box;
     margin: 9px 0 16px;
     overflow: hidden;
@@ -1218,7 +1218,7 @@
         font-size: 0.9rem;
     }
 
-    .automotive-product-info p {
+    .automotive-product-info p, .automotive-product-info .formatted-description {
         font-size: 0.74rem;
     }
 

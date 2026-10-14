@@ -1,3 +1,5 @@
+import { descriptionText } from '../utils/productDescription';
+import ProductDescription from '../components/ProductDescription';
 import React, { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
@@ -72,7 +74,7 @@ const VintageCatalog = () => {
         return products.filter((product) => {
             const matchesGroup = selectedGroupID === 'all' || product.GroupID === selectedGroupID;
             const searchableContent = normalizeSearchText(
-                `${product.ProductName || ''} ${product.Description || ''}`,
+                `${product.ProductName || ''} ${descriptionText(product.Description)}`,
             );
             const matchesSearch = !normalizedSearch || searchableContent.includes(normalizedSearch);
 
@@ -129,7 +131,7 @@ const VintageCatalog = () => {
         <main className="vintage-catalog">
             <Helmet>
                 <title>{catalogName} | Catálogo</title>
-                <meta name="description" content={pageDescription} />
+                <meta name="description" content={descriptionText(pageDescription)} />
             </Helmet>
 
             {showProductCartModal && selectedProduct && (
@@ -186,7 +188,7 @@ const VintageCatalog = () => {
                 <div className="vintage-hero-copy">
                     <span className="vintage-eyebrow">Curadoria de {catalogName}</span>
                     <h1 id="vintage-hero-title">Bem vindo ao {catalogName}</h1>
-                    <p>{pageDescription}</p>
+                    <ProductDescription value={pageDescription} />
                     {establishment?.Address && (
                         <span className="vintage-address">{establishment.Address}</span>
                     )}
@@ -305,7 +307,7 @@ const VintageCatalog = () => {
                                         <h3>{product.ProductName}</h3>
                                         <strong>{currencyFormatter.format(product.Price)}</strong>
                                     </div>
-                                    {product.Description && <p>{product.Description}</p>}
+                                    {product.Description && <ProductDescription value={product.Description} />}
                                 </div>
 
                                 <div className="vintage-product-actions">

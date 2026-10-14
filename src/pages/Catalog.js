@@ -1,3 +1,4 @@
+import ProductDescription from '../components/ProductDescription';
 import React, { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useToast } from '../hooks/ToastContext';
@@ -111,7 +112,7 @@ const Catalog = () => {
                     </div>
 
                     <div className="catalog-establishment-right">
-                        <p>{establishment?.Description || 'Sem descrição disponível.'}</p>
+                        <ProductDescription value={establishment?.Description || 'Sem descrição disponível.'} />
 
                     </div>
                 </div>
@@ -184,7 +185,7 @@ const Catalog = () => {
 
                                     <div className="catalog-product-content">
                                         <h3 className="catalog-product-title">{product.ProductName}</h3>
-                                        <p className="catalog-product-description">{product.Description}</p>
+                                        <ProductDescription className="catalog-product-description" value={product.Description} />
                                         <p className="catalog-product-price">R$ {product.Price.toFixed(2)}</p>
                                     </div>
 

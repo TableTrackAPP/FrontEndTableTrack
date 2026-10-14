@@ -1,3 +1,4 @@
+import DescriptionEditor from '../components/DescriptionEditor';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '../hooks/ToastContext';
@@ -312,13 +313,13 @@ const Establishment = () => {
                             </div>
 
                             <div className="form-group">
-                                <label>Descrição</label>
-                                <textarea
-                                    name="Description"
+                                <label id="establishment-description-label" htmlFor="establishment-description-editor">Descrição</label>
+                                <DescriptionEditor
+                                    id="establishment-description-editor"
+                                    labelledBy="establishment-description-label"
                                     value={establishment.Description}
-                                    onChange={handleChange}
-                                    rows="4"
-                                ></textarea>
+                                    onChange={Description => setEstablishment(previous => ({ ...previous, Description }))}
+                                />
                             </div>
 
                             {/* WhatsApp com combobox + input, mas salva tudo no WhatsAppNumber */}

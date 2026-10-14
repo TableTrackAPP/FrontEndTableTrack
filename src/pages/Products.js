@@ -1,3 +1,4 @@
+import ProductDescription from '../components/ProductDescription';
 import React, { useEffect, useState } from 'react';
 import { useToast } from '../hooks/ToastContext';
 import { useLoading } from '../hooks/LoadingContext'; // Importa o contexto de Loading
@@ -282,7 +283,7 @@ const Products = () => {
                             />
                             <div className="product-content">
                                 <h3 className="product-title">{product.ProductName}</h3>
-                                <p className="product-description">{product.Description}</p>
+                                <ProductDescription className="product-description" value={product.Description} />
                                 <p className="product-price">R$ {product.Price}</p>
                             </div>
                             <div className="product-actions">

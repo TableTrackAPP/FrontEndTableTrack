@@ -250,7 +250,8 @@
     color: #333;
 }
 
-.catalog-establishment-right p {
+.catalog-establishment-right > p,
+.catalog-establishment-right > .formatted-description {
     font-size: 14px;
     color: #555;
     margin-bottom: 20px;

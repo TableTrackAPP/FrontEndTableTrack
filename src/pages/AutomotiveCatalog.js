@@ -1,3 +1,5 @@
+import { descriptionText } from '../utils/productDescription';
+import ProductDescription from '../components/ProductDescription';
 import React, { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import {
@@ -61,7 +63,7 @@ const AutomotiveCatalog = () => {
     const filteredProducts = useMemo(() => products.filter((product) => {
         const matchesGroup = selectedGroupID === 'all' || product.GroupID === selectedGroupID;
         const searchableContent = normalizeSearchText(
-            `${product.ProductName || ''} ${product.Description || ''}`,
+            `${product.ProductName || ''} ${descriptionText(product.Description)}`,
         );
 
         return matchesGroup && (!normalizedSearch || searchableContent.includes(normalizedSearch));
@@ -119,7 +121,7 @@ const AutomotiveCatalog = () => {
         <main className="automotive-catalog">
             <Helmet>
                 <title>{catalogName} | Catálogo automotivo</title>
-                <meta name="description" content={pageDescription} />
+                <meta name="description" content={descriptionText(pageDescription)} />
             </Helmet>
 
             {showProductCartModal && selectedProduct && (
@@ -211,7 +213,7 @@ const AutomotiveCatalog = () => {
                     <h1 id="automotive-hero-title">
                         Encontre o que seu <em>veículo precisa</em>
                     </h1>
-                    <p>{pageDescription}</p>
+                    <ProductDescription value={pageDescription} />
                     <div className="automotive-hero-actions">
                         <button type="button" className="automotive-primary-button" onClick={scrollToProducts}>
                             Ver produtos
@@ -352,7 +354,7 @@ const AutomotiveCatalog = () => {
 
                                     <div className="automotive-product-info">
                                         <h3>{product.ProductName}</h3>
-                                        {product.Description && <p>{product.Description}</p>}
+                                        {product.Description && <ProductDescription value={product.Description} />}
                                         <strong>{currencyFormatter.format(product.Price)}</strong>
                                     </div>
 

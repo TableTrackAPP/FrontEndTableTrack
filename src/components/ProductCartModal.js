@@ -1,3 +1,4 @@
+import ProductDescription from './ProductDescription';
 import React, { useEffect } from 'react';
 import '../styles/Catalog.css';
 
@@ -30,7 +31,7 @@ const ProductCartModal = ({ product, show, onHide, onAddToCart, renderImage, pri
                     alt={product.ProductName}
                     className="product-cart-image"
                 />}
-                <p><strong>Descrição:</strong> {product.Description}</p>
+                <div><strong>Descrição:</strong><ProductDescription value={product.Description} /></div>
                 <p><strong>Preço:</strong> {priceLabel ?? `R$ ${product.Price.toFixed(2)}`}</p>
                 <button
                     className="product-cart-add-button"

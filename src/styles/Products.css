@@ -324,7 +324,11 @@
 
 .modal-textarea {
     resize: none;
-    height: 80px;
+    height: 140px;
+    min-height: 140px;
+    max-height: 140px;
+    flex-shrink: 0;
+    overflow-y: auto;
 }
 
 .modal-image-preview img {

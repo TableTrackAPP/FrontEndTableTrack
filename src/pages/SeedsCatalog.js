@@ -1,3 +1,5 @@
+import { descriptionText } from '../utils/productDescription';
+import ProductDescription from '../components/ProductDescription';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
@@ -66,7 +68,7 @@ function SeedsCatalogView({ establishmentID }) {
     const selectedGroup = productGroups.find((group) => group.GroupID === selectedGroupID);
     const filteredProducts = useMemo(() => products.filter((product) =>
         (selectedGroupID === 'all' || product.GroupID === selectedGroupID)
-        && normalize(`${product.ProductName || ''} ${product.Description || ''}`).includes(normalize(search.trim()))
+        && normalize(`${product.ProductName || ''} ${descriptionText(product.Description)}`).includes(normalize(search.trim()))
     ), [products, selectedGroupID, search]);
     const counts = useMemo(() => cart.reduce((result, product) => {
         result[product.ProductID] = (result[product.ProductID] || 0) + 1;
@@ -126,7 +128,7 @@ function SeedsCatalogView({ establishmentID }) {
                 <section className="seeds-hero" aria-labelledby="seeds-title">
                     <div className="seeds-hero-copy"><span className="seeds-eyebrow">Catálogo de sementes e pastagens</span>
                         <h1 id="seeds-title">{name}</h1>
-                        {description && <p>{description}</p>}
+                        {description && <ProductDescription value={description} />}
                         <button type="button" className="seeds-button seeds-button-gold" onClick={goToProducts}>Ver produtos <ArrowForwardRounded aria-hidden="true" /></button>
                     </div>
 
@@ -154,7 +156,7 @@ function SeedsCatalogView({ establishmentID }) {
                             const group = productGroups.find((item) => item.GroupID === product.GroupID);
                             return <article className={`seeds-product ${justAddedId === product.ProductID ? 'seeds-added' : ''}`} key={product.ProductID}>
                                 <button type="button" className="seeds-product-image" onClick={() => setSelectedProduct(product)} aria-label={`Ver detalhes de ${product.ProductName}`}><ProductImage key={product.ImageURL || product.ProductID} product={product} /></button>
-                                <div className="seeds-product-info">{group && <span className="seeds-product-group">{group.GroupName}</span>}<h3>{product.ProductName}</h3>{product.Description && <p>{product.Description}</p>}<strong className="seeds-price">{formatSeedsPrice(product)}</strong></div>
+                                <div className="seeds-product-info">{group && <span className="seeds-product-group">{group.GroupName}</span>}<h3>{product.ProductName}</h3>{product.Description && <ProductDescription value={product.Description} />}<strong className="seeds-price">{formatSeedsPrice(product)}</strong></div>
                                 <div className="seeds-product-actions"><button type="button" className="seeds-details" onClick={() => setSelectedProduct(product)}>Ver detalhes</button>
                                     {quantity > 0 ? <div className="seeds-quantity" role="group" aria-label={`Quantidade de ${product.ProductName}`}><button type="button" onClick={() => removeOne(product)} aria-label={`Remover uma unidade de ${product.ProductName}`}>−</button><span aria-live="polite">{quantity}<small>no pedido</small></span><button type="button" onClick={() => addToCart(product)} aria-label={`Adicionar uma unidade de ${product.ProductName}`}>+</button></div>
                                         : <button type="button" className="seeds-button" onClick={() => addToCart(product)} aria-label={`Adicionar ${product.ProductName} ao pedido`}>Adicionar <span aria-hidden="true">+</span></button>}
