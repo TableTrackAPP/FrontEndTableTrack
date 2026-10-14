@@ -1,3 +1,5 @@
+import ProductCover from '../components/ProductCover';
+import { productCoverUrl } from '../utils/productImages';
 import { descriptionText } from '../utils/productDescription';
 import ProductDescription from '../components/ProductDescription';
 import React, { useMemo, useState } from 'react';
@@ -70,8 +72,8 @@ const AutomotiveCatalog = () => {
     }), [normalizedSearch, products, selectedGroupID]);
 
     const productImageByGroup = useMemo(() => products.reduce((imagesByGroup, product) => {
-        if (product.ImageURL && !imagesByGroup[product.GroupID]) {
-            imagesByGroup[product.GroupID] = product.ImageURL;
+        if (productCoverUrl(product) && !imagesByGroup[product.GroupID]) {
+            imagesByGroup[product.GroupID] = productCoverUrl(product);
         }
 
         return imagesByGroup;
@@ -329,9 +331,8 @@ const AutomotiveCatalog = () => {
                                         onClick={() => openProductDetails(product)}
                                         aria-label={`Ver detalhes de ${product.ProductName}`}
                                     >
-                                        {product.ImageURL ? (
-                                            <img
-                                                src={product.ImageURL}
+                                        {productCoverUrl(product) ? (
+                                            <ProductCover product={product}
                                                 alt={product.ProductName}
                                                 loading="lazy"
                                                 decoding="async"

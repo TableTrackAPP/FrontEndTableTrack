@@ -1,8 +1,9 @@
+import ProductGallery from './ProductGallery';
 import ProductDescription from './ProductDescription';
 import React, { useEffect } from 'react';
 import '../styles/Catalog.css';
 
-const ProductCartModal = ({ product, show, onHide, onAddToCart, renderImage, priceLabel }) => {
+const ProductCartModal = ({ product, show, onHide, onAddToCart, priceLabel }) => {
     useEffect(() => {
         if (!show) return undefined;
 
@@ -26,11 +27,7 @@ const ProductCartModal = ({ product, show, onHide, onAddToCart, renderImage, pri
             >
                 <button className="product-cart-close-button" onClick={onHide} aria-label="Fechar detalhes">×</button>
                 <h2 id="product-cart-modal-title">{product.ProductName}</h2>
-                {renderImage ? renderImage(product) : <img
-                    src={product.ImageURL}
-                    alt={product.ProductName}
-                    className="product-cart-image"
-                />}
+                <ProductGallery key={product.ProductID} product={product} />
                 <div><strong>Descrição:</strong><ProductDescription value={product.Description} /></div>
                 <p><strong>Preço:</strong> {priceLabel ?? `R$ ${product.Price.toFixed(2)}`}</p>
                 <button

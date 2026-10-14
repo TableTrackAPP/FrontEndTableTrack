@@ -1,3 +1,4 @@
+import ProductCover from '../components/ProductCover';
 import ProductDescription from '../components/ProductDescription';
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -112,8 +113,7 @@ const CatalogWhatsapp = () => {
                             .filter(product => selectedGroupID === 'all' || product.GroupID === selectedGroupID)
                             .map(product => (
                                 <div className="catalog-product-card" key={product.ProductID}>
-                                    <img
-                                        src={product.ImageURL || 'https://via.placeholder.com/300x140'}
+                                    <ProductCover product={product}
                                         alt={product.ProductName}
                                         className="catalog-product-image"
                                     />

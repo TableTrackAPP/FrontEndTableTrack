@@ -209,7 +209,7 @@ const Establishment = () => {
             let imageUrl = establishment.ImageURL;
 
             if (imageFile) {
-                const uploadData = await uploadImage(imageFile, establishment.ImageURL);
+                const uploadData = await uploadImage(imageFile);
                 imageUrl = uploadData.url;
             }
 

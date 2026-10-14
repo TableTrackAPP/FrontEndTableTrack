@@ -1,0 +1,16 @@
+.formatted-description { overflow-wrap: anywhere; line-height: 1.5; }
+.formatted-description p, .formatted-description div { margin: 0 0 0.4em; }
+.formatted-description ul, .formatted-description ol { padding-left: 1.6em; margin: 0.4em 0; }
+.formatted-description ul { list-style: disc; }
+.formatted-description ol { list-style: decimal; }
+.formatted-description blockquote { margin: 0.4em 0 0.4em 1.8em; }
+.description-editor { flex-shrink: 0; border: 1px solid #ccc; border-radius: 8px; overflow: hidden; background: #f9f9f9; }
+.description-toolbar { display: flex; flex-wrap: wrap; gap: 4px; padding: 6px; border-bottom: 1px solid #ddd; background: #f0f2f1; }
+.description-toolbar button { padding: 6px 8px; min-height: 32px; border: 1px solid #ccc; border-radius: 4px; background: white; color: #333; cursor: pointer; font-size: 12px; }
+.description-toolbar button:hover { background: #e0ebe3; }
+.description-toolbar button:focus-visible { outline: 2px solid #2e7d32; outline-offset: 1px; }
+.description-toolbar button[aria-label="Negrito"] { font-weight: bold; }
+.description-toolbar button[aria-label="Itálico"] { font-style: italic; }
+.description-toolbar button[aria-label="Sublinhado"] { text-decoration: underline; }
+.description-editor-content { height: 140px; min-height: 140px; max-height: 140px; overflow-y: auto; padding: 10px 12px; box-sizing: border-box; font-size: 14px; color: #333; }
+.description-editor-content:focus { outline: 2px solid #2e7d32; outline-offset: -2px; }

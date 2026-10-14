@@ -10,11 +10,10 @@ const getAuthHeader = () => {
     return { Authorization: `Bearer ${accessToken}` };
 };
 
-// Função para upload de imagem, com suporte para deletar a imagem antiga
-export const uploadImage = async (imageFile, existingImageUrl = null) => {
+// Upload não remove arquivos: a associação é alterada apenas ao salvar.
+export const uploadImage = async (imageFile) => {
     const formData = new FormData();
     formData.append('file', imageFile);
-    if (existingImageUrl) formData.append('existingImageUrl', existingImageUrl);
 
     try {
         const response = await axios.post(IMAGE_UPLOAD_URL, formData, {

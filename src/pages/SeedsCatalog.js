@@ -1,3 +1,5 @@
+import ProductCover from '../components/ProductCover';
+import { productCoverUrl } from '../utils/productImages';
 import { descriptionText } from '../utils/productDescription';
 import ProductDescription from '../components/ProductDescription';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -17,8 +19,8 @@ function ProductImage({ product }) {
     const [status, setStatus] = useState('loading');
     return (
         <span className={`seeds-image ${status}`}>
-            {product.ImageURL && status !== 'error' ? (
-                <img src={product.ImageURL} alt={product.ProductName} loading="lazy" decoding="async"
+            {productCoverUrl(product) && status !== 'error' ? (
+                <ProductCover product={product} alt={product.ProductName} loading="lazy" decoding="async"
                     onLoad={() => setStatus('ready')} onError={() => setStatus('error')} />
             ) : (
                 <span className="seeds-image-fallback"><SpaOutlined aria-hidden="true" /><span>Imagem não disponível</span></span>
@@ -155,7 +157,7 @@ function SeedsCatalogView({ establishmentID }) {
                             const quantity = counts[product.ProductID] || 0;
                             const group = productGroups.find((item) => item.GroupID === product.GroupID);
                             return <article className={`seeds-product ${justAddedId === product.ProductID ? 'seeds-added' : ''}`} key={product.ProductID}>
-                                <button type="button" className="seeds-product-image" onClick={() => setSelectedProduct(product)} aria-label={`Ver detalhes de ${product.ProductName}`}><ProductImage key={product.ImageURL || product.ProductID} product={product} /></button>
+                                <button type="button" className="seeds-product-image" onClick={() => setSelectedProduct(product)} aria-label={`Ver detalhes de ${product.ProductName}`}><ProductImage key={productCoverUrl(product) || product.ProductID} product={product} /></button>
                                 <div className="seeds-product-info">{group && <span className="seeds-product-group">{group.GroupName}</span>}<h3>{product.ProductName}</h3>{product.Description && <ProductDescription value={product.Description} />}<strong className="seeds-price">{formatSeedsPrice(product)}</strong></div>
                                 <div className="seeds-product-actions"><button type="button" className="seeds-details" onClick={() => setSelectedProduct(product)}>Ver detalhes</button>
                                     {quantity > 0 ? <div className="seeds-quantity" role="group" aria-label={`Quantidade de ${product.ProductName}`}><button type="button" onClick={() => removeOne(product)} aria-label={`Remover uma unidade de ${product.ProductName}`}>−</button><span aria-live="polite">{quantity}<small>no pedido</small></span><button type="button" onClick={() => addToCart(product)} aria-label={`Adicionar uma unidade de ${product.ProductName}`}>+</button></div>
@@ -168,7 +170,7 @@ function SeedsCatalogView({ establishmentID }) {
             </div>
             {ready && <button type="button" className="seeds-floating-cart" onClick={() => setCartOpen(true)}><ShoppingBagOutlined aria-hidden="true" /><span>Ver pedido ({cart.length})</span><strong>{totalLabel}</strong></button>}
             <span className="seeds-sr-only" role="status">{justAddedId !== null ? 'Produto adicionado ao pedido.' : ''}</span>
-            {selectedProduct && <SeedsDialog><ProductCartModal product={selectedProduct} priceLabel={formatSeedsPrice(selectedProduct)} show onHide={() => setSelectedProduct(null)} onAddToCart={addToCart} renderImage={(product) => <ProductImage key={product.ImageURL || product.ProductID} product={product} />} /></SeedsDialog>}
+            {selectedProduct && <SeedsDialog><ProductCartModal product={selectedProduct} priceLabel={formatSeedsPrice(selectedProduct)} show onHide={() => setSelectedProduct(null)} onAddToCart={addToCart} /></SeedsDialog>}
             {cartOpen && <SeedsDialog><CartModalWhatsapp showDeliveryAddress={false} formatItemPrice={formatSeedsCartPrice} totalLabel={formatSeedsOrderTotal(cart, (amount) => `R$ ${amount.toFixed(2)}`)} cart={cart} setCart={setCart} onHide={() => setCartOpen(false)} onRemove={removeFromCart} establishment={establishment} /></SeedsDialog>}
         </main>
     );

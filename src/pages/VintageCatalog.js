@@ -1,3 +1,5 @@
+import ProductCover from '../components/ProductCover';
+import { productCoverUrl } from '../utils/productImages';
 import { descriptionText } from '../utils/productDescription';
 import ProductDescription from '../components/ProductDescription';
 import React, { useMemo, useState } from 'react';
@@ -84,15 +86,15 @@ const VintageCatalog = () => {
 
     const productImageByGroup = useMemo(() => {
         return products.reduce((imagesByGroup, product) => {
-            if (product.ImageURL && !imagesByGroup[product.GroupID]) {
-                imagesByGroup[product.GroupID] = product.ImageURL;
+            if (productCoverUrl(product) && !imagesByGroup[product.GroupID]) {
+                imagesByGroup[product.GroupID] = productCoverUrl(product);
             }
             return imagesByGroup;
         }, {});
     }, [products]);
 
     const heroImages = useMemo(
-        () => products.filter((product) => product.ImageURL).slice(0, 3),
+        () => products.filter((product) => productCoverUrl(product)).slice(0, 3),
         [products],
     );
 
@@ -125,7 +127,7 @@ const VintageCatalog = () => {
 
     const catalogName = establishment?.EstablishmentName || 'Catálogo';
     const pageDescription = establishment?.Description || 'Uma seleção especial preparada para você.';
-    const allProductsImage = products.find((product) => product.ImageURL)?.ImageURL;
+    const allProductsImage = productCoverUrl(products.find((product) => productCoverUrl(product)));
 
     return (
         <main className="vintage-catalog">
@@ -204,7 +206,7 @@ const VintageCatalog = () => {
                             <img
                                 key={product.ProductID}
                                 className={`vintage-hero-image vintage-hero-image-${index + 1}`}
-                                src={product.ImageURL}
+                                src={productCoverUrl(product)}
                                 alt={product.ProductName}
                             />
                         ))
@@ -289,8 +291,8 @@ const VintageCatalog = () => {
                                     onClick={() => openProductDetails(product)}
                                     aria-label={`Ver detalhes de ${product.ProductName}`}
                                 >
-                                    {product.ImageURL ? (
-                                        <img src={product.ImageURL} alt={product.ProductName} />
+                                    {productCoverUrl(product) ? (
+                                        <ProductCover product={product} alt={product.ProductName} />
                                     ) : (
                                         <span className="vintage-image-placeholder">
                                             <span aria-hidden="true">TT</span>

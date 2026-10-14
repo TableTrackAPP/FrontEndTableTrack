@@ -1,3 +1,4 @@
+import ProductCover from '../components/ProductCover';
 import ProductDescription from '../components/ProductDescription';
 import React, { useEffect, useState } from 'react';
 import { useToast } from '../hooks/ToastContext';
@@ -28,6 +29,7 @@ import NotificationListener from "../components/NotificationListener";
 
 const Products = () => {
     const [products, setProducts] = useState([]);
+    const [productsRefreshError, setProductsRefreshError] = useState(false);
     const [productGroups, setProductGroups] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [selectedGroup, setSelectedGroup] = useState(null);
@@ -80,26 +82,34 @@ const Products = () => {
     };
 
     const handleSaveProduct = async (productData) => {
+        if (!establishmentID) throw new Error('Establishment ID não encontrado.');
+        const productPayload = { ...productData, establishmentID };
+        // A falha da gravação deve chegar ao formulário para permitir nova tentativa.
+        if (isEditingProduct) {
+            await updateProduct(selectedProduct.ProductID, productPayload);
+        } else {
+            await createProduct(productPayload);
+        }
+        setShowProductModal(false);
+        setSelectedProduct(null);
+        showToast(isEditingProduct ? 'Produto atualizado com sucesso' : 'Produto criado com sucesso', 'success');
+        // Não reutilize URLs removidas, mesmo se a atualização da lista falhar.
+        setProducts([]);
         try {
-            if (!establishmentID) throw new Error('Establishment ID não encontrado.');
-            showLoading('Salvando produto...');
-            const productPayload = { ...productData, establishmentID };
-
-            if (isEditingProduct) {
-                await updateProduct(selectedProduct.ProductID, productPayload);
-                showToast('Produto atualizado com sucesso', 'success');
-            } else {
-                await createProduct(productPayload);
-                showToast('Produto criado com sucesso', 'success');
-            }
-
             const updatedProducts = await getProductsByEstablishmentId(establishmentID);
             setProducts(updatedProducts);
-            setShowProductModal(false);
-        } catch (error) {
-            showToast(error.message || 'Erro ao salvar produto', 'error');
-        } finally {
-            hideLoading();
+            setProductsRefreshError(false);
+        } catch {
+            setProductsRefreshError(true);
+            showToast('Produto salvo. Não foi possível atualizar a lista; tente carregá-la novamente.', 'warning');
+        }
+    };
+    const retryProducts = async () => {
+        try {
+            setProducts(await getProductsByEstablishmentId(establishmentID));
+            setProductsRefreshError(false);
+        } catch {
+            showToast('Não foi possível carregar os produtos. Tente novamente.', 'error');
         }
     };
 
@@ -252,6 +262,7 @@ const Products = () => {
             </div>
 
 
+            {productsRefreshError && <p role="status">Produto salvo. A lista precisa ser atualizada. <button type="button" onClick={retryProducts}>Recarregar produtos</button></p>}
             {showProductModal && (
                 <ProductModal
                     show={showProductModal}
@@ -276,8 +287,7 @@ const Products = () => {
                 <div className="products-grid">
                     {products.map(product => (
                         <div className="product-card" key={product.ProductID}>
-                            <img
-                                src={product.ImageURL || 'https://via.placeholder.com/300x140'}
+                            <ProductCover product={product}
                                 alt={product.ProductName}
                                 className="product-image"
                             />
@@ -287,7 +297,7 @@ const Products = () => {
                                 <p className="product-price">R$ {product.Price}</p>
                             </div>
                             <div className="product-actions">
-                                <button onClick={() => openProductModal(product)}>Editar</button>
+                                <button aria-label={`Editar ${product.ProductName}`} onClick={() => openProductModal(product)}>Editar</button>
                                 <button onClick={() => handleDeleteProduct(product.ProductID)}>Excluir</button>
                             </div>
                         </div>

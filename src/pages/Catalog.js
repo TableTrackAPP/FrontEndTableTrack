@@ -1,3 +1,4 @@
+import ProductCover from '../components/ProductCover';
 import ProductDescription from '../components/ProductDescription';
 import React, { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
@@ -171,8 +172,7 @@ const Catalog = () => {
                             )
                             .map(product => (
                                 <div className="catalog-product-card" key={product.ProductID}>
-                                    <img
-                                        src={product.ImageURL || 'https://via.placeholder.com/300x140'}
+                                    <ProductCover product={product}
                                         alt={product.ProductName}
                                         className="catalog-product-image"
                                     />
@@ -203,14 +203,6 @@ const Catalog = () => {
                     </div>
                 </section>
 
-                {showProductCartModal && selectedProduct && (
-                    <ProductCartModal
-                        product={selectedProduct}
-                        show={showProductCartModal}
-                        onHide={() => setShowProductCartModal(false)}
-                        onAddToCart={addToCart}
-                    />
-                )}
 
                 {showCartModal && (
                     <CartModal
