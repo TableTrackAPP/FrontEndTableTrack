@@ -426,10 +426,20 @@
     display: none;
 }/* ========= Modal de escolha de catálogo ========= */
 
+.tt-choice-backdrop {
+    padding: 16px;
+    box-sizing: border-box;
+}
+
 .tt-modal-choice {
     max-width: 1040px;
     max-height: 90vh;
-    overflow-y: auto;
+    max-height: 90dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .tt-choice-header {
@@ -437,15 +447,18 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    margin-bottom: 14px;
+    flex-shrink: 0;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .tt-choice-close {
     border: none;
     background: #f3f4f6;
     color: #111827;
-    width: 38px;
-    height: 38px;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
     border-radius: 10px;
     cursor: pointer;
     font-size: 18px;
@@ -461,7 +474,14 @@
 .tt-choice-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: max-content;
     gap: 14px;
+    padding: 20px;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+    align-content: start;
 }
 
 .tt-choice-card {
@@ -1048,4 +1068,50 @@
     color: #c89b3c;
     opacity: .25;
     transform: rotate(-18deg);
+}
+
+@media (max-width: 768px) {
+    .tt-choice-backdrop {
+        padding: 12px;
+        padding-bottom: max(12px, env(safe-area-inset-bottom));
+    }
+    .tt-modal-choice {
+        max-height: calc(100vh - 32px);
+        max-height: calc(100dvh - 32px - env(safe-area-inset-bottom));
+        border-radius: 18px;
+    }
+    .tt-choice-header { padding: 12px 14px; gap: 8px; }
+    .tt-choice-header h3 { font-size: 18px; line-height: 1.3; }
+    .tt-choice-grid { padding: 12px; gap: 10px; }
+    .tt-choice-card {
+        display: grid;
+        grid-template-columns: 76px minmax(0, 1fr);
+        align-items: stretch;
+        border-radius: 12px;
+        box-shadow: none;
+    }
+    .tt-choice-card:hover { transform: none; }
+    .tt-choice-img,
+    .tt-choice-automotive-preview,
+    .tt-choice-seeds-preview {
+        width: 76px;
+        height: 100%;
+        min-height: 112px;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    .tt-choice-automotive-preview,
+    .tt-choice-seeds-preview { align-items: center; gap: 4px; }
+    .tt-choice-automotive-preview > span,
+    .tt-choice-seeds-preview > span { font-size: 8px; letter-spacing: .04em; }
+    .tt-choice-automotive-preview > strong { font-size: 23px; }
+    .tt-choice-seeds-preview > strong { font-size: 16px; }
+    .tt-choice-automotive-preview::after { width: 80px; height: 26px; bottom: 10px; }
+    .tt-choice-seeds-preview > svg { width: 78px; height: 78px; }
+    .tt-choice-body { min-width: 0; padding: 12px; }
+    .tt-choice-title { font-size: 15px; line-height: 1.3; margin-bottom: 4px; }
+    .tt-choice-desc { font-size: 12px; line-height: 1.4; margin-bottom: 6px; }
+    .tt-choice-cta { padding: 0; background: transparent; color: #107653; font-size: 12px; }
+    .tt-choice-cta::after { content: ' →'; margin-left: 6px; }
+    .tt-choice-warning { font-size: 11px; padding: 6px; border-radius: 6px; }
 }

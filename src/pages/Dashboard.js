@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import SpaOutlined from '@mui/icons-material/SpaOutlined';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '../hooks/ToastContext';
@@ -41,6 +42,35 @@ const Dashboard = () => {
     const { unreadCount, clearUnread } = useOrderNotifications();
     const [pageReady, setPageReady] = useState(false);
     const [showCatalogChoiceModal, setShowCatalogChoiceModal] = useState(false);
+    const catalogChoiceRef = useRef(null);
+    useEffect(() => {
+        if (!showCatalogChoiceModal) return undefined;
+        const previousFocus = document.activeElement;
+        const previousOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        catalogChoiceRef.current?.querySelector('button')?.focus({ preventScroll: true });
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape') setShowCatalogChoiceModal(false);
+            if (event.key !== 'Tab') return;
+            const buttons = catalogChoiceRef.current?.querySelectorAll('button:not(:disabled)');
+            if (!buttons?.length) return;
+            const first = buttons[0];
+            const last = buttons[buttons.length - 1];
+            if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+            }
+        };
+        document.addEventListener('keydown', handleKeyDown);
+        return () => {
+            document.body.style.overflow = previousOverflow;
+            document.removeEventListener('keydown', handleKeyDown);
+            if (previousFocus?.isConnected) previousFocus.focus({ preventScroll: true });
+        };
+    }, [showCatalogChoiceModal]);
     const [showWhatsAppCatalogModal, setShowWhatsAppCatalogModal] = useState(false);
     const [showBrechoCatalogModal, setShowBrechoCatalogModal] = useState(false);
     const [showAutomotiveCatalogModal, setShowAutomotiveCatalogModal] = useState(false);
@@ -682,12 +712,12 @@ const Dashboard = () => {
                         ))}
                     </div>
                 </div>)}
-            {showCatalogChoiceModal && (
-                <div className="tt-modal-backdrop">
-                    <div className="tt-modal tt-modal-choice">
+            {showCatalogChoiceModal && createPortal(
+                <div className="tt-modal-backdrop tt-choice-backdrop">
+                    <div ref={catalogChoiceRef} className="tt-modal tt-modal-choice" role="dialog" aria-modal="true" aria-labelledby="tt-choice-title">
                         <div className="tt-choice-header">
-                            <h3 style={{ margin: 0 }}>Escolha o tipo de catálogo</h3>
-                            <button className="tt-choice-close" onClick={closeCatalogChoiceModal}>✕</button>
+                            <h3 id="tt-choice-title" style={{ margin: 0 }}>Escolha o tipo de catálogo</h3>
+                            <button type="button" className="tt-choice-close" aria-label="Fechar escolha de catálogo" onClick={closeCatalogChoiceModal}>✕</button>
                         </div>
 
                         <div className="tt-choice-grid">
@@ -843,7 +873,8 @@ const Dashboard = () => {
                             })()}
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
             {showAutomotiveCatalogModal && (
                 <div className="tt-modal-backdrop">
