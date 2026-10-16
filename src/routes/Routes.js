@@ -49,7 +49,7 @@ function AppRoutes() {
                     <Route path="/catalog-whatsapp/:establishmentID" element={<CatalogWhatsapp />} />
                     <Route path="/catalog-vintage/:establishmentSlug" element={<VintageCatalog />} />
                     <Route path="/catalog-automotivo/:establishmentID" element={<AutomotiveCatalog />} />
-                    <Route path="/catalog-sementes/:establishmentID" element={<SeedsCatalog />} />
+                    <Route path="/catalog-sementes/:establishmentSlug" element={<SeedsCatalog />} />
 
                     <Route
                         path="/dashboard"

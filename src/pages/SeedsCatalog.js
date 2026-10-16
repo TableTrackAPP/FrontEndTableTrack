@@ -58,9 +58,9 @@ function SeedsDialog({ children }) {
     return <div ref={container}>{children}</div>;
 }
 
-function SeedsCatalogView({ establishmentID }) {
+function SeedsCatalogView({ establishmentSlug }) {
     const { establishment, productGroups, products, cart, setCart, selectedGroupID, setSelectedGroupID,
-        justAddedId, catalogStatus, catalogError, retryCatalog, addToCart, removeFromCart } = useWhatsappCatalog(establishmentID);
+        justAddedId, catalogStatus, catalogError, retryCatalog, addToCart, removeFromCart } = useWhatsappCatalog(establishmentSlug, 'slug');
     const [search, setSearch] = useState('');
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [cartOpen, setCartOpen] = useState(false);
@@ -178,6 +178,6 @@ function SeedsCatalogView({ establishmentID }) {
 }
 
 export default function SeedsCatalog() {
-    const { establishmentID } = useParams();
-    return <SeedsCatalogView key={establishmentID} establishmentID={establishmentID} />;
+    const { establishmentSlug } = useParams();
+    return <SeedsCatalogView key={establishmentSlug} establishmentSlug={establishmentSlug} />;
 }

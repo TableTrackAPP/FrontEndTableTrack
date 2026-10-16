@@ -1,4 +1,6 @@
-# Getting Started with Create React App
+# TableTrack — Frontend
+
+Interface web do TableTrack para gerenciamento de estabelecimentos, produtos e catálogos.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

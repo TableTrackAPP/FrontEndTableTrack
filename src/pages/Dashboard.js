@@ -76,8 +76,9 @@ const Dashboard = () => {
     const [showAutomotiveCatalogModal, setShowAutomotiveCatalogModal] = useState(false);
     const [showSeedsCatalogModal, setShowSeedsCatalogModal] = useState(false);
     const buildSeedsCatalogUrl = () => {
-        if (!establishmentID) return '';
-        return `/catalog-sementes/${encodeURIComponent(establishmentID)}`;
+        const catalogIdentifier = establishment?.CatalogSlug || establishmentID;
+        if (!catalogIdentifier) return '';
+        return `/catalog-sementes/${encodeURIComponent(catalogIdentifier)}`;
     };
     const buildWhatsAppCatalogUrl = () => {
         if (!establishmentID) return '';

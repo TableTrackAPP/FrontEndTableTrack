@@ -7,7 +7,7 @@ import SeedsCatalog from './SeedsCatalog';
 import CatalogWhatsapp from './CatalogWhatsapp';
 import { LoadingProvider } from '../hooks/LoadingContext';
 import { ToastProvider } from '../hooks/ToastContext';
-import { getEstablishment } from '../services/establishmentService';
+import { getEstablishment, getEstablishmentByCatalogSlug } from '../services/establishmentService';
 import { getProductsByEstablishmentId } from '../services/productsService';
 import { getProductGroupsByEstablishmentId } from '../services/productGroupsService';
 
@@ -19,13 +19,15 @@ const products = [
     { ProductID: 1, GroupID: 10, ProductName: 'Produto de teste A', Description: 'Descrição com acentuação', Price: '12.50', ImageURL: '/test-product.png' },
     { ProductID: 2, GroupID: 20, ProductName: 'Produto de teste B', Description: 'Outra descrição', Price: '20' },
 ];
-function mount(legacy = false) {
-    return render(<HelmetProvider><LoadingProvider><ToastProvider><MemoryRouter initialEntries={['/catalog/test-establishment']}>
-        <Routes><Route path="/catalog/:establishmentID" element={legacy ? <CatalogWhatsapp /> : <SeedsCatalog />} /></Routes>
+function mount(legacy = false, identifier = 'test-establishment') {
+    const basePath = legacy ? '/catalog-whatsapp' : '/catalog-sementes';
+    return render(<HelmetProvider><LoadingProvider><ToastProvider><MemoryRouter initialEntries={[`${basePath}/${identifier}`]}>
+        <Routes><Route path={`${basePath}/:${legacy ? 'establishmentID' : 'establishmentSlug'}`} element={legacy ? <CatalogWhatsapp /> : <SeedsCatalog />} /></Routes>
     </MemoryRouter></ToastProvider></LoadingProvider></HelmetProvider>);
 }
 beforeEach(() => {
     jest.clearAllMocks();
+    getEstablishmentByCatalogSlug.mockReset().mockRejectedValue({ response: { status: 404 } });
     getEstablishment.mockResolvedValue({ EstablishmentID: 'test-establishment', EstablishmentName: 'Estabelecimento de teste', Description: 'Descrição cadastrada', WhatsAppNumber: '+55 (11) 99999-9999' });
     getProductsByEstablishmentId.mockResolvedValue(products);
     getProductGroupsByEstablishmentId.mockResolvedValue([{ GroupID: 10, GroupName: 'Grupo A' }, { GroupID: 20, GroupName: 'Grupo B' }]);
@@ -135,4 +137,30 @@ test.each([21.23, '21,23'])('preço %s aparece a combinar nos detalhes e no pedi
     const message = new URL(window.open.mock.calls[0][0]).searchParams.get('text');
     expect(message).toContain('1x Produto de teste A — preço a combinar');
     expect(message).not.toMatch(/21[.,]23/);
+});
+
+
+test('carrega o catálogo sementes pelo slug e usa o ID resolvido para buscar produtos', async () => {
+    getEstablishmentByCatalogSlug.mockResolvedValue({ EstablishmentID: 'resolved-id', EstablishmentName: 'Raízes de Ouro' });
+    mount(false, 'raizes-de-ouro');
+    await screen.findByRole('heading', { name: 'Produto de teste A' });
+    expect(getEstablishmentByCatalogSlug).toHaveBeenCalledWith('raizes-de-ouro');
+    expect(getEstablishment).not.toHaveBeenCalled();
+    expect(getProductsByEstablishmentId).toHaveBeenCalledWith('resolved-id');
+    expect(getProductGroupsByEstablishmentId).toHaveBeenCalledWith('resolved-id');
+});
+
+test('preserva links antigos por ID quando o slug não existe', async () => {
+    mount();
+    await screen.findByRole('heading', { name: 'Produto de teste A' });
+    expect(getEstablishmentByCatalogSlug).toHaveBeenCalledWith('test-establishment');
+    expect(getEstablishment).toHaveBeenCalledWith('test-establishment');
+});
+
+test('falha na busca por slug não é tratada como estabelecimento inexistente', async () => {
+    getEstablishmentByCatalogSlug.mockRejectedValue({ response: { status: 500 } });
+    mount(false, 'raizes-de-ouro');
+    await screen.findByRole('heading', { name: 'Não foi possível carregar o catálogo' });
+    expect(getEstablishment).not.toHaveBeenCalled();
+    expect(getProductsByEstablishmentId).not.toHaveBeenCalled();
 });
