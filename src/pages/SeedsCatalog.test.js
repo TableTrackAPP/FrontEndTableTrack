@@ -11,6 +11,8 @@ import { getEstablishment, getEstablishmentByCatalogSlug } from '../services/est
 import { getProductsByEstablishmentId } from '../services/productsService';
 import { getProductGroupsByEstablishmentId } from '../services/productGroupsService';
 
+jest.mock('../services/orderService', () => ({ createOrder: jest.fn().mockResolvedValue({ OrderID: 123 }) }));
+
 jest.mock('../services/establishmentService', () => ({ getEstablishment: jest.fn(), getEstablishmentByCatalogSlug: jest.fn() }));
 jest.mock('../services/productsService', () => ({ getProductsByEstablishmentId: jest.fn() }));
 jest.mock('../services/productGroupsService', () => ({ getProductGroupsByEstablishmentId: jest.fn() }));
@@ -64,13 +66,14 @@ test('preserva detalhes, quantidades, remoção, validação e mensagem do Whats
     expect(screen.getByRole('alert')).toHaveTextContent('Informe seu nome');
     fireEvent.change(screen.getByRole('textbox', { name: 'Nome do cliente' }), { target: { value: 'Cliente de teste' } });
     fireEvent.click(screen.getByRole('button', { name: 'Enviar no WhatsApp' }));
+    await waitFor(() => expect(window.open).toHaveBeenCalled());
     const [url, target, features] = window.open.mock.calls[0];
     expect(url).toContain('https://wa.me/5511999999999?text=');
     expect(decodeURIComponent(url)).toContain('2x Produto de teste A — R$ 25.00');
     expect(decodeURIComponent(url)).toContain('*Total:* R$ 25.00');
-    expect(target).toBe('_blank');
+    expect(target).toBe('_self');
     expect(features).toBe('noopener,noreferrer');
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
     expect(screen.getByRole('button', { name: 'Abrir pedido com 0 itens' })).toBeInTheDocument();
     expect(getEstablishment).toHaveBeenCalledTimes(1);
 });
@@ -134,6 +137,7 @@ test.each([21.23, '21,23'])('preço %s aparece a combinar nos detalhes e no pedi
     expect(screen.getByRole('dialog')).toHaveTextContent(/Total: R\$\s*20.00 \+ preço a combinar/);
     fireEvent.change(screen.getByRole('textbox', { name: 'Nome do cliente' }), { target: { value: 'Cliente' } });
     fireEvent.click(screen.getByRole('button', { name: 'Enviar no WhatsApp' }));
+    await waitFor(() => expect(window.open).toHaveBeenCalled());
     const message = new URL(window.open.mock.calls[0][0]).searchParams.get('text');
     expect(message).toContain('1x Produto de teste A — preço a combinar');
     expect(message).not.toMatch(/21[.,]23/);

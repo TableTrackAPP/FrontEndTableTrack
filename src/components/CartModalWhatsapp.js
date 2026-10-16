@@ -1,9 +1,12 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import '../styles/Modal.css';
+import { createOrder } from '../services/orderService';
 import { useToast } from '../hooks/ToastContext';
 import { useLoading } from '../hooks/LoadingContext';
 
 const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart, formatItemPrice, totalLabel, showDeliveryAddress = true }) => {
+    const submitting = useRef(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [customerName, setCustomerName] = useState('');
     const [customerPhone, setCustomerPhone] = useState('');
     const [addressState, setAddressState] = useState('');
@@ -37,16 +40,9 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart, for
         return Array.from(map.values());
     }, [cart]);
 
-    // limpa o erro quando o usuário corrigir
-    useEffect(() => {
-        if (errorMsg && cart.length > 0 && customerName.trim()) {
-            setErrorMsg('');
-        }
-    }, [cart.length, customerName, errorMsg]);
-
     useEffect(() => {
         const handleKeyDown = (event) => {
-            if (event.key === 'Escape') onHide();
+            if (event.key === 'Escape' && !submitting.current) onHide();
         };
 
         document.addEventListener('keydown', handleKeyDown);
@@ -123,6 +119,7 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart, for
     };
 
     const handleSendToWhatsApp = async () => {
+        if (submitting.current) return;
         // validações com mensagem no próprio modal
         if (cart.length === 0) {
             setErrorMsg('Seu carrinho está vazio. Adicione pelo menos 1 item antes de enviar.');
@@ -143,20 +140,52 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart, for
             return;
         }
 
+        if (!establishment?.EstablishmentID) {
+            setErrorMsg('Estabelecimento inválido. Recarregue o catálogo e tente novamente.');
+            return;
+        }
+
+        submitting.current = true;
+        setIsSubmitting(true);
         try {
-            showLoading('Abrindo WhatsApp...');
-
+            showLoading('Registrando pedido...');
             const message = buildWhatsAppMessage();
-            const url = `https://wa.me/${wa}?text=${encodeURIComponent(message)}`;
+            const items = groupedItems.map((item) => ({
+                ProductID: item.ProductID,
+                quantity: item.qty,
+                unitPrice: formatItemPrice && formatItemPrice(item.product) === 'preço a combinar' ? 0 : item.unitPrice,
+            }));
+            const address = showDeliveryAddress
+                ? [addressLine, addressNeighborhood, addressCity, addressState].map(value => value.trim()).filter(Boolean).join(', ')
+                : '';
+            const notes = [
+                'Origem: Catálogo WhatsApp. Envio da mensagem pelo cliente não confirmado.',
+                address && `Endereço de entrega: ${address}`,
+                observation.trim(),
+                ...groupedItems.filter(item => formatItemPrice && formatItemPrice(item.product) === 'preço a combinar')
+                    .map(item => `${item.qty}x ${item.ProductName}: preço a combinar (não incluído no total).`),
+            ].filter(Boolean).join('\n');
 
-            window.open(url, '_blank', 'noopener,noreferrer');
+            await createOrder({
+                establishmentID: establishment.EstablishmentID,
+                tableNumber: null,
+                customerName: customerName.trim(),
+                customerPhone: customerPhone.trim() || null,
+                totalAmount: items.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0),
+                observation: notes,
+                items,
+            });
 
-            showToast('Pedido pronto! Envie a mensagem no WhatsApp.', 'success');
             setCart([]);
             onHide();
+            showToast('Pedido registrado! Envie a mensagem no WhatsApp.', 'success');
+            // A mesma aba evita bloqueio de pop-up depois da requisição assíncrona.
+            window.open(`https://wa.me/${wa}?text=${encodeURIComponent(message)}`, '_self', 'noopener,noreferrer');
         } catch (e) {
-            setErrorMsg('Falha ao abrir o WhatsApp. Tente novamente.');
+            setErrorMsg('Não foi possível registrar o pedido. Tente novamente.');
         } finally {
+            submitting.current = false;
+            setIsSubmitting(false);
             hideLoading();
         }
     };
@@ -183,7 +212,7 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart, for
                         <li key={`${item.ProductID}-${index}`} className="cart-modal-item">
                             <span>{item.ProductName}</span>
                             <span style={{ marginLeft: 'auto' }}>{formatItemPrice ? formatItemPrice(item) : `R$ ${item.Price.toFixed(2)}`}</span>
-                            <button className="cart-modal-remove" onClick={() => onRemove(index)} aria-label={`Remover ${item.ProductName}`}>✕</button>
+                            <button className="cart-modal-remove" disabled={isSubmitting} onClick={() => onRemove(index)} aria-label={`Remover ${item.ProductName}`}>✕</button>
                         </li>
                     ))}
                 </ul>
@@ -276,10 +305,10 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart, for
                 />
 
                 <div className="cart-modal-buttons">
-                    <button className="cart-modal-btn finalize" onClick={handleSendToWhatsApp}>
+                    <button className="cart-modal-btn finalize" disabled={isSubmitting} onClick={handleSendToWhatsApp}>
                         Enviar no WhatsApp
                     </button>
-                    <button className="cart-modal-btn cancel" onClick={onHide}>
+                    <button className="cart-modal-btn cancel" disabled={isSubmitting} onClick={onHide}>
                         Fechar
                     </button>
                 </div>
