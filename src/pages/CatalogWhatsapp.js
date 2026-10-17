@@ -122,7 +122,7 @@ const CatalogWhatsapp = () => {
 
                                     <div className="catalog-product-content">
                                         <h3 className="catalog-product-title">{product.ProductName}</h3>
-                                        <ProductDescription className="catalog-product-description" value={product.Description} />
+                                        <ProductDescription className="catalog-product-description" value={product.Description} maxLength={500} />
                                         <p className="catalog-product-price">R$ {product.Price.toFixed(2)}</p>
                                     </div>
 

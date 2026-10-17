@@ -326,6 +326,56 @@ function Home() {
                         <h3>Gestão simples</h3>
                         <p>Edite estabelecimento, produtos e catálogo sem complicação e sem depender de designer.</p>
                     </div>
+
+                    <div className="feature-card">
+                        <h3>Pedidos do catálogo no painel</h3>
+                        <p>Ao finalizar no catálogo WhatsApp, o pedido é registrado no sistema antes de abrir a mensagem para o cliente enviar.</p>
+                    </div>
+
+                    <div className="feature-card">
+                        <h3>Galeria de fotos dos produtos</h3>
+                        <p>Cadastre até 20 fotos por produto, escolha a imagem de capa e apresente os detalhes em uma galeria para seus clientes.</p>
+                    </div>
+
+                    <div className="feature-card">
+                        <h3>Busca e filtros no catálogo</h3>
+                        <p>Nos catálogos de brechó, automotivo e sementes, seus clientes encontram produtos pela busca e navegam pelas categorias.</p>
+                    </div>
+
+                    <div className="feature-card">
+                        <h3>Dados de entrega e observações</h3>
+                        <p>Nos catálogos com entrega, o cliente pode informar endereço e observações, que acompanham o pedido no painel e na mensagem do WhatsApp.</p>
+                    </div>
+
+                    <div className="feature-card">
+                        <h3>Acompanhamento dos pedidos</h3>
+                        <p>Consulte cliente, itens e observações, filtre pedidos por data ou status e atualize as etapas do atendimento.</p>
+                    </div>
+
+                    <div className="feature-card">
+                        <h3>Fechamento de contas e recibos</h3>
+                        <p>Feche contas por mesa ou por cliente e imprima o recibo para facilitar a organização do atendimento.</p>
+                    </div>
+                </div>
+
+                <div className="features-header features-header--catalogs">
+                    <h2>Catálogos digitais para novos segmentos</h2>
+                    <p>Além do cardápio para alimentação, escolha uma apresentação para o seu negócio e compartilhe o catálogo por link ou QR Code.</p>
+                </div>
+
+                <div className="features-grid">
+                    <div className="feature-card">
+                        <h3>Catálogo para brechós</h3>
+                        <p>Apresente roupas, acessórios e achados em um catálogo com visual de brechó, fotos dos produtos e pedidos pelo WhatsApp.</p>
+                    </div>
+                    <div className="feature-card">
+                        <h3>Catálogo automotivo</h3>
+                        <p>Organize peças e acessórios por categorias, destaque os produtos e facilite a montagem de pedidos para sua loja automotiva.</p>
+                    </div>
+                    <div className="feature-card">
+                        <h3>Catálogo de sementes e pastagens</h3>
+                        <p>Divulgue sementes para pastagens, facilite a consulta de produtos e receba pedidos pelo WhatsApp, inclusive com itens de preço a combinar.</p>
+                    </div>
                 </div>
             </section>
 
@@ -341,6 +391,9 @@ function Home() {
                     <span>Cafeterias</span>
                     <span>Hamburguerias</span>
                     <span>Docerias</span>
+                    <span>Brechós</span>
+                    <span>Lojas de peças e acessórios automotivos</span>
+                    <span>Lojas de sementes e pastagens</span>
                 </div>
             </section>
 
@@ -421,6 +474,12 @@ function Home() {
                     Com o TableTrack, seu estabelecimento pode oferecer acesso ao cardápio pelo celular,
                     gerar QR Code por mesa, receber pedidos em um painel próprio ou encaminhar pedidos estruturados pelo
                     WhatsApp.
+                </p>
+                <p>
+                    A plataforma também oferece catálogos digitais para brechós, lojas de peças e acessórios
+                    automotivos e lojas de sementes e pastagens. Com galeria de fotos, busca e categorias,
+                    seus clientes podem conhecer os produtos e montar o pedido pelo celular. Os pedidos
+                    finalizados nos catálogos WhatsApp são registrados no painel antes de o cliente enviar a mensagem.
                 </p>
             </section>
 

@@ -297,7 +297,7 @@ const VintageCatalog = () => {
                                         <h3>{product.ProductName}</h3>
                                         <strong>{currencyFormatter.format(product.Price)}</strong>
                                     </div>
-                                    {product.Description && <ProductDescription value={product.Description} />}
+                                    {product.Description && <ProductDescription value={product.Description} maxLength={500} />}
                                 </div>
 
                                 <div className="vintage-product-actions">

@@ -37,3 +37,28 @@ export function descriptionText(value) {
     container.querySelectorAll('p, div, li, blockquote').forEach(node => node.append('\n'));
     return container.textContent.trim();
 }
+
+// Count visible characters, keeping formatted HTML valid when a preview is cut.
+export function truncateDescriptionHtml(html, maxLength) {
+    if (!Number.isInteger(maxLength) || maxLength < 1) return html;
+    const container = document.createElement('div');
+    container.innerHTML = html;
+    if (Array.from(container.textContent).length <= maxLength) return html;
+
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+    let remaining = maxLength - 1;
+    let node;
+    while ((node = walker.nextNode())) {
+        const characters = Array.from(node.textContent);
+        if (characters.length > remaining) {
+            node.textContent = characters.slice(0, remaining).join('') + '…';
+            const range = document.createRange();
+            range.setStartAfter(node);
+            range.setEnd(container, container.childNodes.length);
+            range.deleteContents();
+            break;
+        }
+        remaining -= characters.length;
+    }
+    return container.innerHTML;
+}

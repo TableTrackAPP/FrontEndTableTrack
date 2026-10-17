@@ -1,7 +1,7 @@
 import React from 'react';
-import { descriptionHtml } from '../utils/productDescription';
+import { descriptionHtml, truncateDescriptionHtml } from '../utils/productDescription';
 import '../styles/ProductDescription.css';
 
-export default function ProductDescription({ value, className = '' }) {
-    return <div className={`formatted-description ${className}`} dangerouslySetInnerHTML={{ __html: descriptionHtml(value) }} />;
+export default function ProductDescription({ value, className = '', maxLength }) {
+    return <div className={`formatted-description ${className}`} dangerouslySetInnerHTML={{ __html: truncateDescriptionHtml(descriptionHtml(value), maxLength) }} />;
 }

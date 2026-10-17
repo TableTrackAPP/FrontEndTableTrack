@@ -339,7 +339,7 @@ const AutomotiveCatalog = () => {
 
                                     <div className="automotive-product-info">
                                         <h3>{product.ProductName}</h3>
-                                        {product.Description && <ProductDescription value={product.Description} />}
+                                        {product.Description && <ProductDescription value={product.Description} maxLength={500} />}
                                         <strong>{currencyFormatter.format(product.Price)}</strong>
                                     </div>
 

@@ -1156,6 +1156,10 @@ footer {
     margin: 0 auto 40px auto;
 }
 
+.features-header--catalogs {
+    margin-top: 64px;
+}
+
 .features-header h2 {
     font-size: 42px;
     color: #7A786F;
