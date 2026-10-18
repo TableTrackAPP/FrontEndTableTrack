@@ -1,3 +1,4 @@
+import ProductOrderEditor from '../components/ProductOrderEditor';
 import ProductCover from '../components/ProductCover';
 import ProductDescription from '../components/ProductDescription';
 import React, { useEffect, useState } from 'react';
@@ -29,6 +30,8 @@ import NotificationListener from "../components/NotificationListener";
 
 const Products = () => {
     const [products, setProducts] = useState([]);
+    const [organizing, setOrganizing] = useState(false);
+    const [productsLoading, setProductsLoading] = useState(true);
     const [productsRefreshError, setProductsRefreshError] = useState(false);
     const [productGroups, setProductGroups] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -60,8 +63,10 @@ const Products = () => {
                 setProducts(fetchedProducts);
                 setProductGroups(fetchedGroups);
             } catch (error) {
+                setProductsRefreshError(true);
                 showToast(error.message || 'Erro ao carregar dados', 'error');
             } finally {
+                setProductsLoading(false);
                 hideLoading(); // Esconde o loading
             }
         };
@@ -105,11 +110,29 @@ const Products = () => {
         }
     };
     const retryProducts = async () => {
+        setProductsLoading(true);
         try {
             setProducts(await getProductsByEstablishmentId(establishmentID));
             setProductsRefreshError(false);
         } catch {
             showToast('Não foi possível carregar os produtos. Tente novamente.', 'error');
+        } finally {
+            setProductsLoading(false);
+        }
+    };
+
+    const reloadAfterOrder = async (message, type) => {
+        setProductsLoading(true);
+        try {
+            setProducts(await getProductsByEstablishmentId(establishmentID));
+            setProductsRefreshError(false);
+            showToast(message, type);
+        } catch {
+            setProducts([]);
+            setProductsRefreshError(true);
+            showToast(`${message} Não foi possível atualizar a lista. Recarregue os produtos antes de organizar novamente.`, 'warning');
+        } finally {
+            setProductsLoading(false);
         }
     };
 
@@ -201,6 +224,7 @@ const Products = () => {
                 </div>
             </Box>
 
+            {!organizing && <>
             <div className="sticky-card">
                 <h2 className="sticky-card-title">Ações Rápidas</h2>
                 <div className="sticky-card-buttons">
@@ -262,7 +286,8 @@ const Products = () => {
             </div>
 
 
-            {productsRefreshError && <p role="status">Produto salvo. A lista precisa ser atualizada. <button type="button" onClick={retryProducts}>Recarregar produtos</button></p>}
+            </>}
+            {productsRefreshError && <p role="status">A lista precisa ser atualizada. <button type="button" onClick={retryProducts}>Recarregar produtos</button></p>}
             {showProductModal && (
                 <ProductModal
                     show={showProductModal}
@@ -282,8 +307,11 @@ const Products = () => {
             )}
 
 
-            <section className="products-section">
+            {organizing ? <ProductOrderEditor products={products} establishmentID={establishmentID}
+                onReload={reloadAfterOrder} onClose={() => setOrganizing(false)} /> : <section className="products-section">
                 <h2>Produtos</h2>
+                <button className="product-order-launch" type="button" disabled={productsLoading || productsRefreshError || products.length < 2 || !establishmentID}
+                    onClick={() => setOrganizing(true)}><span aria-hidden="true">↕</span> Organizar produtos</button>
                 <div className="products-grid">
                     {products.map(product => (
                         <div className="product-card" key={product.ProductID}>
@@ -303,7 +331,7 @@ const Products = () => {
                         </div>
                     ))}
                 </div>
-            </section>
+            </section>}
 
         </div>
 

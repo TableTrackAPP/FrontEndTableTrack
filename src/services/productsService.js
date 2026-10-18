@@ -15,15 +15,17 @@ export const getProducts = async () => {
     return response.data;
 };
 
+const withoutProductOrder = ({ SortOrder, sortOrder, ...productData }) => productData;
+
 export const createProduct = async (productData) => {
-    const response = await axios.post(API_URL, productData, {
+    const response = await axios.post(API_URL, withoutProductOrder(productData), {
         headers: getAuthHeader(),
     });
     return response.data;
 };
 
 export const updateProduct = async (productID, productData) => {
-    const response = await axios.put(`${API_URL}/${productID}`, productData, {
+    const response = await axios.put(`${API_URL}/${productID}`, withoutProductOrder(productData), {
         headers: getAuthHeader(),
     });
     return response.data;
@@ -45,5 +47,12 @@ export const getProductsByUserID = async (userID) => {
 
 export const getProductsByEstablishmentId = async (establishmentID) => {
     const response = await axios.get(`${API_URL}/establishment/${establishmentID}`);
+    return response.data;
+};
+
+export const updateProductOrder = async (establishmentID, productIDs) => {
+    const response = await axios.put(`${API_URL}/establishment/${establishmentID}/order`, { productIDs }, {
+        headers: getAuthHeader(),
+    });
     return response.data;
 };
