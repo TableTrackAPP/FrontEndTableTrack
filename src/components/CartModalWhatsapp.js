@@ -182,7 +182,10 @@ const CartModalWhatsapp = ({ cart, onHide, onRemove, establishment, setCart, for
             // A mesma aba evita bloqueio de pop-up depois da requisição assíncrona.
             window.open(`https://wa.me/${wa}?text=${encodeURIComponent(message)}`, '_self', 'noopener,noreferrer');
         } catch (e) {
-            setErrorMsg('Não foi possível registrar o pedido. Tente novamente.');
+            const serverMessage = e.response?.data?.message;
+            setErrorMsg(typeof serverMessage === 'string' && serverMessage.trim()
+                ? serverMessage
+                : 'Não foi possível registrar o pedido. Tente novamente.');
         } finally {
             submitting.current = false;
             setIsSubmitting(false);
